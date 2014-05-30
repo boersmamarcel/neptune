@@ -1,0 +1,23 @@
+
+
+int i = 0;
+
+
+if( i + 1 < 4){
+    print('Y');
+    i = 101;
+}
+
+if(i > 400){
+    print('N');
+}else{
+    print('Y');
+}
+
+if( i > 400){
+    print('N');
+}elsif(i > 100){
+    print('Y');
+}else{
+    print('N');
+}
