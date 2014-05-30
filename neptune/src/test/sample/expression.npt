@@ -1,0 +1,22 @@
+int a;
+const a_answer;
+int b;
+const b_answer;
+int c;
+const c_answer;
+
+a_answer = 25;
+a = 5+4*5;
+
+print(a_answer);
+print(a);
+
+b_answer = 1;
+b = a*25 > 3;
+
+print(b_answer);
+print(b);
+
+c_answer = 5;
+c = ((5+4)*5 +5) / 10
+
