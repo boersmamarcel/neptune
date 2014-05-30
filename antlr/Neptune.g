@@ -29,9 +29,10 @@ tokens {
 
     // keywords
     PROGRAM     =   'program'   ;
-/*    VAR         =   'var'       ;*/
+    VAR         =   'var'       ;
 	CONST		=	'const'		;
     PRINT       =   'print'     ;
+	READ		=	'read'		;
     INCLUDE     =   'include'   ;
 	FUNCTION	=	'function'	;
 	RETURN		=	'return'	;
@@ -83,7 +84,6 @@ lines
 line
 	:	expression SEMICOLON!
 	|	declaration SEMICOLON!
-	|	print_statement SEMICOLON!
 	|	include_statement
 	|	logic_statement
 	;
@@ -93,32 +93,35 @@ logic_statement
 	|	foreach_statement
 	|	if_statement
 	;
-
 	
 while_statement
-	:	WHILE LPAREN! expression RPAREN! LCURLY! lines RCURLY!
+	:	WHILE^ LPAREN! expression RPAREN! LCURLY! lines RCURLY!
 	;
 	
 foreach_statement
-	:	FOREACH LPAREN! IDENTIFIER IN! IDENTIFIER RPAREN! LCURLY! lines RCURLY!
+	:	FOREACH^ LPAREN! IDENTIFIER IN! IDENTIFIER RPAREN! LCURLY! lines RCURLY!
 	;
 	
 if_statement
-	:	IF LPAREN! expression RPAREN! LCURLY! lines RCURLY!
+	:	IF^ LPAREN! expression RPAREN! LCURLY! lines RCURLY!
 		(ELSIF LPAREN! expression RPAREN! LCURLY! lines RCURLY!)*
 		(ELSE LCURLY! lines RCURLY!)?
 	;
 	
 include_statement
-	:	INCLUDE	'ello'
+	:	INCLUDE^ 'ello'
 	;
 	
 print_statement
-	:	PRINT LPAREN! expression (COMMA expression)* RPAREN!
+	:	PRINT^ LPAREN! expression (COMMA expression)* RPAREN!
+	;
+	
+read_statement
+	:	READ^ LPAREN! expression (COMMA expression)* RPAREN!
 	;
 	
 declaration
-	:	type IDENTIFIER (BECOMES expression)?
+	:	(VAR^ | CONST^) type IDENTIFIER (BECOMES expression)?
 	;
 	
 expression
@@ -147,6 +150,8 @@ operand
     |   LPAREN! assignment_expr RPAREN!
 	|	LCURLY expression (COMMA expression)* RCURLY
 		->	^(ARRAY_SET expression+)
+	|	print_statement
+	|	read_statement
     ;
 
 type
