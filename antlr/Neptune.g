@@ -124,7 +124,8 @@ read_statement
 	;
 	
 declaration
-	:	(VAR^ | CONST^) type IDENTIFIER (BECOMES expression)?
+	:	VAR^ type IDENTIFIER (BECOMES expression)?
+	|	CONST^ type IDENTIFIER BECOMES expression
 	;
 	
 expression
@@ -157,6 +158,7 @@ operand
 	|	read_statement
 	|	(TRUE | FALSE)
 	|	QUOTE! (LETTER|DIGIT) QUOTE!
+	|	STRING
     ;
 
 type
@@ -184,6 +186,10 @@ COMMENT
     :   '//' .* '\n' 
             { $channel=HIDDEN; }
     ;
+
+STRING
+	:	DQUOTE (DIGIT | LETTER | ' ' | '\t' | '\f' | '\r' | '\n')+ DQUOTE
+	;
 
 WS
     :   (' ' | '\t' | '\f' | '\r' | '\n')+

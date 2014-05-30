@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 Neptune.g 2014-05-30 14:19:27
+// $ANTLR 3.5.2 Neptune.g 2014-05-30 14:31:42
 
 package neptune;
 
@@ -20,11 +20,11 @@ public class NeptuneParser extends Parser {
 		"GT_EQ", "IDENTIFIER", "IF", "IN", "INCLUDE", "INTEGER", "LBRACKET", "LCURLY", 
 		"LETTER", "LOWER", "LPAREN", "LT", "LT_EQ", "MINUS", "NEQ", "NUMBER", 
 		"PLUS", "PRINT", "PROGRAM", "QUOTE", "RBRACKET", "RCURLY", "READ", "RETURN", 
-		"RPAREN", "SEMICOLON", "THEN", "TIMES", "TRUE", "UPPER", "VAR", "WHILE", 
-		"WS", "'ello'"
+		"RPAREN", "SEMICOLON", "STRING", "THEN", "TIMES", "TRUE", "UPPER", "VAR", 
+		"WHILE", "WS", "'ello'"
 	};
 	public static final int EOF=-1;
-	public static final int T__56=56;
+	public static final int T__57=57;
 	public static final int ARRAY_SET=4;
 	public static final int BECOMES=5;
 	public static final int BOOLEAN=6;
@@ -70,13 +70,14 @@ public class NeptuneParser extends Parser {
 	public static final int RETURN=46;
 	public static final int RPAREN=47;
 	public static final int SEMICOLON=48;
-	public static final int THEN=49;
-	public static final int TIMES=50;
-	public static final int TRUE=51;
-	public static final int UPPER=52;
-	public static final int VAR=53;
-	public static final int WHILE=54;
-	public static final int WS=55;
+	public static final int STRING=49;
+	public static final int THEN=50;
+	public static final int TIMES=51;
+	public static final int TRUE=52;
+	public static final int UPPER=53;
+	public static final int VAR=54;
+	public static final int WHILE=55;
+	public static final int WS=56;
 
 	// delegates
 	public Parser[] getDelegates() {
@@ -217,7 +218,7 @@ public class NeptuneParser extends Parser {
 			while (true) {
 				int alt1=2;
 				int LA1_0 = input.LA(1);
-				if ( (LA1_0==CONST||(LA1_0 >= FALSE && LA1_0 <= FOREACH)||(LA1_0 >= IDENTIFIER && LA1_0 <= IF)||LA1_0==INCLUDE||LA1_0==LCURLY||LA1_0==LPAREN||LA1_0==NUMBER||LA1_0==PRINT||LA1_0==QUOTE||LA1_0==READ||LA1_0==TRUE||(LA1_0 >= VAR && LA1_0 <= WHILE)) ) {
+				if ( (LA1_0==CONST||(LA1_0 >= FALSE && LA1_0 <= FOREACH)||(LA1_0 >= IDENTIFIER && LA1_0 <= IF)||LA1_0==INCLUDE||LA1_0==LCURLY||LA1_0==LPAREN||LA1_0==NUMBER||LA1_0==PRINT||LA1_0==QUOTE||LA1_0==READ||LA1_0==STRING||LA1_0==TRUE||(LA1_0 >= VAR && LA1_0 <= WHILE)) ) {
 					alt1=1;
 				}
 
@@ -300,6 +301,7 @@ public class NeptuneParser extends Parser {
 			case PRINT:
 			case QUOTE:
 			case READ:
+			case STRING:
 			case TRUE:
 				{
 				alt2=1;
@@ -874,7 +876,7 @@ public class NeptuneParser extends Parser {
 			INCLUDE47_tree = (Object)adaptor.create(INCLUDE47);
 			root_0 = (Object)adaptor.becomeRoot(INCLUDE47_tree, root_0);
 
-			string_literal48=(Token)match(input,56,FOLLOW_56_in_include_statement1258); 
+			string_literal48=(Token)match(input,57,FOLLOW_57_in_include_statement1258); 
 			string_literal48_tree = (Object)adaptor.create(string_literal48);
 			adaptor.addChild(root_0, string_literal48_tree);
 
@@ -1103,7 +1105,7 @@ public class NeptuneParser extends Parser {
 
 
 	// $ANTLR start "declaration"
-	// Neptune.g:126:1: declaration : ( VAR ^| CONST ^) type IDENTIFIER ( BECOMES expression )? ;
+	// Neptune.g:126:1: declaration : ( VAR ^ type IDENTIFIER ( BECOMES expression )? | CONST ^ type IDENTIFIER BECOMES expression );
 	public final NeptuneParser.declaration_return declaration() throws RecognitionException {
 		NeptuneParser.declaration_return retval = new NeptuneParser.declaration_return();
 		retval.start = input.LT(1);
@@ -1111,99 +1113,122 @@ public class NeptuneParser extends Parser {
 		Object root_0 = null;
 
 		Token VAR61=null;
-		Token CONST62=null;
-		Token IDENTIFIER64=null;
-		Token BECOMES65=null;
-		ParserRuleReturnScope type63 =null;
-		ParserRuleReturnScope expression66 =null;
+		Token IDENTIFIER63=null;
+		Token BECOMES64=null;
+		Token CONST66=null;
+		Token IDENTIFIER68=null;
+		Token BECOMES69=null;
+		ParserRuleReturnScope type62 =null;
+		ParserRuleReturnScope expression65 =null;
+		ParserRuleReturnScope type67 =null;
+		ParserRuleReturnScope expression70 =null;
 
 		Object VAR61_tree=null;
-		Object CONST62_tree=null;
-		Object IDENTIFIER64_tree=null;
-		Object BECOMES65_tree=null;
+		Object IDENTIFIER63_tree=null;
+		Object BECOMES64_tree=null;
+		Object CONST66_tree=null;
+		Object IDENTIFIER68_tree=null;
+		Object BECOMES69_tree=null;
 
 		try {
-			// Neptune.g:127:2: ( ( VAR ^| CONST ^) type IDENTIFIER ( BECOMES expression )? )
-			// Neptune.g:127:4: ( VAR ^| CONST ^) type IDENTIFIER ( BECOMES expression )?
-			{
-			root_0 = (Object)adaptor.nil();
-
-
-			// Neptune.g:127:4: ( VAR ^| CONST ^)
-			int alt8=2;
-			int LA8_0 = input.LA(1);
-			if ( (LA8_0==VAR) ) {
-				alt8=1;
+			// Neptune.g:127:2: ( VAR ^ type IDENTIFIER ( BECOMES expression )? | CONST ^ type IDENTIFIER BECOMES expression )
+			int alt9=2;
+			int LA9_0 = input.LA(1);
+			if ( (LA9_0==VAR) ) {
+				alt9=1;
 			}
-			else if ( (LA8_0==CONST) ) {
-				alt8=2;
+			else if ( (LA9_0==CONST) ) {
+				alt9=2;
 			}
 
 			else {
 				NoViableAltException nvae =
-					new NoViableAltException("", 8, 0, input);
+					new NoViableAltException("", 9, 0, input);
 				throw nvae;
 			}
 
-			switch (alt8) {
+			switch (alt9) {
 				case 1 :
-					// Neptune.g:127:5: VAR ^
+					// Neptune.g:127:4: VAR ^ type IDENTIFIER ( BECOMES expression )?
 					{
-					VAR61=(Token)match(input,VAR,FOLLOW_VAR_in_declaration1327); 
+					root_0 = (Object)adaptor.nil();
+
+
+					VAR61=(Token)match(input,VAR,FOLLOW_VAR_in_declaration1326); 
 					VAR61_tree = (Object)adaptor.create(VAR61);
 					root_0 = (Object)adaptor.becomeRoot(VAR61_tree, root_0);
+
+					pushFollow(FOLLOW_type_in_declaration1329);
+					type62=type();
+					state._fsp--;
+
+					adaptor.addChild(root_0, type62.getTree());
+
+					IDENTIFIER63=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_declaration1331); 
+					IDENTIFIER63_tree = (Object)adaptor.create(IDENTIFIER63);
+					adaptor.addChild(root_0, IDENTIFIER63_tree);
+
+					// Neptune.g:127:25: ( BECOMES expression )?
+					int alt8=2;
+					int LA8_0 = input.LA(1);
+					if ( (LA8_0==BECOMES) ) {
+						alt8=1;
+					}
+					switch (alt8) {
+						case 1 :
+							// Neptune.g:127:26: BECOMES expression
+							{
+							BECOMES64=(Token)match(input,BECOMES,FOLLOW_BECOMES_in_declaration1334); 
+							BECOMES64_tree = (Object)adaptor.create(BECOMES64);
+							adaptor.addChild(root_0, BECOMES64_tree);
+
+							pushFollow(FOLLOW_expression_in_declaration1336);
+							expression65=expression();
+							state._fsp--;
+
+							adaptor.addChild(root_0, expression65.getTree());
+
+							}
+							break;
+
+					}
 
 					}
 					break;
 				case 2 :
-					// Neptune.g:127:12: CONST ^
+					// Neptune.g:128:4: CONST ^ type IDENTIFIER BECOMES expression
 					{
-					CONST62=(Token)match(input,CONST,FOLLOW_CONST_in_declaration1332); 
-					CONST62_tree = (Object)adaptor.create(CONST62);
-					root_0 = (Object)adaptor.becomeRoot(CONST62_tree, root_0);
+					root_0 = (Object)adaptor.nil();
 
-					}
-					break;
 
-			}
+					CONST66=(Token)match(input,CONST,FOLLOW_CONST_in_declaration1343); 
+					CONST66_tree = (Object)adaptor.create(CONST66);
+					root_0 = (Object)adaptor.becomeRoot(CONST66_tree, root_0);
 
-			pushFollow(FOLLOW_type_in_declaration1336);
-			type63=type();
-			state._fsp--;
-
-			adaptor.addChild(root_0, type63.getTree());
-
-			IDENTIFIER64=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_declaration1338); 
-			IDENTIFIER64_tree = (Object)adaptor.create(IDENTIFIER64);
-			adaptor.addChild(root_0, IDENTIFIER64_tree);
-
-			// Neptune.g:127:36: ( BECOMES expression )?
-			int alt9=2;
-			int LA9_0 = input.LA(1);
-			if ( (LA9_0==BECOMES) ) {
-				alt9=1;
-			}
-			switch (alt9) {
-				case 1 :
-					// Neptune.g:127:37: BECOMES expression
-					{
-					BECOMES65=(Token)match(input,BECOMES,FOLLOW_BECOMES_in_declaration1341); 
-					BECOMES65_tree = (Object)adaptor.create(BECOMES65);
-					adaptor.addChild(root_0, BECOMES65_tree);
-
-					pushFollow(FOLLOW_expression_in_declaration1343);
-					expression66=expression();
+					pushFollow(FOLLOW_type_in_declaration1346);
+					type67=type();
 					state._fsp--;
 
-					adaptor.addChild(root_0, expression66.getTree());
+					adaptor.addChild(root_0, type67.getTree());
+
+					IDENTIFIER68=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_declaration1348); 
+					IDENTIFIER68_tree = (Object)adaptor.create(IDENTIFIER68);
+					adaptor.addChild(root_0, IDENTIFIER68_tree);
+
+					BECOMES69=(Token)match(input,BECOMES,FOLLOW_BECOMES_in_declaration1350); 
+					BECOMES69_tree = (Object)adaptor.create(BECOMES69);
+					adaptor.addChild(root_0, BECOMES69_tree);
+
+					pushFollow(FOLLOW_expression_in_declaration1352);
+					expression70=expression();
+					state._fsp--;
+
+					adaptor.addChild(root_0, expression70.getTree());
 
 					}
 					break;
 
 			}
-
-			}
-
 			retval.stop = input.LT(-1);
 
 			retval.tree = (Object)adaptor.rulePostProcessing(root_0);
@@ -1231,28 +1256,28 @@ public class NeptuneParser extends Parser {
 
 
 	// $ANTLR start "expression"
-	// Neptune.g:130:1: expression : assignment_expr ;
+	// Neptune.g:131:1: expression : assignment_expr ;
 	public final NeptuneParser.expression_return expression() throws RecognitionException {
 		NeptuneParser.expression_return retval = new NeptuneParser.expression_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		ParserRuleReturnScope assignment_expr67 =null;
+		ParserRuleReturnScope assignment_expr71 =null;
 
 
 		try {
-			// Neptune.g:131:2: ( assignment_expr )
-			// Neptune.g:131:4: assignment_expr
+			// Neptune.g:132:2: ( assignment_expr )
+			// Neptune.g:132:4: assignment_expr
 			{
 			root_0 = (Object)adaptor.nil();
 
 
-			pushFollow(FOLLOW_assignment_expr_in_expression1357);
-			assignment_expr67=assignment_expr();
+			pushFollow(FOLLOW_assignment_expr_in_expression1364);
+			assignment_expr71=assignment_expr();
 			state._fsp--;
 
-			adaptor.addChild(root_0, assignment_expr67.getTree());
+			adaptor.addChild(root_0, assignment_expr71.getTree());
 
 			}
 
@@ -1283,33 +1308,33 @@ public class NeptuneParser extends Parser {
 
 
 	// $ANTLR start "assignment_expr"
-	// Neptune.g:134:1: assignment_expr : boolean_expr ( BECOMES ^ assignment_expr )? ;
+	// Neptune.g:135:1: assignment_expr : boolean_expr ( BECOMES ^ assignment_expr )? ;
 	public final NeptuneParser.assignment_expr_return assignment_expr() throws RecognitionException {
 		NeptuneParser.assignment_expr_return retval = new NeptuneParser.assignment_expr_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token BECOMES69=null;
-		ParserRuleReturnScope boolean_expr68 =null;
-		ParserRuleReturnScope assignment_expr70 =null;
+		Token BECOMES73=null;
+		ParserRuleReturnScope boolean_expr72 =null;
+		ParserRuleReturnScope assignment_expr74 =null;
 
-		Object BECOMES69_tree=null;
+		Object BECOMES73_tree=null;
 
 		try {
-			// Neptune.g:135:2: ( boolean_expr ( BECOMES ^ assignment_expr )? )
-			// Neptune.g:135:4: boolean_expr ( BECOMES ^ assignment_expr )?
+			// Neptune.g:136:2: ( boolean_expr ( BECOMES ^ assignment_expr )? )
+			// Neptune.g:136:4: boolean_expr ( BECOMES ^ assignment_expr )?
 			{
 			root_0 = (Object)adaptor.nil();
 
 
-			pushFollow(FOLLOW_boolean_expr_in_assignment_expr1368);
-			boolean_expr68=boolean_expr();
+			pushFollow(FOLLOW_boolean_expr_in_assignment_expr1375);
+			boolean_expr72=boolean_expr();
 			state._fsp--;
 
-			adaptor.addChild(root_0, boolean_expr68.getTree());
+			adaptor.addChild(root_0, boolean_expr72.getTree());
 
-			// Neptune.g:135:17: ( BECOMES ^ assignment_expr )?
+			// Neptune.g:136:17: ( BECOMES ^ assignment_expr )?
 			int alt10=2;
 			int LA10_0 = input.LA(1);
 			if ( (LA10_0==BECOMES) ) {
@@ -1317,17 +1342,17 @@ public class NeptuneParser extends Parser {
 			}
 			switch (alt10) {
 				case 1 :
-					// Neptune.g:135:18: BECOMES ^ assignment_expr
+					// Neptune.g:136:18: BECOMES ^ assignment_expr
 					{
-					BECOMES69=(Token)match(input,BECOMES,FOLLOW_BECOMES_in_assignment_expr1371); 
-					BECOMES69_tree = (Object)adaptor.create(BECOMES69);
-					root_0 = (Object)adaptor.becomeRoot(BECOMES69_tree, root_0);
+					BECOMES73=(Token)match(input,BECOMES,FOLLOW_BECOMES_in_assignment_expr1378); 
+					BECOMES73_tree = (Object)adaptor.create(BECOMES73);
+					root_0 = (Object)adaptor.becomeRoot(BECOMES73_tree, root_0);
 
-					pushFollow(FOLLOW_assignment_expr_in_assignment_expr1374);
-					assignment_expr70=assignment_expr();
+					pushFollow(FOLLOW_assignment_expr_in_assignment_expr1381);
+					assignment_expr74=assignment_expr();
 					state._fsp--;
 
-					adaptor.addChild(root_0, assignment_expr70.getTree());
+					adaptor.addChild(root_0, assignment_expr74.getTree());
 
 					}
 					break;
@@ -1363,43 +1388,43 @@ public class NeptuneParser extends Parser {
 
 
 	// $ANTLR start "boolean_expr"
-	// Neptune.g:138:1: boolean_expr : plus_expr ( ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^) plus_expr )* ;
+	// Neptune.g:139:1: boolean_expr : plus_expr ( ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^) plus_expr )* ;
 	public final NeptuneParser.boolean_expr_return boolean_expr() throws RecognitionException {
 		NeptuneParser.boolean_expr_return retval = new NeptuneParser.boolean_expr_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token LT72=null;
-		Token LT_EQ73=null;
-		Token GT74=null;
-		Token GT_EQ75=null;
-		Token EQ76=null;
-		Token NEQ77=null;
-		ParserRuleReturnScope plus_expr71 =null;
-		ParserRuleReturnScope plus_expr78 =null;
+		Token LT76=null;
+		Token LT_EQ77=null;
+		Token GT78=null;
+		Token GT_EQ79=null;
+		Token EQ80=null;
+		Token NEQ81=null;
+		ParserRuleReturnScope plus_expr75 =null;
+		ParserRuleReturnScope plus_expr82 =null;
 
-		Object LT72_tree=null;
-		Object LT_EQ73_tree=null;
-		Object GT74_tree=null;
-		Object GT_EQ75_tree=null;
-		Object EQ76_tree=null;
-		Object NEQ77_tree=null;
+		Object LT76_tree=null;
+		Object LT_EQ77_tree=null;
+		Object GT78_tree=null;
+		Object GT_EQ79_tree=null;
+		Object EQ80_tree=null;
+		Object NEQ81_tree=null;
 
 		try {
-			// Neptune.g:139:2: ( plus_expr ( ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^) plus_expr )* )
-			// Neptune.g:139:4: plus_expr ( ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^) plus_expr )*
+			// Neptune.g:140:2: ( plus_expr ( ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^) plus_expr )* )
+			// Neptune.g:140:4: plus_expr ( ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^) plus_expr )*
 			{
 			root_0 = (Object)adaptor.nil();
 
 
-			pushFollow(FOLLOW_plus_expr_in_boolean_expr1388);
-			plus_expr71=plus_expr();
+			pushFollow(FOLLOW_plus_expr_in_boolean_expr1395);
+			plus_expr75=plus_expr();
 			state._fsp--;
 
-			adaptor.addChild(root_0, plus_expr71.getTree());
+			adaptor.addChild(root_0, plus_expr75.getTree());
 
-			// Neptune.g:139:14: ( ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^) plus_expr )*
+			// Neptune.g:140:14: ( ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^) plus_expr )*
 			loop12:
 			while (true) {
 				int alt12=2;
@@ -1410,9 +1435,9 @@ public class NeptuneParser extends Parser {
 
 				switch (alt12) {
 				case 1 :
-					// Neptune.g:139:15: ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^) plus_expr
+					// Neptune.g:140:15: ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^) plus_expr
 					{
-					// Neptune.g:139:15: ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^)
+					// Neptune.g:140:15: ( LT ^| LT_EQ ^| GT ^| GT_EQ ^| EQ ^| NEQ ^)
 					int alt11=6;
 					switch ( input.LA(1) ) {
 					case LT:
@@ -1452,67 +1477,67 @@ public class NeptuneParser extends Parser {
 					}
 					switch (alt11) {
 						case 1 :
-							// Neptune.g:139:16: LT ^
+							// Neptune.g:140:16: LT ^
 							{
-							LT72=(Token)match(input,LT,FOLLOW_LT_in_boolean_expr1392); 
-							LT72_tree = (Object)adaptor.create(LT72);
-							root_0 = (Object)adaptor.becomeRoot(LT72_tree, root_0);
+							LT76=(Token)match(input,LT,FOLLOW_LT_in_boolean_expr1399); 
+							LT76_tree = (Object)adaptor.create(LT76);
+							root_0 = (Object)adaptor.becomeRoot(LT76_tree, root_0);
 
 							}
 							break;
 						case 2 :
-							// Neptune.g:139:22: LT_EQ ^
+							// Neptune.g:140:22: LT_EQ ^
 							{
-							LT_EQ73=(Token)match(input,LT_EQ,FOLLOW_LT_EQ_in_boolean_expr1397); 
-							LT_EQ73_tree = (Object)adaptor.create(LT_EQ73);
-							root_0 = (Object)adaptor.becomeRoot(LT_EQ73_tree, root_0);
+							LT_EQ77=(Token)match(input,LT_EQ,FOLLOW_LT_EQ_in_boolean_expr1404); 
+							LT_EQ77_tree = (Object)adaptor.create(LT_EQ77);
+							root_0 = (Object)adaptor.becomeRoot(LT_EQ77_tree, root_0);
 
 							}
 							break;
 						case 3 :
-							// Neptune.g:139:31: GT ^
+							// Neptune.g:140:31: GT ^
 							{
-							GT74=(Token)match(input,GT,FOLLOW_GT_in_boolean_expr1402); 
-							GT74_tree = (Object)adaptor.create(GT74);
-							root_0 = (Object)adaptor.becomeRoot(GT74_tree, root_0);
+							GT78=(Token)match(input,GT,FOLLOW_GT_in_boolean_expr1409); 
+							GT78_tree = (Object)adaptor.create(GT78);
+							root_0 = (Object)adaptor.becomeRoot(GT78_tree, root_0);
 
 							}
 							break;
 						case 4 :
-							// Neptune.g:139:37: GT_EQ ^
+							// Neptune.g:140:37: GT_EQ ^
 							{
-							GT_EQ75=(Token)match(input,GT_EQ,FOLLOW_GT_EQ_in_boolean_expr1407); 
-							GT_EQ75_tree = (Object)adaptor.create(GT_EQ75);
-							root_0 = (Object)adaptor.becomeRoot(GT_EQ75_tree, root_0);
+							GT_EQ79=(Token)match(input,GT_EQ,FOLLOW_GT_EQ_in_boolean_expr1414); 
+							GT_EQ79_tree = (Object)adaptor.create(GT_EQ79);
+							root_0 = (Object)adaptor.becomeRoot(GT_EQ79_tree, root_0);
 
 							}
 							break;
 						case 5 :
-							// Neptune.g:139:46: EQ ^
+							// Neptune.g:140:46: EQ ^
 							{
-							EQ76=(Token)match(input,EQ,FOLLOW_EQ_in_boolean_expr1412); 
-							EQ76_tree = (Object)adaptor.create(EQ76);
-							root_0 = (Object)adaptor.becomeRoot(EQ76_tree, root_0);
+							EQ80=(Token)match(input,EQ,FOLLOW_EQ_in_boolean_expr1419); 
+							EQ80_tree = (Object)adaptor.create(EQ80);
+							root_0 = (Object)adaptor.becomeRoot(EQ80_tree, root_0);
 
 							}
 							break;
 						case 6 :
-							// Neptune.g:139:52: NEQ ^
+							// Neptune.g:140:52: NEQ ^
 							{
-							NEQ77=(Token)match(input,NEQ,FOLLOW_NEQ_in_boolean_expr1417); 
-							NEQ77_tree = (Object)adaptor.create(NEQ77);
-							root_0 = (Object)adaptor.becomeRoot(NEQ77_tree, root_0);
+							NEQ81=(Token)match(input,NEQ,FOLLOW_NEQ_in_boolean_expr1424); 
+							NEQ81_tree = (Object)adaptor.create(NEQ81);
+							root_0 = (Object)adaptor.becomeRoot(NEQ81_tree, root_0);
 
 							}
 							break;
 
 					}
 
-					pushFollow(FOLLOW_plus_expr_in_boolean_expr1421);
-					plus_expr78=plus_expr();
+					pushFollow(FOLLOW_plus_expr_in_boolean_expr1428);
+					plus_expr82=plus_expr();
 					state._fsp--;
 
-					adaptor.addChild(root_0, plus_expr78.getTree());
+					adaptor.addChild(root_0, plus_expr82.getTree());
 
 					}
 					break;
@@ -1551,35 +1576,35 @@ public class NeptuneParser extends Parser {
 
 
 	// $ANTLR start "plus_expr"
-	// Neptune.g:142:1: plus_expr : multi_expr ( ( PLUS ^| MINUS ^) multi_expr )* ;
+	// Neptune.g:143:1: plus_expr : multi_expr ( ( PLUS ^| MINUS ^) multi_expr )* ;
 	public final NeptuneParser.plus_expr_return plus_expr() throws RecognitionException {
 		NeptuneParser.plus_expr_return retval = new NeptuneParser.plus_expr_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token PLUS80=null;
-		Token MINUS81=null;
-		ParserRuleReturnScope multi_expr79 =null;
-		ParserRuleReturnScope multi_expr82 =null;
+		Token PLUS84=null;
+		Token MINUS85=null;
+		ParserRuleReturnScope multi_expr83 =null;
+		ParserRuleReturnScope multi_expr86 =null;
 
-		Object PLUS80_tree=null;
-		Object MINUS81_tree=null;
+		Object PLUS84_tree=null;
+		Object MINUS85_tree=null;
 
 		try {
-			// Neptune.g:143:2: ( multi_expr ( ( PLUS ^| MINUS ^) multi_expr )* )
-			// Neptune.g:143:4: multi_expr ( ( PLUS ^| MINUS ^) multi_expr )*
+			// Neptune.g:144:2: ( multi_expr ( ( PLUS ^| MINUS ^) multi_expr )* )
+			// Neptune.g:144:4: multi_expr ( ( PLUS ^| MINUS ^) multi_expr )*
 			{
 			root_0 = (Object)adaptor.nil();
 
 
-			pushFollow(FOLLOW_multi_expr_in_plus_expr1434);
-			multi_expr79=multi_expr();
+			pushFollow(FOLLOW_multi_expr_in_plus_expr1441);
+			multi_expr83=multi_expr();
 			state._fsp--;
 
-			adaptor.addChild(root_0, multi_expr79.getTree());
+			adaptor.addChild(root_0, multi_expr83.getTree());
 
-			// Neptune.g:143:15: ( ( PLUS ^| MINUS ^) multi_expr )*
+			// Neptune.g:144:15: ( ( PLUS ^| MINUS ^) multi_expr )*
 			loop14:
 			while (true) {
 				int alt14=2;
@@ -1590,9 +1615,9 @@ public class NeptuneParser extends Parser {
 
 				switch (alt14) {
 				case 1 :
-					// Neptune.g:143:16: ( PLUS ^| MINUS ^) multi_expr
+					// Neptune.g:144:16: ( PLUS ^| MINUS ^) multi_expr
 					{
-					// Neptune.g:143:16: ( PLUS ^| MINUS ^)
+					// Neptune.g:144:16: ( PLUS ^| MINUS ^)
 					int alt13=2;
 					int LA13_0 = input.LA(1);
 					if ( (LA13_0==PLUS) ) {
@@ -1610,31 +1635,31 @@ public class NeptuneParser extends Parser {
 
 					switch (alt13) {
 						case 1 :
-							// Neptune.g:143:17: PLUS ^
+							// Neptune.g:144:17: PLUS ^
 							{
-							PLUS80=(Token)match(input,PLUS,FOLLOW_PLUS_in_plus_expr1438); 
-							PLUS80_tree = (Object)adaptor.create(PLUS80);
-							root_0 = (Object)adaptor.becomeRoot(PLUS80_tree, root_0);
+							PLUS84=(Token)match(input,PLUS,FOLLOW_PLUS_in_plus_expr1445); 
+							PLUS84_tree = (Object)adaptor.create(PLUS84);
+							root_0 = (Object)adaptor.becomeRoot(PLUS84_tree, root_0);
 
 							}
 							break;
 						case 2 :
-							// Neptune.g:143:25: MINUS ^
+							// Neptune.g:144:25: MINUS ^
 							{
-							MINUS81=(Token)match(input,MINUS,FOLLOW_MINUS_in_plus_expr1443); 
-							MINUS81_tree = (Object)adaptor.create(MINUS81);
-							root_0 = (Object)adaptor.becomeRoot(MINUS81_tree, root_0);
+							MINUS85=(Token)match(input,MINUS,FOLLOW_MINUS_in_plus_expr1450); 
+							MINUS85_tree = (Object)adaptor.create(MINUS85);
+							root_0 = (Object)adaptor.becomeRoot(MINUS85_tree, root_0);
 
 							}
 							break;
 
 					}
 
-					pushFollow(FOLLOW_multi_expr_in_plus_expr1447);
-					multi_expr82=multi_expr();
+					pushFollow(FOLLOW_multi_expr_in_plus_expr1454);
+					multi_expr86=multi_expr();
 					state._fsp--;
 
-					adaptor.addChild(root_0, multi_expr82.getTree());
+					adaptor.addChild(root_0, multi_expr86.getTree());
 
 					}
 					break;
@@ -1673,35 +1698,35 @@ public class NeptuneParser extends Parser {
 
 
 	// $ANTLR start "multi_expr"
-	// Neptune.g:146:1: multi_expr : operand ( ( TIMES ^| DIVIDE ^) operand )* ;
+	// Neptune.g:147:1: multi_expr : operand ( ( TIMES ^| DIVIDE ^) operand )* ;
 	public final NeptuneParser.multi_expr_return multi_expr() throws RecognitionException {
 		NeptuneParser.multi_expr_return retval = new NeptuneParser.multi_expr_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token TIMES84=null;
-		Token DIVIDE85=null;
-		ParserRuleReturnScope operand83 =null;
-		ParserRuleReturnScope operand86 =null;
+		Token TIMES88=null;
+		Token DIVIDE89=null;
+		ParserRuleReturnScope operand87 =null;
+		ParserRuleReturnScope operand90 =null;
 
-		Object TIMES84_tree=null;
-		Object DIVIDE85_tree=null;
+		Object TIMES88_tree=null;
+		Object DIVIDE89_tree=null;
 
 		try {
-			// Neptune.g:147:2: ( operand ( ( TIMES ^| DIVIDE ^) operand )* )
-			// Neptune.g:147:4: operand ( ( TIMES ^| DIVIDE ^) operand )*
+			// Neptune.g:148:2: ( operand ( ( TIMES ^| DIVIDE ^) operand )* )
+			// Neptune.g:148:4: operand ( ( TIMES ^| DIVIDE ^) operand )*
 			{
 			root_0 = (Object)adaptor.nil();
 
 
-			pushFollow(FOLLOW_operand_in_multi_expr1460);
-			operand83=operand();
+			pushFollow(FOLLOW_operand_in_multi_expr1467);
+			operand87=operand();
 			state._fsp--;
 
-			adaptor.addChild(root_0, operand83.getTree());
+			adaptor.addChild(root_0, operand87.getTree());
 
-			// Neptune.g:147:12: ( ( TIMES ^| DIVIDE ^) operand )*
+			// Neptune.g:148:12: ( ( TIMES ^| DIVIDE ^) operand )*
 			loop16:
 			while (true) {
 				int alt16=2;
@@ -1712,9 +1737,9 @@ public class NeptuneParser extends Parser {
 
 				switch (alt16) {
 				case 1 :
-					// Neptune.g:147:13: ( TIMES ^| DIVIDE ^) operand
+					// Neptune.g:148:13: ( TIMES ^| DIVIDE ^) operand
 					{
-					// Neptune.g:147:13: ( TIMES ^| DIVIDE ^)
+					// Neptune.g:148:13: ( TIMES ^| DIVIDE ^)
 					int alt15=2;
 					int LA15_0 = input.LA(1);
 					if ( (LA15_0==TIMES) ) {
@@ -1732,31 +1757,31 @@ public class NeptuneParser extends Parser {
 
 					switch (alt15) {
 						case 1 :
-							// Neptune.g:147:14: TIMES ^
+							// Neptune.g:148:14: TIMES ^
 							{
-							TIMES84=(Token)match(input,TIMES,FOLLOW_TIMES_in_multi_expr1464); 
-							TIMES84_tree = (Object)adaptor.create(TIMES84);
-							root_0 = (Object)adaptor.becomeRoot(TIMES84_tree, root_0);
+							TIMES88=(Token)match(input,TIMES,FOLLOW_TIMES_in_multi_expr1471); 
+							TIMES88_tree = (Object)adaptor.create(TIMES88);
+							root_0 = (Object)adaptor.becomeRoot(TIMES88_tree, root_0);
 
 							}
 							break;
 						case 2 :
-							// Neptune.g:147:23: DIVIDE ^
+							// Neptune.g:148:23: DIVIDE ^
 							{
-							DIVIDE85=(Token)match(input,DIVIDE,FOLLOW_DIVIDE_in_multi_expr1469); 
-							DIVIDE85_tree = (Object)adaptor.create(DIVIDE85);
-							root_0 = (Object)adaptor.becomeRoot(DIVIDE85_tree, root_0);
+							DIVIDE89=(Token)match(input,DIVIDE,FOLLOW_DIVIDE_in_multi_expr1476); 
+							DIVIDE89_tree = (Object)adaptor.create(DIVIDE89);
+							root_0 = (Object)adaptor.becomeRoot(DIVIDE89_tree, root_0);
 
 							}
 							break;
 
 					}
 
-					pushFollow(FOLLOW_operand_in_multi_expr1473);
-					operand86=operand();
+					pushFollow(FOLLOW_operand_in_multi_expr1480);
+					operand90=operand();
 					state._fsp--;
 
-					adaptor.addChild(root_0, operand86.getTree());
+					adaptor.addChild(root_0, operand90.getTree());
 
 					}
 					break;
@@ -1795,49 +1820,51 @@ public class NeptuneParser extends Parser {
 
 
 	// $ANTLR start "operand"
-	// Neptune.g:150:1: operand : ( IDENTIFIER | NUMBER | LPAREN ! assignment_expr RPAREN !| LCURLY expression ( COMMA expression )* RCURLY -> ^( ARRAY_SET ( expression )+ ) | print_statement | read_statement | ( TRUE | FALSE ) | QUOTE ! ( LETTER | DIGIT ) QUOTE !);
+	// Neptune.g:151:1: operand : ( IDENTIFIER | NUMBER | LPAREN ! assignment_expr RPAREN !| LCURLY expression ( COMMA expression )* RCURLY -> ^( ARRAY_SET ( expression )+ ) | print_statement | read_statement | ( TRUE | FALSE ) | QUOTE ! ( LETTER | DIGIT ) QUOTE !| STRING );
 	public final NeptuneParser.operand_return operand() throws RecognitionException {
 		NeptuneParser.operand_return retval = new NeptuneParser.operand_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token IDENTIFIER87=null;
-		Token NUMBER88=null;
-		Token LPAREN89=null;
-		Token RPAREN91=null;
-		Token LCURLY92=null;
-		Token COMMA94=null;
-		Token RCURLY96=null;
-		Token set99=null;
-		Token QUOTE100=null;
-		Token set101=null;
-		Token QUOTE102=null;
-		ParserRuleReturnScope assignment_expr90 =null;
-		ParserRuleReturnScope expression93 =null;
-		ParserRuleReturnScope expression95 =null;
-		ParserRuleReturnScope print_statement97 =null;
-		ParserRuleReturnScope read_statement98 =null;
+		Token IDENTIFIER91=null;
+		Token NUMBER92=null;
+		Token LPAREN93=null;
+		Token RPAREN95=null;
+		Token LCURLY96=null;
+		Token COMMA98=null;
+		Token RCURLY100=null;
+		Token set103=null;
+		Token QUOTE104=null;
+		Token set105=null;
+		Token QUOTE106=null;
+		Token STRING107=null;
+		ParserRuleReturnScope assignment_expr94 =null;
+		ParserRuleReturnScope expression97 =null;
+		ParserRuleReturnScope expression99 =null;
+		ParserRuleReturnScope print_statement101 =null;
+		ParserRuleReturnScope read_statement102 =null;
 
-		Object IDENTIFIER87_tree=null;
-		Object NUMBER88_tree=null;
-		Object LPAREN89_tree=null;
-		Object RPAREN91_tree=null;
-		Object LCURLY92_tree=null;
-		Object COMMA94_tree=null;
-		Object RCURLY96_tree=null;
-		Object set99_tree=null;
-		Object QUOTE100_tree=null;
-		Object set101_tree=null;
-		Object QUOTE102_tree=null;
+		Object IDENTIFIER91_tree=null;
+		Object NUMBER92_tree=null;
+		Object LPAREN93_tree=null;
+		Object RPAREN95_tree=null;
+		Object LCURLY96_tree=null;
+		Object COMMA98_tree=null;
+		Object RCURLY100_tree=null;
+		Object set103_tree=null;
+		Object QUOTE104_tree=null;
+		Object set105_tree=null;
+		Object QUOTE106_tree=null;
+		Object STRING107_tree=null;
 		RewriteRuleTokenStream stream_LCURLY=new RewriteRuleTokenStream(adaptor,"token LCURLY");
 		RewriteRuleTokenStream stream_COMMA=new RewriteRuleTokenStream(adaptor,"token COMMA");
 		RewriteRuleTokenStream stream_RCURLY=new RewriteRuleTokenStream(adaptor,"token RCURLY");
 		RewriteRuleSubtreeStream stream_expression=new RewriteRuleSubtreeStream(adaptor,"rule expression");
 
 		try {
-			// Neptune.g:151:5: ( IDENTIFIER | NUMBER | LPAREN ! assignment_expr RPAREN !| LCURLY expression ( COMMA expression )* RCURLY -> ^( ARRAY_SET ( expression )+ ) | print_statement | read_statement | ( TRUE | FALSE ) | QUOTE ! ( LETTER | DIGIT ) QUOTE !)
-			int alt18=8;
+			// Neptune.g:152:5: ( IDENTIFIER | NUMBER | LPAREN ! assignment_expr RPAREN !| LCURLY expression ( COMMA expression )* RCURLY -> ^( ARRAY_SET ( expression )+ ) | print_statement | read_statement | ( TRUE | FALSE ) | QUOTE ! ( LETTER | DIGIT ) QUOTE !| STRING )
+			int alt18=9;
 			switch ( input.LA(1) ) {
 			case IDENTIFIER:
 				{
@@ -1880,6 +1907,11 @@ public class NeptuneParser extends Parser {
 				alt18=8;
 				}
 				break;
+			case STRING:
+				{
+				alt18=9;
+				}
+				break;
 			default:
 				NoViableAltException nvae =
 					new NoViableAltException("", 18, 0, input);
@@ -1887,57 +1919,57 @@ public class NeptuneParser extends Parser {
 			}
 			switch (alt18) {
 				case 1 :
-					// Neptune.g:151:9: IDENTIFIER
+					// Neptune.g:152:9: IDENTIFIER
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					IDENTIFIER87=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_operand1491); 
-					IDENTIFIER87_tree = (Object)adaptor.create(IDENTIFIER87);
-					adaptor.addChild(root_0, IDENTIFIER87_tree);
+					IDENTIFIER91=(Token)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_operand1498); 
+					IDENTIFIER91_tree = (Object)adaptor.create(IDENTIFIER91);
+					adaptor.addChild(root_0, IDENTIFIER91_tree);
 
 					}
 					break;
 				case 2 :
-					// Neptune.g:152:9: NUMBER
+					// Neptune.g:153:9: NUMBER
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					NUMBER88=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_operand1501); 
-					NUMBER88_tree = (Object)adaptor.create(NUMBER88);
-					adaptor.addChild(root_0, NUMBER88_tree);
+					NUMBER92=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_operand1508); 
+					NUMBER92_tree = (Object)adaptor.create(NUMBER92);
+					adaptor.addChild(root_0, NUMBER92_tree);
 
 					}
 					break;
 				case 3 :
-					// Neptune.g:153:9: LPAREN ! assignment_expr RPAREN !
+					// Neptune.g:154:9: LPAREN ! assignment_expr RPAREN !
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					LPAREN89=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_operand1511); 
-					pushFollow(FOLLOW_assignment_expr_in_operand1514);
-					assignment_expr90=assignment_expr();
+					LPAREN93=(Token)match(input,LPAREN,FOLLOW_LPAREN_in_operand1518); 
+					pushFollow(FOLLOW_assignment_expr_in_operand1521);
+					assignment_expr94=assignment_expr();
 					state._fsp--;
 
-					adaptor.addChild(root_0, assignment_expr90.getTree());
+					adaptor.addChild(root_0, assignment_expr94.getTree());
 
-					RPAREN91=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_operand1516); 
+					RPAREN95=(Token)match(input,RPAREN,FOLLOW_RPAREN_in_operand1523); 
 					}
 					break;
 				case 4 :
-					// Neptune.g:154:4: LCURLY expression ( COMMA expression )* RCURLY
+					// Neptune.g:155:4: LCURLY expression ( COMMA expression )* RCURLY
 					{
-					LCURLY92=(Token)match(input,LCURLY,FOLLOW_LCURLY_in_operand1522);  
-					stream_LCURLY.add(LCURLY92);
+					LCURLY96=(Token)match(input,LCURLY,FOLLOW_LCURLY_in_operand1529);  
+					stream_LCURLY.add(LCURLY96);
 
-					pushFollow(FOLLOW_expression_in_operand1524);
-					expression93=expression();
+					pushFollow(FOLLOW_expression_in_operand1531);
+					expression97=expression();
 					state._fsp--;
 
-					stream_expression.add(expression93.getTree());
-					// Neptune.g:154:22: ( COMMA expression )*
+					stream_expression.add(expression97.getTree());
+					// Neptune.g:155:22: ( COMMA expression )*
 					loop17:
 					while (true) {
 						int alt17=2;
@@ -1948,16 +1980,16 @@ public class NeptuneParser extends Parser {
 
 						switch (alt17) {
 						case 1 :
-							// Neptune.g:154:23: COMMA expression
+							// Neptune.g:155:23: COMMA expression
 							{
-							COMMA94=(Token)match(input,COMMA,FOLLOW_COMMA_in_operand1527);  
-							stream_COMMA.add(COMMA94);
+							COMMA98=(Token)match(input,COMMA,FOLLOW_COMMA_in_operand1534);  
+							stream_COMMA.add(COMMA98);
 
-							pushFollow(FOLLOW_expression_in_operand1529);
-							expression95=expression();
+							pushFollow(FOLLOW_expression_in_operand1536);
+							expression99=expression();
 							state._fsp--;
 
-							stream_expression.add(expression95.getTree());
+							stream_expression.add(expression99.getTree());
 							}
 							break;
 
@@ -1966,8 +1998,8 @@ public class NeptuneParser extends Parser {
 						}
 					}
 
-					RCURLY96=(Token)match(input,RCURLY,FOLLOW_RCURLY_in_operand1533);  
-					stream_RCURLY.add(RCURLY96);
+					RCURLY100=(Token)match(input,RCURLY,FOLLOW_RCURLY_in_operand1540);  
+					stream_RCURLY.add(RCURLY100);
 
 					// AST REWRITE
 					// elements: expression
@@ -1980,9 +2012,9 @@ public class NeptuneParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 155:3: -> ^( ARRAY_SET ( expression )+ )
+					// 156:3: -> ^( ARRAY_SET ( expression )+ )
 					{
-						// Neptune.g:155:6: ^( ARRAY_SET ( expression )+ )
+						// Neptune.g:156:6: ^( ARRAY_SET ( expression )+ )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(ARRAY_SET, "ARRAY_SET"), root_1);
@@ -2005,43 +2037,43 @@ public class NeptuneParser extends Parser {
 					}
 					break;
 				case 5 :
-					// Neptune.g:156:4: print_statement
+					// Neptune.g:157:4: print_statement
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					pushFollow(FOLLOW_print_statement_in_operand1549);
-					print_statement97=print_statement();
+					pushFollow(FOLLOW_print_statement_in_operand1556);
+					print_statement101=print_statement();
 					state._fsp--;
 
-					adaptor.addChild(root_0, print_statement97.getTree());
+					adaptor.addChild(root_0, print_statement101.getTree());
 
 					}
 					break;
 				case 6 :
-					// Neptune.g:157:4: read_statement
+					// Neptune.g:158:4: read_statement
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					pushFollow(FOLLOW_read_statement_in_operand1554);
-					read_statement98=read_statement();
+					pushFollow(FOLLOW_read_statement_in_operand1561);
+					read_statement102=read_statement();
 					state._fsp--;
 
-					adaptor.addChild(root_0, read_statement98.getTree());
+					adaptor.addChild(root_0, read_statement102.getTree());
 
 					}
 					break;
 				case 7 :
-					// Neptune.g:158:4: ( TRUE | FALSE )
+					// Neptune.g:159:4: ( TRUE | FALSE )
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					set99=input.LT(1);
+					set103=input.LT(1);
 					if ( input.LA(1)==FALSE||input.LA(1)==TRUE ) {
 						input.consume();
-						adaptor.addChild(root_0, (Object)adaptor.create(set99));
+						adaptor.addChild(root_0, (Object)adaptor.create(set103));
 						state.errorRecovery=false;
 					}
 					else {
@@ -2051,23 +2083,35 @@ public class NeptuneParser extends Parser {
 					}
 					break;
 				case 8 :
-					// Neptune.g:159:4: QUOTE ! ( LETTER | DIGIT ) QUOTE !
+					// Neptune.g:160:4: QUOTE ! ( LETTER | DIGIT ) QUOTE !
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					QUOTE100=(Token)match(input,QUOTE,FOLLOW_QUOTE_in_operand1570); 
-					set101=input.LT(1);
+					QUOTE104=(Token)match(input,QUOTE,FOLLOW_QUOTE_in_operand1577); 
+					set105=input.LT(1);
 					if ( input.LA(1)==DIGIT||input.LA(1)==LETTER ) {
 						input.consume();
-						adaptor.addChild(root_0, (Object)adaptor.create(set101));
+						adaptor.addChild(root_0, (Object)adaptor.create(set105));
 						state.errorRecovery=false;
 					}
 					else {
 						MismatchedSetException mse = new MismatchedSetException(null,input);
 						throw mse;
 					}
-					QUOTE102=(Token)match(input,QUOTE,FOLLOW_QUOTE_in_operand1579); 
+					QUOTE106=(Token)match(input,QUOTE,FOLLOW_QUOTE_in_operand1586); 
+					}
+					break;
+				case 9 :
+					// Neptune.g:161:4: STRING
+					{
+					root_0 = (Object)adaptor.nil();
+
+
+					STRING107=(Token)match(input,STRING,FOLLOW_STRING_in_operand1592); 
+					STRING107_tree = (Object)adaptor.create(STRING107);
+					adaptor.addChild(root_0, STRING107_tree);
+
 					}
 					break;
 
@@ -2099,26 +2143,26 @@ public class NeptuneParser extends Parser {
 
 
 	// $ANTLR start "type"
-	// Neptune.g:162:1: type : ( INTEGER ( array_def )? | CHAR ( array_def )? | BOOLEAN ( array_def )? );
+	// Neptune.g:164:1: type : ( INTEGER ( array_def )? | CHAR ( array_def )? | BOOLEAN ( array_def )? );
 	public final NeptuneParser.type_return type() throws RecognitionException {
 		NeptuneParser.type_return retval = new NeptuneParser.type_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token INTEGER103=null;
-		Token CHAR105=null;
-		Token BOOLEAN107=null;
-		ParserRuleReturnScope array_def104 =null;
-		ParserRuleReturnScope array_def106 =null;
-		ParserRuleReturnScope array_def108 =null;
+		Token INTEGER108=null;
+		Token CHAR110=null;
+		Token BOOLEAN112=null;
+		ParserRuleReturnScope array_def109 =null;
+		ParserRuleReturnScope array_def111 =null;
+		ParserRuleReturnScope array_def113 =null;
 
-		Object INTEGER103_tree=null;
-		Object CHAR105_tree=null;
-		Object BOOLEAN107_tree=null;
+		Object INTEGER108_tree=null;
+		Object CHAR110_tree=null;
+		Object BOOLEAN112_tree=null;
 
 		try {
-			// Neptune.g:163:2: ( INTEGER ( array_def )? | CHAR ( array_def )? | BOOLEAN ( array_def )? )
+			// Neptune.g:165:2: ( INTEGER ( array_def )? | CHAR ( array_def )? | BOOLEAN ( array_def )? )
 			int alt22=3;
 			switch ( input.LA(1) ) {
 			case INTEGER:
@@ -2143,16 +2187,16 @@ public class NeptuneParser extends Parser {
 			}
 			switch (alt22) {
 				case 1 :
-					// Neptune.g:163:4: INTEGER ( array_def )?
+					// Neptune.g:165:4: INTEGER ( array_def )?
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					INTEGER103=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_type1594); 
-					INTEGER103_tree = (Object)adaptor.create(INTEGER103);
-					adaptor.addChild(root_0, INTEGER103_tree);
+					INTEGER108=(Token)match(input,INTEGER,FOLLOW_INTEGER_in_type1606); 
+					INTEGER108_tree = (Object)adaptor.create(INTEGER108);
+					adaptor.addChild(root_0, INTEGER108_tree);
 
-					// Neptune.g:163:12: ( array_def )?
+					// Neptune.g:165:12: ( array_def )?
 					int alt19=2;
 					int LA19_0 = input.LA(1);
 					if ( (LA19_0==LBRACKET) ) {
@@ -2160,13 +2204,13 @@ public class NeptuneParser extends Parser {
 					}
 					switch (alt19) {
 						case 1 :
-							// Neptune.g:163:12: array_def
+							// Neptune.g:165:12: array_def
 							{
-							pushFollow(FOLLOW_array_def_in_type1596);
-							array_def104=array_def();
+							pushFollow(FOLLOW_array_def_in_type1608);
+							array_def109=array_def();
 							state._fsp--;
 
-							adaptor.addChild(root_0, array_def104.getTree());
+							adaptor.addChild(root_0, array_def109.getTree());
 
 							}
 							break;
@@ -2176,16 +2220,16 @@ public class NeptuneParser extends Parser {
 					}
 					break;
 				case 2 :
-					// Neptune.g:164:4: CHAR ( array_def )?
+					// Neptune.g:166:4: CHAR ( array_def )?
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					CHAR105=(Token)match(input,CHAR,FOLLOW_CHAR_in_type1602); 
-					CHAR105_tree = (Object)adaptor.create(CHAR105);
-					adaptor.addChild(root_0, CHAR105_tree);
+					CHAR110=(Token)match(input,CHAR,FOLLOW_CHAR_in_type1614); 
+					CHAR110_tree = (Object)adaptor.create(CHAR110);
+					adaptor.addChild(root_0, CHAR110_tree);
 
-					// Neptune.g:164:9: ( array_def )?
+					// Neptune.g:166:9: ( array_def )?
 					int alt20=2;
 					int LA20_0 = input.LA(1);
 					if ( (LA20_0==LBRACKET) ) {
@@ -2193,13 +2237,13 @@ public class NeptuneParser extends Parser {
 					}
 					switch (alt20) {
 						case 1 :
-							// Neptune.g:164:9: array_def
+							// Neptune.g:166:9: array_def
 							{
-							pushFollow(FOLLOW_array_def_in_type1604);
-							array_def106=array_def();
+							pushFollow(FOLLOW_array_def_in_type1616);
+							array_def111=array_def();
 							state._fsp--;
 
-							adaptor.addChild(root_0, array_def106.getTree());
+							adaptor.addChild(root_0, array_def111.getTree());
 
 							}
 							break;
@@ -2209,16 +2253,16 @@ public class NeptuneParser extends Parser {
 					}
 					break;
 				case 3 :
-					// Neptune.g:165:4: BOOLEAN ( array_def )?
+					// Neptune.g:167:4: BOOLEAN ( array_def )?
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					BOOLEAN107=(Token)match(input,BOOLEAN,FOLLOW_BOOLEAN_in_type1610); 
-					BOOLEAN107_tree = (Object)adaptor.create(BOOLEAN107);
-					adaptor.addChild(root_0, BOOLEAN107_tree);
+					BOOLEAN112=(Token)match(input,BOOLEAN,FOLLOW_BOOLEAN_in_type1622); 
+					BOOLEAN112_tree = (Object)adaptor.create(BOOLEAN112);
+					adaptor.addChild(root_0, BOOLEAN112_tree);
 
-					// Neptune.g:165:12: ( array_def )?
+					// Neptune.g:167:12: ( array_def )?
 					int alt21=2;
 					int LA21_0 = input.LA(1);
 					if ( (LA21_0==LBRACKET) ) {
@@ -2226,13 +2270,13 @@ public class NeptuneParser extends Parser {
 					}
 					switch (alt21) {
 						case 1 :
-							// Neptune.g:165:12: array_def
+							// Neptune.g:167:12: array_def
 							{
-							pushFollow(FOLLOW_array_def_in_type1612);
-							array_def108=array_def();
+							pushFollow(FOLLOW_array_def_in_type1624);
+							array_def113=array_def();
 							state._fsp--;
 
-							adaptor.addChild(root_0, array_def108.getTree());
+							adaptor.addChild(root_0, array_def113.getTree());
 
 							}
 							break;
@@ -2270,33 +2314,33 @@ public class NeptuneParser extends Parser {
 
 
 	// $ANTLR start "array_def"
-	// Neptune.g:168:1: array_def : LBRACKET ( NUMBER )? RBRACKET ;
+	// Neptune.g:170:1: array_def : LBRACKET ( NUMBER )? RBRACKET ;
 	public final NeptuneParser.array_def_return array_def() throws RecognitionException {
 		NeptuneParser.array_def_return retval = new NeptuneParser.array_def_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token LBRACKET109=null;
-		Token NUMBER110=null;
-		Token RBRACKET111=null;
+		Token LBRACKET114=null;
+		Token NUMBER115=null;
+		Token RBRACKET116=null;
 
-		Object LBRACKET109_tree=null;
-		Object NUMBER110_tree=null;
-		Object RBRACKET111_tree=null;
+		Object LBRACKET114_tree=null;
+		Object NUMBER115_tree=null;
+		Object RBRACKET116_tree=null;
 
 		try {
-			// Neptune.g:169:2: ( LBRACKET ( NUMBER )? RBRACKET )
-			// Neptune.g:169:5: LBRACKET ( NUMBER )? RBRACKET
+			// Neptune.g:171:2: ( LBRACKET ( NUMBER )? RBRACKET )
+			// Neptune.g:171:5: LBRACKET ( NUMBER )? RBRACKET
 			{
 			root_0 = (Object)adaptor.nil();
 
 
-			LBRACKET109=(Token)match(input,LBRACKET,FOLLOW_LBRACKET_in_array_def1626); 
-			LBRACKET109_tree = (Object)adaptor.create(LBRACKET109);
-			adaptor.addChild(root_0, LBRACKET109_tree);
+			LBRACKET114=(Token)match(input,LBRACKET,FOLLOW_LBRACKET_in_array_def1638); 
+			LBRACKET114_tree = (Object)adaptor.create(LBRACKET114);
+			adaptor.addChild(root_0, LBRACKET114_tree);
 
-			// Neptune.g:169:14: ( NUMBER )?
+			// Neptune.g:171:14: ( NUMBER )?
 			int alt23=2;
 			int LA23_0 = input.LA(1);
 			if ( (LA23_0==NUMBER) ) {
@@ -2304,20 +2348,20 @@ public class NeptuneParser extends Parser {
 			}
 			switch (alt23) {
 				case 1 :
-					// Neptune.g:169:14: NUMBER
+					// Neptune.g:171:14: NUMBER
 					{
-					NUMBER110=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_array_def1628); 
-					NUMBER110_tree = (Object)adaptor.create(NUMBER110);
-					adaptor.addChild(root_0, NUMBER110_tree);
+					NUMBER115=(Token)match(input,NUMBER,FOLLOW_NUMBER_in_array_def1640); 
+					NUMBER115_tree = (Object)adaptor.create(NUMBER115);
+					adaptor.addChild(root_0, NUMBER115_tree);
 
 					}
 					break;
 
 			}
 
-			RBRACKET111=(Token)match(input,RBRACKET,FOLLOW_RBRACKET_in_array_def1631); 
-			RBRACKET111_tree = (Object)adaptor.create(RBRACKET111);
-			adaptor.addChild(root_0, RBRACKET111_tree);
+			RBRACKET116=(Token)match(input,RBRACKET,FOLLOW_RBRACKET_in_array_def1643); 
+			RBRACKET116_tree = (Object)adaptor.create(RBRACKET116);
+			adaptor.addChild(root_0, RBRACKET116_tree);
 
 			}
 
@@ -2345,7 +2389,7 @@ public class NeptuneParser extends Parser {
 
 	public static final BitSet FOLLOW_lines_in_program1020 = new BitSet(new long[]{0x0000000000000000L});
 	public static final BitSet FOLLOW_EOF_in_program1022 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_line_in_lines1057 = new BitSet(new long[]{0x006825424B180802L});
+	public static final BitSet FOLLOW_line_in_lines1057 = new BitSet(new long[]{0x00D225424B180802L});
 	public static final BitSet FOLLOW_expression_in_line1070 = new BitSet(new long[]{0x0001000000000000L});
 	public static final BitSet FOLLOW_SEMICOLON_in_line1072 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_declaration_in_line1078 = new BitSet(new long[]{0x0001000000000000L});
@@ -2356,10 +2400,10 @@ public class NeptuneParser extends Parser {
 	public static final BitSet FOLLOW_foreach_statement_in_logic_statement1108 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_if_statement_in_logic_statement1113 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_WHILE_in_while_statement1125 = new BitSet(new long[]{0x0000000200000000L});
-	public static final BitSet FOLLOW_LPAREN_in_while_statement1128 = new BitSet(new long[]{0x0008254241080000L});
+	public static final BitSet FOLLOW_LPAREN_in_while_statement1128 = new BitSet(new long[]{0x0012254241080000L});
 	public static final BitSet FOLLOW_expression_in_while_statement1131 = new BitSet(new long[]{0x0000800000000000L});
 	public static final BitSet FOLLOW_RPAREN_in_while_statement1133 = new BitSet(new long[]{0x0000000040000000L});
-	public static final BitSet FOLLOW_LCURLY_in_while_statement1136 = new BitSet(new long[]{0x006825424B180800L});
+	public static final BitSet FOLLOW_LCURLY_in_while_statement1136 = new BitSet(new long[]{0x00D225424B180800L});
 	public static final BitSet FOLLOW_lines_in_while_statement1139 = new BitSet(new long[]{0x0000100000000000L});
 	public static final BitSet FOLLOW_RCURLY_in_while_statement1141 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_FOREACH_in_foreach_statement1154 = new BitSet(new long[]{0x0000000200000000L});
@@ -2368,90 +2412,95 @@ public class NeptuneParser extends Parser {
 	public static final BitSet FOLLOW_IN_in_foreach_statement1162 = new BitSet(new long[]{0x0000000001000000L});
 	public static final BitSet FOLLOW_IDENTIFIER_in_foreach_statement1165 = new BitSet(new long[]{0x0000800000000000L});
 	public static final BitSet FOLLOW_RPAREN_in_foreach_statement1167 = new BitSet(new long[]{0x0000000040000000L});
-	public static final BitSet FOLLOW_LCURLY_in_foreach_statement1170 = new BitSet(new long[]{0x006825424B180800L});
+	public static final BitSet FOLLOW_LCURLY_in_foreach_statement1170 = new BitSet(new long[]{0x00D225424B180800L});
 	public static final BitSet FOLLOW_lines_in_foreach_statement1173 = new BitSet(new long[]{0x0000100000000000L});
 	public static final BitSet FOLLOW_RCURLY_in_foreach_statement1175 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_IF_in_if_statement1188 = new BitSet(new long[]{0x0000000200000000L});
-	public static final BitSet FOLLOW_LPAREN_in_if_statement1191 = new BitSet(new long[]{0x0008254241080000L});
+	public static final BitSet FOLLOW_LPAREN_in_if_statement1191 = new BitSet(new long[]{0x0012254241080000L});
 	public static final BitSet FOLLOW_expression_in_if_statement1194 = new BitSet(new long[]{0x0000800000000000L});
 	public static final BitSet FOLLOW_RPAREN_in_if_statement1196 = new BitSet(new long[]{0x0000000040000000L});
-	public static final BitSet FOLLOW_LCURLY_in_if_statement1199 = new BitSet(new long[]{0x006825424B180800L});
+	public static final BitSet FOLLOW_LCURLY_in_if_statement1199 = new BitSet(new long[]{0x00D225424B180800L});
 	public static final BitSet FOLLOW_lines_in_if_statement1202 = new BitSet(new long[]{0x0000100000000000L});
 	public static final BitSet FOLLOW_RCURLY_in_if_statement1204 = new BitSet(new long[]{0x0000000000030002L});
 	public static final BitSet FOLLOW_ELSIF_in_if_statement1210 = new BitSet(new long[]{0x0000000200000000L});
-	public static final BitSet FOLLOW_LPAREN_in_if_statement1212 = new BitSet(new long[]{0x0008254241080000L});
+	public static final BitSet FOLLOW_LPAREN_in_if_statement1212 = new BitSet(new long[]{0x0012254241080000L});
 	public static final BitSet FOLLOW_expression_in_if_statement1215 = new BitSet(new long[]{0x0000800000000000L});
 	public static final BitSet FOLLOW_RPAREN_in_if_statement1217 = new BitSet(new long[]{0x0000000040000000L});
-	public static final BitSet FOLLOW_LCURLY_in_if_statement1220 = new BitSet(new long[]{0x006825424B180800L});
+	public static final BitSet FOLLOW_LCURLY_in_if_statement1220 = new BitSet(new long[]{0x00D225424B180800L});
 	public static final BitSet FOLLOW_lines_in_if_statement1223 = new BitSet(new long[]{0x0000100000000000L});
 	public static final BitSet FOLLOW_RCURLY_in_if_statement1225 = new BitSet(new long[]{0x0000000000030002L});
 	public static final BitSet FOLLOW_ELSE_in_if_statement1233 = new BitSet(new long[]{0x0000000040000000L});
-	public static final BitSet FOLLOW_LCURLY_in_if_statement1235 = new BitSet(new long[]{0x006825424B180800L});
+	public static final BitSet FOLLOW_LCURLY_in_if_statement1235 = new BitSet(new long[]{0x00D225424B180800L});
 	public static final BitSet FOLLOW_lines_in_if_statement1238 = new BitSet(new long[]{0x0000100000000000L});
 	public static final BitSet FOLLOW_RCURLY_in_if_statement1240 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_INCLUDE_in_include_statement1255 = new BitSet(new long[]{0x0100000000000000L});
-	public static final BitSet FOLLOW_56_in_include_statement1258 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_INCLUDE_in_include_statement1255 = new BitSet(new long[]{0x0200000000000000L});
+	public static final BitSet FOLLOW_57_in_include_statement1258 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_PRINT_in_print_statement1270 = new BitSet(new long[]{0x0000000200000000L});
-	public static final BitSet FOLLOW_LPAREN_in_print_statement1273 = new BitSet(new long[]{0x0008254241080000L});
+	public static final BitSet FOLLOW_LPAREN_in_print_statement1273 = new BitSet(new long[]{0x0012254241080000L});
 	public static final BitSet FOLLOW_expression_in_print_statement1276 = new BitSet(new long[]{0x0000800000000200L});
-	public static final BitSet FOLLOW_COMMA_in_print_statement1279 = new BitSet(new long[]{0x0008254241080000L});
+	public static final BitSet FOLLOW_COMMA_in_print_statement1279 = new BitSet(new long[]{0x0012254241080000L});
 	public static final BitSet FOLLOW_expression_in_print_statement1281 = new BitSet(new long[]{0x0000800000000200L});
 	public static final BitSet FOLLOW_RPAREN_in_print_statement1285 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_READ_in_read_statement1298 = new BitSet(new long[]{0x0000000200000000L});
-	public static final BitSet FOLLOW_LPAREN_in_read_statement1301 = new BitSet(new long[]{0x0008254241080000L});
+	public static final BitSet FOLLOW_LPAREN_in_read_statement1301 = new BitSet(new long[]{0x0012254241080000L});
 	public static final BitSet FOLLOW_expression_in_read_statement1304 = new BitSet(new long[]{0x0000800000000200L});
-	public static final BitSet FOLLOW_COMMA_in_read_statement1307 = new BitSet(new long[]{0x0008254241080000L});
+	public static final BitSet FOLLOW_COMMA_in_read_statement1307 = new BitSet(new long[]{0x0012254241080000L});
 	public static final BitSet FOLLOW_expression_in_read_statement1309 = new BitSet(new long[]{0x0000800000000200L});
 	public static final BitSet FOLLOW_RPAREN_in_read_statement1313 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_VAR_in_declaration1327 = new BitSet(new long[]{0x00000000100000C0L});
-	public static final BitSet FOLLOW_CONST_in_declaration1332 = new BitSet(new long[]{0x00000000100000C0L});
-	public static final BitSet FOLLOW_type_in_declaration1336 = new BitSet(new long[]{0x0000000001000000L});
-	public static final BitSet FOLLOW_IDENTIFIER_in_declaration1338 = new BitSet(new long[]{0x0000000000000022L});
-	public static final BitSet FOLLOW_BECOMES_in_declaration1341 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_expression_in_declaration1343 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_assignment_expr_in_expression1357 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_boolean_expr_in_assignment_expr1368 = new BitSet(new long[]{0x0000000000000022L});
-	public static final BitSet FOLLOW_BECOMES_in_assignment_expr1371 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_assignment_expr_in_assignment_expr1374 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_plus_expr_in_boolean_expr1388 = new BitSet(new long[]{0x0000002C00C40002L});
-	public static final BitSet FOLLOW_LT_in_boolean_expr1392 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_LT_EQ_in_boolean_expr1397 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_GT_in_boolean_expr1402 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_GT_EQ_in_boolean_expr1407 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_EQ_in_boolean_expr1412 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_NEQ_in_boolean_expr1417 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_plus_expr_in_boolean_expr1421 = new BitSet(new long[]{0x0000002C00C40002L});
-	public static final BitSet FOLLOW_multi_expr_in_plus_expr1434 = new BitSet(new long[]{0x0000009000000002L});
-	public static final BitSet FOLLOW_PLUS_in_plus_expr1438 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_MINUS_in_plus_expr1443 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_multi_expr_in_plus_expr1447 = new BitSet(new long[]{0x0000009000000002L});
-	public static final BitSet FOLLOW_operand_in_multi_expr1460 = new BitSet(new long[]{0x0004000000002002L});
-	public static final BitSet FOLLOW_TIMES_in_multi_expr1464 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_DIVIDE_in_multi_expr1469 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_operand_in_multi_expr1473 = new BitSet(new long[]{0x0004000000002002L});
-	public static final BitSet FOLLOW_IDENTIFIER_in_operand1491 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_NUMBER_in_operand1501 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LPAREN_in_operand1511 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_assignment_expr_in_operand1514 = new BitSet(new long[]{0x0000800000000000L});
-	public static final BitSet FOLLOW_RPAREN_in_operand1516 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LCURLY_in_operand1522 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_expression_in_operand1524 = new BitSet(new long[]{0x0000100000000200L});
-	public static final BitSet FOLLOW_COMMA_in_operand1527 = new BitSet(new long[]{0x0008254241080000L});
-	public static final BitSet FOLLOW_expression_in_operand1529 = new BitSet(new long[]{0x0000100000000200L});
-	public static final BitSet FOLLOW_RCURLY_in_operand1533 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_print_statement_in_operand1549 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_read_statement_in_operand1554 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_set_in_operand1559 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_QUOTE_in_operand1570 = new BitSet(new long[]{0x0000000080001000L});
-	public static final BitSet FOLLOW_set_in_operand1573 = new BitSet(new long[]{0x0000040000000000L});
-	public static final BitSet FOLLOW_QUOTE_in_operand1579 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_INTEGER_in_type1594 = new BitSet(new long[]{0x0000000020000002L});
-	public static final BitSet FOLLOW_array_def_in_type1596 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_CHAR_in_type1602 = new BitSet(new long[]{0x0000000020000002L});
-	public static final BitSet FOLLOW_array_def_in_type1604 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_BOOLEAN_in_type1610 = new BitSet(new long[]{0x0000000020000002L});
-	public static final BitSet FOLLOW_array_def_in_type1612 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_LBRACKET_in_array_def1626 = new BitSet(new long[]{0x0000084000000000L});
-	public static final BitSet FOLLOW_NUMBER_in_array_def1628 = new BitSet(new long[]{0x0000080000000000L});
-	public static final BitSet FOLLOW_RBRACKET_in_array_def1631 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_VAR_in_declaration1326 = new BitSet(new long[]{0x00000000100000C0L});
+	public static final BitSet FOLLOW_type_in_declaration1329 = new BitSet(new long[]{0x0000000001000000L});
+	public static final BitSet FOLLOW_IDENTIFIER_in_declaration1331 = new BitSet(new long[]{0x0000000000000022L});
+	public static final BitSet FOLLOW_BECOMES_in_declaration1334 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_expression_in_declaration1336 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_CONST_in_declaration1343 = new BitSet(new long[]{0x00000000100000C0L});
+	public static final BitSet FOLLOW_type_in_declaration1346 = new BitSet(new long[]{0x0000000001000000L});
+	public static final BitSet FOLLOW_IDENTIFIER_in_declaration1348 = new BitSet(new long[]{0x0000000000000020L});
+	public static final BitSet FOLLOW_BECOMES_in_declaration1350 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_expression_in_declaration1352 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_assignment_expr_in_expression1364 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_boolean_expr_in_assignment_expr1375 = new BitSet(new long[]{0x0000000000000022L});
+	public static final BitSet FOLLOW_BECOMES_in_assignment_expr1378 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_assignment_expr_in_assignment_expr1381 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_plus_expr_in_boolean_expr1395 = new BitSet(new long[]{0x0000002C00C40002L});
+	public static final BitSet FOLLOW_LT_in_boolean_expr1399 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_LT_EQ_in_boolean_expr1404 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_GT_in_boolean_expr1409 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_GT_EQ_in_boolean_expr1414 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_EQ_in_boolean_expr1419 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_NEQ_in_boolean_expr1424 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_plus_expr_in_boolean_expr1428 = new BitSet(new long[]{0x0000002C00C40002L});
+	public static final BitSet FOLLOW_multi_expr_in_plus_expr1441 = new BitSet(new long[]{0x0000009000000002L});
+	public static final BitSet FOLLOW_PLUS_in_plus_expr1445 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_MINUS_in_plus_expr1450 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_multi_expr_in_plus_expr1454 = new BitSet(new long[]{0x0000009000000002L});
+	public static final BitSet FOLLOW_operand_in_multi_expr1467 = new BitSet(new long[]{0x0008000000002002L});
+	public static final BitSet FOLLOW_TIMES_in_multi_expr1471 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_DIVIDE_in_multi_expr1476 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_operand_in_multi_expr1480 = new BitSet(new long[]{0x0008000000002002L});
+	public static final BitSet FOLLOW_IDENTIFIER_in_operand1498 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_NUMBER_in_operand1508 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LPAREN_in_operand1518 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_assignment_expr_in_operand1521 = new BitSet(new long[]{0x0000800000000000L});
+	public static final BitSet FOLLOW_RPAREN_in_operand1523 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LCURLY_in_operand1529 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_expression_in_operand1531 = new BitSet(new long[]{0x0000100000000200L});
+	public static final BitSet FOLLOW_COMMA_in_operand1534 = new BitSet(new long[]{0x0012254241080000L});
+	public static final BitSet FOLLOW_expression_in_operand1536 = new BitSet(new long[]{0x0000100000000200L});
+	public static final BitSet FOLLOW_RCURLY_in_operand1540 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_print_statement_in_operand1556 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_read_statement_in_operand1561 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_set_in_operand1566 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_QUOTE_in_operand1577 = new BitSet(new long[]{0x0000000080001000L});
+	public static final BitSet FOLLOW_set_in_operand1580 = new BitSet(new long[]{0x0000040000000000L});
+	public static final BitSet FOLLOW_QUOTE_in_operand1586 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_STRING_in_operand1592 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_INTEGER_in_type1606 = new BitSet(new long[]{0x0000000020000002L});
+	public static final BitSet FOLLOW_array_def_in_type1608 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_CHAR_in_type1614 = new BitSet(new long[]{0x0000000020000002L});
+	public static final BitSet FOLLOW_array_def_in_type1616 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_BOOLEAN_in_type1622 = new BitSet(new long[]{0x0000000020000002L});
+	public static final BitSet FOLLOW_array_def_in_type1624 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_LBRACKET_in_array_def1638 = new BitSet(new long[]{0x0000084000000000L});
+	public static final BitSet FOLLOW_NUMBER_in_array_def1640 = new BitSet(new long[]{0x0000080000000000L});
+	public static final BitSet FOLLOW_RBRACKET_in_array_def1643 = new BitSet(new long[]{0x0000000000000002L});
 }
