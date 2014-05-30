@@ -1,0 +1,12 @@
+
+
+int function multiply(int a, int b){
+    return(a*b);
+}
+
+int c = 3;
+int d = 4;
+int e = multiply(c,d);
+int f = multiply(5,5);
+
+
