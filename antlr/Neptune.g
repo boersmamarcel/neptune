@@ -26,6 +26,9 @@ tokens {
 	
 	// strings
 	DQUOTE		=	'"'		;
+	QUOTE		=	'\''	;
+	FALSE		=	'false'	;
+	TRUE		=	'true'	;
 
     // keywords
     PROGRAM     =   'program'   ;
@@ -152,6 +155,8 @@ operand
 		->	^(ARRAY_SET expression+)
 	|	print_statement
 	|	read_statement
+	|	(TRUE | FALSE)
+	|	QUOTE! (LETTER|DIGIT) QUOTE!
     ;
 
 type
