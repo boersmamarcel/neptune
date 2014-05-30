@@ -32,6 +32,7 @@ tokens {
 
     // keywords
     PROGRAM     =   'program'   ;
+	BLOCK		=	'block'		;
     VAR         =   'var'       ;
 	CONST		=	'const'		;
     PRINT       =   'print'     ;
@@ -126,6 +127,11 @@ line
 	|	logic_statement
 	;
 	
+codeblock
+	:	LCURLY lines RCURLY
+		->	^(BLOCK lines)
+	;
+	
 logic_statement
 	:	while_statement
 	|	foreach_statement
@@ -184,13 +190,14 @@ operand
     :   IDENTIFIER
     |   NUMBER
     |   LPAREN! assignment_expr RPAREN!
-	|	LCURLY expression (COMMA expression)* RCURLY
+	|	LBRACKET expression (COMMA expression)* RBRACKET
 		->	^(ARRAY_SET expression+)
 	|	print_statement
 	|	read_statement
 	|	(TRUE | FALSE)
 	|	CHAR_LITERAL
 	|	STRING_LITERAL
+	|	codeblock
     ;
 
 type

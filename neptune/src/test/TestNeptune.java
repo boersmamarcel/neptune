@@ -26,7 +26,8 @@ public class TestNeptune {
 				"print_statement",
 				"include_statement",
 				"read_statement",
-				"while_statement"
+				"while_statement",
+				"codeblock"
 		};
 		
 		for(String s: tests) {
