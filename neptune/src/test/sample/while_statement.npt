@@ -1,6 +1,6 @@
 // do a while statement, should loop 10 times over the variable and increase the count
 
-var int i;
+int i;
 
 i = 0;
 

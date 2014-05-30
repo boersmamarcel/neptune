@@ -1,11 +1,11 @@
-var int i = 0;
+int i = 0;
 
 print(i);
-var char a = 'A';
+char a = 'A';
 
 print(a);
 
-var bool b = true;
+bool b = true;
 
 print(b);
 

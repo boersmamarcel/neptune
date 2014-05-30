@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 Neptune.g 2014-05-30 22:43:55
+// $ANTLR 3.5.2 Neptune.g 2014-05-30 22:59:35
 
 package neptune;
 
@@ -1009,8 +1009,8 @@ public class NeptuneLexer extends Lexer {
 			int _channel = DEFAULT_TOKEN_CHANNEL;
 			CommonToken f=null;
 
-			// Neptune.g:208:2: ( '#dropin' LPAREN f= STRING_LITERAL RPAREN )
-			// Neptune.g:208:4: '#dropin' LPAREN f= STRING_LITERAL RPAREN
+			// Neptune.g:209:2: ( '#dropin' LPAREN f= STRING_LITERAL RPAREN )
+			// Neptune.g:209:4: '#dropin' LPAREN f= STRING_LITERAL RPAREN
 			{
 			match("#dropin"); 
 
@@ -1057,12 +1057,12 @@ public class NeptuneLexer extends Lexer {
 		try {
 			int _type = IDENTIFIER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Neptune.g:226:5: ( LETTER ( LETTER | DIGIT | '_' )* )
-			// Neptune.g:226:9: LETTER ( LETTER | DIGIT | '_' )*
+			// Neptune.g:227:5: ( LETTER ( LETTER | DIGIT | '_' )* )
+			// Neptune.g:227:9: LETTER ( LETTER | DIGIT | '_' )*
 			{
 			mLETTER(); 
 
-			// Neptune.g:226:16: ( LETTER | DIGIT | '_' )*
+			// Neptune.g:227:16: ( LETTER | DIGIT | '_' )*
 			loop1:
 			while (true) {
 				int alt1=2;
@@ -1107,10 +1107,10 @@ public class NeptuneLexer extends Lexer {
 		try {
 			int _type = NUMBER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Neptune.g:230:5: ( ( DIGIT )+ )
-			// Neptune.g:230:9: ( DIGIT )+
+			// Neptune.g:231:5: ( ( DIGIT )+ )
+			// Neptune.g:231:9: ( DIGIT )+
 			{
-			// Neptune.g:230:9: ( DIGIT )+
+			// Neptune.g:231:9: ( DIGIT )+
 			int cnt2=0;
 			loop2:
 			while (true) {
@@ -1159,12 +1159,12 @@ public class NeptuneLexer extends Lexer {
 		try {
 			int _type = COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Neptune.g:235:5: ( '//' ( . )* '\\n' )
-			// Neptune.g:235:9: '//' ( . )* '\\n'
+			// Neptune.g:236:5: ( '//' ( . )* '\\n' )
+			// Neptune.g:236:9: '//' ( . )* '\\n'
 			{
 			match("//"); 
 
-			// Neptune.g:235:14: ( . )*
+			// Neptune.g:236:14: ( . )*
 			loop3:
 			while (true) {
 				int alt3=2;
@@ -1178,7 +1178,7 @@ public class NeptuneLexer extends Lexer {
 
 				switch (alt3) {
 				case 1 :
-					// Neptune.g:235:14: .
+					// Neptune.g:236:14: .
 					{
 					matchAny(); 
 					}
@@ -1207,8 +1207,8 @@ public class NeptuneLexer extends Lexer {
 		try {
 			int _type = CHAR_LITERAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Neptune.g:240:2: ( '\\'' ~ '\\'' '\\'' )
-			// Neptune.g:240:4: '\\'' ~ '\\'' '\\''
+			// Neptune.g:241:2: ( '\\'' ~ '\\'' '\\'' )
+			// Neptune.g:241:4: '\\'' ~ '\\'' '\\''
 			{
 			match('\''); 
 			if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '&')||(input.LA(1) >= '(' && input.LA(1) <= '\uFFFF') ) {
@@ -1236,11 +1236,11 @@ public class NeptuneLexer extends Lexer {
 		try {
 			int _type = STRING_LITERAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Neptune.g:244:2: ( '\"' (~ '\"' )+ '\"' )
-			// Neptune.g:244:4: '\"' (~ '\"' )+ '\"'
+			// Neptune.g:245:2: ( '\"' (~ '\"' )+ '\"' )
+			// Neptune.g:245:4: '\"' (~ '\"' )+ '\"'
 			{
 			match('\"'); 
-			// Neptune.g:244:8: (~ '\"' )+
+			// Neptune.g:245:8: (~ '\"' )+
 			int cnt4=0;
 			loop4:
 			while (true) {
@@ -1290,10 +1290,10 @@ public class NeptuneLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Neptune.g:248:5: ( ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+ )
-			// Neptune.g:248:9: ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+
+			// Neptune.g:249:5: ( ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+ )
+			// Neptune.g:249:9: ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+
 			{
-			// Neptune.g:248:9: ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+
+			// Neptune.g:249:9: ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+
 			int cnt5=0;
 			loop5:
 			while (true) {
@@ -1341,7 +1341,7 @@ public class NeptuneLexer extends Lexer {
 	// $ANTLR start "DIGIT"
 	public final void mDIGIT() throws RecognitionException {
 		try {
-			// Neptune.g:252:17: ( ( '0' .. '9' ) )
+			// Neptune.g:253:17: ( ( '0' .. '9' ) )
 			// Neptune.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
@@ -1364,7 +1364,7 @@ public class NeptuneLexer extends Lexer {
 	// $ANTLR start "LOWER"
 	public final void mLOWER() throws RecognitionException {
 		try {
-			// Neptune.g:253:17: ( ( 'a' .. 'z' ) )
+			// Neptune.g:254:17: ( ( 'a' .. 'z' ) )
 			// Neptune.g:
 			{
 			if ( (input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
@@ -1387,7 +1387,7 @@ public class NeptuneLexer extends Lexer {
 	// $ANTLR start "UPPER"
 	public final void mUPPER() throws RecognitionException {
 		try {
-			// Neptune.g:254:17: ( ( 'A' .. 'Z' ) )
+			// Neptune.g:255:17: ( ( 'A' .. 'Z' ) )
 			// Neptune.g:
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z') ) {
@@ -1410,7 +1410,7 @@ public class NeptuneLexer extends Lexer {
 	// $ANTLR start "LETTER"
 	public final void mLETTER() throws RecognitionException {
 		try {
-			// Neptune.g:255:17: ( LOWER | UPPER )
+			// Neptune.g:256:17: ( LOWER | UPPER )
 			// Neptune.g:
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {

@@ -1,18 +1,18 @@
 const int a = 10;
 
-var int b;
+int b;
 
-var int c = 3;
+int c = 3;
 
-var char h = 'h';
+char h = 'h';
 
-var bool u = false;
+bool u = false;
 
-var bool u = true;
+bool u = true;
 
-var bool d = 4;
+bool d = 4;
 
-var int e = 'a';
+int e = 'a';
 
 a = 5;
 

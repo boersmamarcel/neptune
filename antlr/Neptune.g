@@ -155,7 +155,8 @@ read_statement
 	;
 	
 declaration
-	:	VAR^ type IDENTIFIER (BECOMES expression)?
+	:	type IDENTIFIER (BECOMES expression)?
+		-> ^(VAR type IDENTIFIER (BECOMES expression)?)
 	|	CONST^ type IDENTIFIER BECOMES expression
 	;
 	
