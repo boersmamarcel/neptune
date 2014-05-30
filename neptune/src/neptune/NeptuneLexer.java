@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 Neptune.g 2014-05-30 14:19:27
+// $ANTLR 3.5.2 Neptune.g 2014-05-30 14:31:43
 
 package neptune;
 
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class NeptuneLexer extends Lexer {
 	public static final int EOF=-1;
-	public static final int T__56=56;
+	public static final int T__57=57;
 	public static final int ARRAY_SET=4;
 	public static final int BECOMES=5;
 	public static final int BOOLEAN=6;
@@ -57,13 +57,14 @@ public class NeptuneLexer extends Lexer {
 	public static final int RETURN=46;
 	public static final int RPAREN=47;
 	public static final int SEMICOLON=48;
-	public static final int THEN=49;
-	public static final int TIMES=50;
-	public static final int TRUE=51;
-	public static final int UPPER=52;
-	public static final int VAR=53;
-	public static final int WHILE=54;
-	public static final int WS=55;
+	public static final int STRING=49;
+	public static final int THEN=50;
+	public static final int TIMES=51;
+	public static final int TRUE=52;
+	public static final int UPPER=53;
+	public static final int VAR=54;
+	public static final int WHILE=55;
+	public static final int WS=56;
 
 	// delegates
 	// delegators
@@ -986,10 +987,10 @@ public class NeptuneLexer extends Lexer {
 	}
 	// $ANTLR end "WHILE"
 
-	// $ANTLR start "T__56"
-	public final void mT__56() throws RecognitionException {
+	// $ANTLR start "T__57"
+	public final void mT__57() throws RecognitionException {
 		try {
-			int _type = T__56;
+			int _type = T__57;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
 			// Neptune.g:55:7: ( 'ello' )
 			// Neptune.g:55:9: 'ello'
@@ -1005,19 +1006,19 @@ public class NeptuneLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__56"
+	// $ANTLR end "T__57"
 
 	// $ANTLR start "IDENTIFIER"
 	public final void mIDENTIFIER() throws RecognitionException {
 		try {
 			int _type = IDENTIFIER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Neptune.g:175:5: ( LETTER ( LETTER | DIGIT )* )
-			// Neptune.g:175:9: LETTER ( LETTER | DIGIT )*
+			// Neptune.g:177:5: ( LETTER ( LETTER | DIGIT )* )
+			// Neptune.g:177:9: LETTER ( LETTER | DIGIT )*
 			{
 			mLETTER(); 
 
-			// Neptune.g:175:16: ( LETTER | DIGIT )*
+			// Neptune.g:177:16: ( LETTER | DIGIT )*
 			loop1:
 			while (true) {
 				int alt1=2;
@@ -1062,10 +1063,10 @@ public class NeptuneLexer extends Lexer {
 		try {
 			int _type = NUMBER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Neptune.g:179:5: ( ( DIGIT )+ )
-			// Neptune.g:179:9: ( DIGIT )+
+			// Neptune.g:181:5: ( ( DIGIT )+ )
+			// Neptune.g:181:9: ( DIGIT )+
 			{
-			// Neptune.g:179:9: ( DIGIT )+
+			// Neptune.g:181:9: ( DIGIT )+
 			int cnt2=0;
 			loop2:
 			while (true) {
@@ -1114,12 +1115,12 @@ public class NeptuneLexer extends Lexer {
 		try {
 			int _type = COMMENT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Neptune.g:184:5: ( '//' ( . )* '\\n' )
-			// Neptune.g:184:9: '//' ( . )* '\\n'
+			// Neptune.g:186:5: ( '//' ( . )* '\\n' )
+			// Neptune.g:186:9: '//' ( . )* '\\n'
 			{
 			match("//"); 
 
-			// Neptune.g:184:14: ( . )*
+			// Neptune.g:186:14: ( . )*
 			loop3:
 			while (true) {
 				int alt3=2;
@@ -1133,7 +1134,7 @@ public class NeptuneLexer extends Lexer {
 
 				switch (alt3) {
 				case 1 :
-					// Neptune.g:184:14: .
+					// Neptune.g:186:14: .
 					{
 					matchAny(); 
 					}
@@ -1157,21 +1158,23 @@ public class NeptuneLexer extends Lexer {
 	}
 	// $ANTLR end "COMMENT"
 
-	// $ANTLR start "WS"
-	public final void mWS() throws RecognitionException {
+	// $ANTLR start "STRING"
+	public final void mSTRING() throws RecognitionException {
 		try {
-			int _type = WS;
+			int _type = STRING;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Neptune.g:189:5: ( ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+ )
-			// Neptune.g:189:9: ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+
+			// Neptune.g:191:2: ( DQUOTE ( DIGIT | LETTER | ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+ DQUOTE )
+			// Neptune.g:191:4: DQUOTE ( DIGIT | LETTER | ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+ DQUOTE
 			{
-			// Neptune.g:189:9: ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+
+			mDQUOTE(); 
+
+			// Neptune.g:191:11: ( DIGIT | LETTER | ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+
 			int cnt4=0;
 			loop4:
 			while (true) {
 				int alt4=2;
 				int LA4_0 = input.LA(1);
-				if ( ((LA4_0 >= '\t' && LA4_0 <= '\n')||(LA4_0 >= '\f' && LA4_0 <= '\r')||LA4_0==' ') ) {
+				if ( ((LA4_0 >= '\t' && LA4_0 <= '\n')||(LA4_0 >= '\f' && LA4_0 <= '\r')||LA4_0==' '||(LA4_0 >= '0' && LA4_0 <= '9')||(LA4_0 >= 'A' && LA4_0 <= 'Z')||(LA4_0 >= 'a' && LA4_0 <= 'z')) ) {
 					alt4=1;
 				}
 
@@ -1179,7 +1182,7 @@ public class NeptuneLexer extends Lexer {
 				case 1 :
 					// Neptune.g:
 					{
-					if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||(input.LA(1) >= '\f' && input.LA(1) <= '\r')||input.LA(1)==' ' ) {
+					if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||(input.LA(1) >= '\f' && input.LA(1) <= '\r')||input.LA(1)==' '||(input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= 'A' && input.LA(1) <= 'Z')||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
 						input.consume();
 					}
 					else {
@@ -1198,6 +1201,60 @@ public class NeptuneLexer extends Lexer {
 				cnt4++;
 			}
 
+			mDQUOTE(); 
+
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "STRING"
+
+	// $ANTLR start "WS"
+	public final void mWS() throws RecognitionException {
+		try {
+			int _type = WS;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Neptune.g:195:5: ( ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+ )
+			// Neptune.g:195:9: ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+
+			{
+			// Neptune.g:195:9: ( ' ' | '\\t' | '\\f' | '\\r' | '\\n' )+
+			int cnt5=0;
+			loop5:
+			while (true) {
+				int alt5=2;
+				int LA5_0 = input.LA(1);
+				if ( ((LA5_0 >= '\t' && LA5_0 <= '\n')||(LA5_0 >= '\f' && LA5_0 <= '\r')||LA5_0==' ') ) {
+					alt5=1;
+				}
+
+				switch (alt5) {
+				case 1 :
+					// Neptune.g:
+					{
+					if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||(input.LA(1) >= '\f' && input.LA(1) <= '\r')||input.LA(1)==' ' ) {
+						input.consume();
+					}
+					else {
+						MismatchedSetException mse = new MismatchedSetException(null,input);
+						recover(mse);
+						throw mse;
+					}
+					}
+					break;
+
+				default :
+					if ( cnt5 >= 1 ) break loop5;
+					EarlyExitException eee = new EarlyExitException(5, input);
+					throw eee;
+				}
+				cnt5++;
+			}
+
 			 _channel=HIDDEN; 
 			}
 
@@ -1213,7 +1270,7 @@ public class NeptuneLexer extends Lexer {
 	// $ANTLR start "DIGIT"
 	public final void mDIGIT() throws RecognitionException {
 		try {
-			// Neptune.g:193:17: ( ( '0' .. '9' ) )
+			// Neptune.g:199:17: ( ( '0' .. '9' ) )
 			// Neptune.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
@@ -1236,7 +1293,7 @@ public class NeptuneLexer extends Lexer {
 	// $ANTLR start "LOWER"
 	public final void mLOWER() throws RecognitionException {
 		try {
-			// Neptune.g:194:17: ( ( 'a' .. 'z' ) )
+			// Neptune.g:200:17: ( ( 'a' .. 'z' ) )
 			// Neptune.g:
 			{
 			if ( (input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
@@ -1259,7 +1316,7 @@ public class NeptuneLexer extends Lexer {
 	// $ANTLR start "UPPER"
 	public final void mUPPER() throws RecognitionException {
 		try {
-			// Neptune.g:195:17: ( ( 'A' .. 'Z' ) )
+			// Neptune.g:201:17: ( ( 'A' .. 'Z' ) )
 			// Neptune.g:
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z') ) {
@@ -1282,7 +1339,7 @@ public class NeptuneLexer extends Lexer {
 	// $ANTLR start "LETTER"
 	public final void mLETTER() throws RecognitionException {
 		try {
-			// Neptune.g:196:17: ( LOWER | UPPER )
+			// Neptune.g:202:17: ( LOWER | UPPER )
 			// Neptune.g:
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
@@ -1304,10 +1361,10 @@ public class NeptuneLexer extends Lexer {
 
 	@Override
 	public void mTokens() throws RecognitionException {
-		// Neptune.g:1:8: ( ARRAY_SET | BECOMES | BOOLEAN | CHAR | COLON | COMMA | CONST | DIVIDE | DO | DQUOTE | ELSE | ELSIF | EQ | FALSE | FOREACH | FUNCTION | GT | GT_EQ | IF | IN | INCLUDE | INTEGER | LBRACKET | LCURLY | LPAREN | LT | LT_EQ | MINUS | NEQ | PLUS | PRINT | PROGRAM | QUOTE | RBRACKET | RCURLY | READ | RETURN | RPAREN | SEMICOLON | THEN | TIMES | TRUE | VAR | WHILE | T__56 | IDENTIFIER | NUMBER | COMMENT | WS )
-		int alt5=49;
-		alt5 = dfa5.predict(input);
-		switch (alt5) {
+		// Neptune.g:1:8: ( ARRAY_SET | BECOMES | BOOLEAN | CHAR | COLON | COMMA | CONST | DIVIDE | DO | DQUOTE | ELSE | ELSIF | EQ | FALSE | FOREACH | FUNCTION | GT | GT_EQ | IF | IN | INCLUDE | INTEGER | LBRACKET | LCURLY | LPAREN | LT | LT_EQ | MINUS | NEQ | PLUS | PRINT | PROGRAM | QUOTE | RBRACKET | RCURLY | READ | RETURN | RPAREN | SEMICOLON | THEN | TIMES | TRUE | VAR | WHILE | T__57 | IDENTIFIER | NUMBER | COMMENT | STRING | WS )
+		int alt6=50;
+		alt6 = dfa6.predict(input);
+		switch (alt6) {
 			case 1 :
 				// Neptune.g:1:10: ARRAY_SET
 				{
@@ -1617,9 +1674,9 @@ public class NeptuneLexer extends Lexer {
 				}
 				break;
 			case 45 :
-				// Neptune.g:1:282: T__56
+				// Neptune.g:1:282: T__57
 				{
-				mT__56(); 
+				mT__57(); 
 
 				}
 				break;
@@ -1645,7 +1702,14 @@ public class NeptuneLexer extends Lexer {
 				}
 				break;
 			case 49 :
-				// Neptune.g:1:314: WS
+				// Neptune.g:1:314: STRING
+				{
+				mSTRING(); 
+
+				}
+				break;
+			case 50 :
+				// Neptune.g:1:321: WS
 				{
 				mWS(); 
 
@@ -1656,53 +1720,53 @@ public class NeptuneLexer extends Lexer {
 	}
 
 
-	protected DFA5 dfa5 = new DFA5(this);
-	static final String DFA5_eotS =
-		"\1\uffff\1\40\1\45\2\40\2\uffff\1\52\1\40\1\uffff\2\40\1\61\1\40\3\uffff"+
-		"\1\65\3\uffff\1\40\3\uffff\1\40\2\uffff\1\40\1\uffff\2\40\3\uffff\1\40"+
-		"\2\uffff\3\40\2\uffff\1\100\4\40\2\uffff\1\106\1\111\2\uffff\12\40\1\uffff"+
-		"\5\40\1\uffff\1\40\1\135\1\uffff\6\40\1\144\2\40\1\147\1\150\1\40\1\152"+
-		"\1\40\1\154\4\40\1\uffff\2\40\1\163\1\40\1\165\1\166\1\uffff\2\40\2\uffff"+
-		"\1\171\1\uffff\1\172\1\uffff\1\173\3\40\1\177\1\40\1\uffff\1\40\2\uffff"+
-		"\1\u0082\4\uffff\3\40\1\uffff\1\40\1\u0087\1\uffff\1\u0088\1\40\1\u008a"+
-		"\1\u008b\2\uffff\1\u008c\3\uffff";
-	static final String DFA5_eofS =
-		"\u008d\uffff";
-	static final String DFA5_minS =
-		"\1\11\1\162\1\75\1\157\1\150\2\uffff\1\57\1\157\1\uffff\1\154\1\141\1"+
-		"\75\1\146\3\uffff\1\75\3\uffff\1\162\3\uffff\1\145\2\uffff\1\150\1\uffff"+
-		"\1\141\1\150\3\uffff\1\162\2\uffff\1\157\1\141\1\156\2\uffff\1\60\2\154"+
-		"\1\162\1\156\2\uffff\2\60\2\uffff\1\151\1\141\1\145\1\165\1\162\1\151"+
-		"\1\141\1\154\1\162\1\163\1\uffff\1\145\1\157\1\163\1\145\1\143\1\uffff"+
-		"\1\154\1\60\1\uffff\1\156\1\147\1\144\1\165\1\156\1\145\1\60\1\154\1\171"+
-		"\2\60\1\164\1\60\1\146\1\60\1\145\1\141\1\164\1\165\1\uffff\1\164\1\162"+
-		"\1\60\1\162\2\60\1\uffff\1\145\1\137\2\uffff\1\60\1\uffff\1\60\1\uffff"+
-		"\1\60\1\143\1\151\1\144\1\60\1\141\1\uffff\1\156\2\uffff\1\60\4\uffff"+
-		"\1\150\1\157\1\145\1\uffff\1\155\1\60\1\uffff\1\60\1\156\2\60\2\uffff"+
-		"\1\60\3\uffff";
-	static final String DFA5_maxS =
-		"\1\175\1\162\1\75\2\157\2\uffff\1\57\1\157\1\uffff\1\154\1\165\1\75\1"+
-		"\156\3\uffff\1\75\3\uffff\1\162\3\uffff\1\145\2\uffff\1\162\1\uffff\1"+
-		"\141\1\150\3\uffff\1\162\2\uffff\1\157\1\141\1\156\2\uffff\1\172\1\163"+
-		"\1\154\1\162\1\156\2\uffff\2\172\2\uffff\1\157\1\164\1\145\1\165\1\162"+
-		"\1\151\1\141\1\154\1\162\1\163\1\uffff\1\151\1\157\1\163\1\145\1\143\1"+
-		"\uffff\1\154\1\172\1\uffff\1\156\1\147\1\144\1\165\1\156\1\145\1\172\1"+
-		"\154\1\171\2\172\1\164\1\172\1\146\1\172\1\145\1\141\1\164\1\165\1\uffff"+
+	protected DFA6 dfa6 = new DFA6(this);
+	static final String DFA6_eotS =
+		"\1\uffff\1\40\1\45\2\40\2\uffff\1\52\1\40\1\54\2\40\1\63\1\40\3\uffff"+
+		"\1\67\3\uffff\1\40\3\uffff\1\40\2\uffff\1\40\1\uffff\2\40\3\uffff\1\40"+
+		"\2\uffff\3\40\2\uffff\1\102\2\uffff\4\40\2\uffff\1\110\1\113\2\uffff\12"+
+		"\40\1\uffff\5\40\1\uffff\1\40\1\137\1\uffff\6\40\1\146\2\40\1\151\1\152"+
+		"\1\40\1\154\1\40\1\156\4\40\1\uffff\2\40\1\165\1\40\1\167\1\170\1\uffff"+
+		"\2\40\2\uffff\1\173\1\uffff\1\174\1\uffff\1\175\3\40\1\u0081\1\40\1\uffff"+
+		"\1\40\2\uffff\1\u0084\4\uffff\3\40\1\uffff\1\40\1\u0089\1\uffff\1\u008a"+
+		"\1\40\1\u008c\1\u008d\2\uffff\1\u008e\3\uffff";
+	static final String DFA6_eofS =
+		"\u008f\uffff";
+	static final String DFA6_minS =
+		"\1\11\1\162\1\75\1\157\1\150\2\uffff\1\57\1\157\1\11\1\154\1\141\1\75"+
+		"\1\146\3\uffff\1\75\3\uffff\1\162\3\uffff\1\145\2\uffff\1\150\1\uffff"+
+		"\1\141\1\150\3\uffff\1\162\2\uffff\1\157\1\141\1\156\2\uffff\1\60\2\uffff"+
+		"\2\154\1\162\1\156\2\uffff\2\60\2\uffff\1\151\1\141\1\145\1\165\1\162"+
+		"\1\151\1\141\1\154\1\162\1\163\1\uffff\1\145\1\157\1\163\1\145\1\143\1"+
+		"\uffff\1\154\1\60\1\uffff\1\156\1\147\1\144\1\165\1\156\1\145\1\60\1\154"+
+		"\1\171\2\60\1\164\1\60\1\146\1\60\1\145\1\141\1\164\1\165\1\uffff\1\164"+
+		"\1\162\1\60\1\162\2\60\1\uffff\1\145\1\137\2\uffff\1\60\1\uffff\1\60\1"+
+		"\uffff\1\60\1\143\1\151\1\144\1\60\1\141\1\uffff\1\156\2\uffff\1\60\4"+
+		"\uffff\1\150\1\157\1\145\1\uffff\1\155\1\60\1\uffff\1\60\1\156\2\60\2"+
+		"\uffff\1\60\3\uffff";
+	static final String DFA6_maxS =
+		"\1\175\1\162\1\75\2\157\2\uffff\1\57\1\157\1\172\1\154\1\165\1\75\1\156"+
+		"\3\uffff\1\75\3\uffff\1\162\3\uffff\1\145\2\uffff\1\162\1\uffff\1\141"+
+		"\1\150\3\uffff\1\162\2\uffff\1\157\1\141\1\156\2\uffff\1\172\2\uffff\1"+
+		"\163\1\154\1\162\1\156\2\uffff\2\172\2\uffff\1\157\1\164\1\145\1\165\1"+
+		"\162\1\151\1\141\1\154\1\162\1\163\1\uffff\1\151\1\157\1\163\1\145\1\143"+
+		"\1\uffff\1\154\1\172\1\uffff\1\156\1\147\1\144\1\165\1\156\1\145\1\172"+
+		"\1\154\1\171\2\172\1\164\1\172\1\146\1\172\1\145\1\141\1\164\1\165\1\uffff"+
 		"\1\164\1\162\1\172\1\162\2\172\1\uffff\1\145\1\137\2\uffff\1\172\1\uffff"+
 		"\1\172\1\uffff\1\172\1\143\1\151\1\144\1\172\1\141\1\uffff\1\156\2\uffff"+
 		"\1\172\4\uffff\1\150\1\157\1\145\1\uffff\1\155\1\172\1\uffff\1\172\1\156"+
 		"\2\172\2\uffff\1\172\3\uffff";
-	static final String DFA5_acceptS =
-		"\5\uffff\1\5\1\6\2\uffff\1\12\4\uffff\1\27\1\30\1\31\1\uffff\1\34\1\35"+
-		"\1\36\1\uffff\1\41\1\42\1\43\1\uffff\1\46\1\47\1\uffff\1\51\2\uffff\1"+
-		"\56\1\57\1\61\1\uffff\1\15\1\2\3\uffff\1\60\1\10\5\uffff\1\22\1\21\2\uffff"+
-		"\1\33\1\32\12\uffff\1\11\5\uffff\1\23\2\uffff\1\24\23\uffff\1\26\6\uffff"+
-		"\1\53\2\uffff\1\3\1\4\1\uffff\1\13\1\uffff\1\55\6\uffff\1\44\1\uffff\1"+
-		"\50\1\52\1\uffff\1\1\1\7\1\14\1\16\3\uffff\1\37\2\uffff\1\54\4\uffff\1"+
-		"\45\1\17\1\uffff\1\25\1\40\1\20";
-	static final String DFA5_specialS =
-		"\u008d\uffff}>";
-	static final String[] DFA5_transitionS = {
+	static final String DFA6_acceptS =
+		"\5\uffff\1\5\1\6\7\uffff\1\27\1\30\1\31\1\uffff\1\34\1\35\1\36\1\uffff"+
+		"\1\41\1\42\1\43\1\uffff\1\46\1\47\1\uffff\1\51\2\uffff\1\56\1\57\1\62"+
+		"\1\uffff\1\15\1\2\3\uffff\1\60\1\10\1\uffff\1\12\1\61\4\uffff\1\22\1\21"+
+		"\2\uffff\1\33\1\32\12\uffff\1\11\5\uffff\1\23\2\uffff\1\24\23\uffff\1"+
+		"\26\6\uffff\1\53\2\uffff\1\3\1\4\1\uffff\1\13\1\uffff\1\55\6\uffff\1\44"+
+		"\1\uffff\1\50\1\52\1\uffff\1\1\1\7\1\14\1\16\3\uffff\1\37\2\uffff\1\54"+
+		"\4\uffff\1\45\1\17\1\uffff\1\25\1\40\1\20";
+	static final String DFA6_specialS =
+		"\u008f\uffff}>";
+	static final String[] DFA6_transitionS = {
 			"\2\42\1\uffff\2\42\22\uffff\1\42\1\23\1\11\4\uffff\1\26\1\20\1\32\1\35"+
 			"\1\24\1\6\1\22\1\uffff\1\7\12\41\1\5\1\33\1\21\1\2\1\14\2\uffff\32\40"+
 			"\1\16\1\uffff\1\27\3\uffff\1\1\1\3\1\4\1\10\1\12\1\13\2\40\1\15\6\40"+
@@ -1715,15 +1779,12 @@ public class NeptuneLexer extends Lexer {
 			"",
 			"\1\51",
 			"\1\53",
-			"",
-			"\1\54",
-			"\1\55\15\uffff\1\56\5\uffff\1\57",
-			"\1\60",
-			"\1\62\7\uffff\1\63",
-			"",
-			"",
-			"",
-			"\1\64",
+			"\2\55\1\uffff\2\55\22\uffff\1\55\17\uffff\12\55\7\uffff\32\55\6\uffff"+
+			"\32\55",
+			"\1\56",
+			"\1\57\15\uffff\1\60\5\uffff\1\61",
+			"\1\62",
+			"\1\64\7\uffff\1\65",
 			"",
 			"",
 			"",
@@ -1731,84 +1792,90 @@ public class NeptuneLexer extends Lexer {
 			"",
 			"",
 			"",
-			"\1\67",
+			"\1\70",
 			"",
 			"",
-			"\1\70\11\uffff\1\71",
 			"",
-			"\1\72",
-			"\1\73",
+			"\1\71",
 			"",
 			"",
+			"\1\72\11\uffff\1\73",
 			"",
 			"\1\74",
-			"",
-			"",
 			"\1\75",
+			"",
+			"",
+			"",
 			"\1\76",
+			"",
+			"",
 			"\1\77",
+			"\1\100",
+			"\1\101",
 			"",
 			"",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
-			"\1\102\6\uffff\1\101",
-			"\1\103",
-			"\1\104",
+			"",
+			"",
+			"\1\104\6\uffff\1\103",
 			"\1\105",
+			"\1\106",
+			"\1\107",
 			"",
 			"",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
-			"\12\40\7\uffff\32\40\6\uffff\2\40\1\107\20\40\1\110\6\40",
+			"\12\40\7\uffff\32\40\6\uffff\2\40\1\111\20\40\1\112\6\40",
 			"",
 			"",
-			"\1\112\5\uffff\1\113",
-			"\1\114\22\uffff\1\115",
-			"\1\116",
-			"\1\117",
+			"\1\114\5\uffff\1\115",
+			"\1\116\22\uffff\1\117",
 			"\1\120",
 			"\1\121",
 			"\1\122",
 			"\1\123",
 			"\1\124",
 			"\1\125",
+			"\1\126",
+			"\1\127",
 			"",
-			"\1\126\3\uffff\1\127",
-			"\1\130",
-			"\1\131",
+			"\1\130\3\uffff\1\131",
 			"\1\132",
 			"\1\133",
-			"",
 			"\1\134",
-			"\12\40\7\uffff\32\40\6\uffff\32\40",
+			"\1\135",
 			"",
 			"\1\136",
-			"\1\137",
+			"\12\40\7\uffff\32\40\6\uffff\32\40",
+			"",
 			"\1\140",
 			"\1\141",
 			"\1\142",
 			"\1\143",
-			"\12\40\7\uffff\32\40\6\uffff\32\40",
+			"\1\144",
 			"\1\145",
-			"\1\146",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
+			"\1\147",
+			"\1\150",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
-			"\1\151",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
 			"\1\153",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
 			"\1\155",
-			"\1\156",
+			"\12\40\7\uffff\32\40\6\uffff\32\40",
 			"\1\157",
 			"\1\160",
-			"",
 			"\1\161",
 			"\1\162",
-			"\12\40\7\uffff\32\40\6\uffff\32\40",
+			"",
+			"\1\163",
 			"\1\164",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
+			"\1\166",
+			"\12\40\7\uffff\32\40\6\uffff\32\40",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
 			"",
-			"\1\167",
-			"\1\170",
+			"\1\171",
+			"\1\172",
 			"",
 			"",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
@@ -1816,29 +1883,29 @@ public class NeptuneLexer extends Lexer {
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
 			"",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
-			"\1\174",
-			"\1\175",
 			"\1\176",
-			"\12\40\7\uffff\32\40\6\uffff\32\40",
+			"\1\177",
 			"\1\u0080",
-			"",
-			"\1\u0081",
-			"",
-			"",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
-			"",
-			"",
-			"",
+			"\1\u0082",
 			"",
 			"\1\u0083",
-			"\1\u0084",
+			"",
+			"",
+			"\12\40\7\uffff\32\40\6\uffff\32\40",
+			"",
+			"",
+			"",
+			"",
 			"\1\u0085",
-			"",
 			"\1\u0086",
+			"\1\u0087",
+			"",
+			"\1\u0088",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
 			"",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
-			"\1\u0089",
+			"\1\u008b",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
 			"\12\40\7\uffff\32\40\6\uffff\32\40",
 			"",
@@ -1849,38 +1916,38 @@ public class NeptuneLexer extends Lexer {
 			""
 	};
 
-	static final short[] DFA5_eot = DFA.unpackEncodedString(DFA5_eotS);
-	static final short[] DFA5_eof = DFA.unpackEncodedString(DFA5_eofS);
-	static final char[] DFA5_min = DFA.unpackEncodedStringToUnsignedChars(DFA5_minS);
-	static final char[] DFA5_max = DFA.unpackEncodedStringToUnsignedChars(DFA5_maxS);
-	static final short[] DFA5_accept = DFA.unpackEncodedString(DFA5_acceptS);
-	static final short[] DFA5_special = DFA.unpackEncodedString(DFA5_specialS);
-	static final short[][] DFA5_transition;
+	static final short[] DFA6_eot = DFA.unpackEncodedString(DFA6_eotS);
+	static final short[] DFA6_eof = DFA.unpackEncodedString(DFA6_eofS);
+	static final char[] DFA6_min = DFA.unpackEncodedStringToUnsignedChars(DFA6_minS);
+	static final char[] DFA6_max = DFA.unpackEncodedStringToUnsignedChars(DFA6_maxS);
+	static final short[] DFA6_accept = DFA.unpackEncodedString(DFA6_acceptS);
+	static final short[] DFA6_special = DFA.unpackEncodedString(DFA6_specialS);
+	static final short[][] DFA6_transition;
 
 	static {
-		int numStates = DFA5_transitionS.length;
-		DFA5_transition = new short[numStates][];
+		int numStates = DFA6_transitionS.length;
+		DFA6_transition = new short[numStates][];
 		for (int i=0; i<numStates; i++) {
-			DFA5_transition[i] = DFA.unpackEncodedString(DFA5_transitionS[i]);
+			DFA6_transition[i] = DFA.unpackEncodedString(DFA6_transitionS[i]);
 		}
 	}
 
-	protected class DFA5 extends DFA {
+	protected class DFA6 extends DFA {
 
-		public DFA5(BaseRecognizer recognizer) {
+		public DFA6(BaseRecognizer recognizer) {
 			this.recognizer = recognizer;
-			this.decisionNumber = 5;
-			this.eot = DFA5_eot;
-			this.eof = DFA5_eof;
-			this.min = DFA5_min;
-			this.max = DFA5_max;
-			this.accept = DFA5_accept;
-			this.special = DFA5_special;
-			this.transition = DFA5_transition;
+			this.decisionNumber = 6;
+			this.eot = DFA6_eot;
+			this.eof = DFA6_eof;
+			this.min = DFA6_min;
+			this.max = DFA6_max;
+			this.accept = DFA6_accept;
+			this.special = DFA6_special;
+			this.transition = DFA6_transition;
 		}
 		@Override
 		public String getDescription() {
-			return "1:1: Tokens : ( ARRAY_SET | BECOMES | BOOLEAN | CHAR | COLON | COMMA | CONST | DIVIDE | DO | DQUOTE | ELSE | ELSIF | EQ | FALSE | FOREACH | FUNCTION | GT | GT_EQ | IF | IN | INCLUDE | INTEGER | LBRACKET | LCURLY | LPAREN | LT | LT_EQ | MINUS | NEQ | PLUS | PRINT | PROGRAM | QUOTE | RBRACKET | RCURLY | READ | RETURN | RPAREN | SEMICOLON | THEN | TIMES | TRUE | VAR | WHILE | T__56 | IDENTIFIER | NUMBER | COMMENT | WS );";
+			return "1:1: Tokens : ( ARRAY_SET | BECOMES | BOOLEAN | CHAR | COLON | COMMA | CONST | DIVIDE | DO | DQUOTE | ELSE | ELSIF | EQ | FALSE | FOREACH | FUNCTION | GT | GT_EQ | IF | IN | INCLUDE | INTEGER | LBRACKET | LCURLY | LPAREN | LT | LT_EQ | MINUS | NEQ | PLUS | PRINT | PROGRAM | QUOTE | RBRACKET | RCURLY | READ | RETURN | RPAREN | SEMICOLON | THEN | TIMES | TRUE | VAR | WHILE | T__57 | IDENTIFIER | NUMBER | COMMENT | STRING | WS );";
 		}
 	}
 

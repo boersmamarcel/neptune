@@ -11,4 +11,5 @@ if(a < b) {
 	read(c);
 } else {
 	print(b);
+	print("Hello World");
 }
