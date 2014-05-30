@@ -1,0 +1,13 @@
+int a;
+bool b;
+char c;
+
+read(a,b,c);
+
+int d = read(a);
+
+read();
+
+read(c,b,a);
+
+
