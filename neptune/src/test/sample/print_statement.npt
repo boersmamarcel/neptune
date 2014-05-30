@@ -10,3 +10,5 @@ bool b = true;
 print(b);
 
 print(a,b,c);
+
+print("Hello world");
