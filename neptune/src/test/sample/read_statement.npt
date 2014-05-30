@@ -1,12 +1,10 @@
-int a;
-bool b;
-char c;
+var int a;
+var bool b;
+var char c;
 
 read(a,b,c);
 
-int d = read(a);
-
-read();
+var int d = read(a);
 
 read(c,b,a);
 

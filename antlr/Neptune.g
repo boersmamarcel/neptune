@@ -36,7 +36,6 @@ tokens {
 	CONST		=	'const'		;
     PRINT       =   'print'     ;
 	READ		=	'read'		;
-    INCLUDE     =   'include'   ;
 	FUNCTION	=	'function'	;
 	RETURN		=	'return'	;
 
@@ -87,7 +86,6 @@ lines
 line
 	:	expression SEMICOLON!
 	|	declaration SEMICOLON!
-	|	include_statement
 	|	logic_statement
 	;
 	
@@ -109,10 +107,6 @@ if_statement
 	:	IF^ LPAREN! expression RPAREN! LCURLY! lines RCURLY!
 		(ELSIF LPAREN! expression RPAREN! LCURLY! lines RCURLY!)*
 		(ELSE LCURLY! lines RCURLY!)?
-	;
-	
-include_statement
-	:	INCLUDE^ 'ello'
 	;
 	
 print_statement
@@ -157,8 +151,8 @@ operand
 	|	print_statement
 	|	read_statement
 	|	(TRUE | FALSE)
-	|	QUOTE! (LETTER|DIGIT) QUOTE!
-	|	STRING
+	|	CHAR_LITERAL
+	|	STRING_LITERAL
     ;
 
 type
@@ -174,7 +168,7 @@ array_def
 // Lexer rules
 
 IDENTIFIER
-    :   LETTER (LETTER | DIGIT)*
+    :   LETTER (LETTER | DIGIT | '_')*
     ;
 
 NUMBER
@@ -187,8 +181,12 @@ COMMENT
             { $channel=HIDDEN; }
     ;
 
-STRING
-	:	DQUOTE (DIGIT | LETTER | ' ' | '\t' | '\f' | '\r' | '\n')+ DQUOTE
+CHAR_LITERAL
+	:	'\'' ~'\'' '\''
+	;
+
+STRING_LITERAL
+	:	'"' (~'"')+ '"'
 	;
 
 WS

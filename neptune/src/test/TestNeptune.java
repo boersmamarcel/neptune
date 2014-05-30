@@ -23,6 +23,7 @@ public class TestNeptune {
 				"expression",
 				"foreach_statement",
 				"if_statement",
+				"print_statement",
 				"include_statement",
 				"read_statement",
 				"while_statement"
