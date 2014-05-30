@@ -33,7 +33,7 @@ public class Neptune {
                 Option option = getOption(args[i]);
                 if (option == null) {
                     if (i < args.length - 1) {
-                        System.err.println("Input file name '%s' should be last argument");
+                        System.err.println("Input file name '%s' should be last argument FUBAR");
                         System.exit(1);
                     } else {
                         inputFile = args[i];
