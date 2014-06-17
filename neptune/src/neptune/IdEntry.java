@@ -14,7 +14,7 @@ public class IdEntry {
     	this.address = addr;
     }
     
-    public int   getLevel()             { return this.level;         }
+    public int   getLevel()             { return this.level;    }
     public void  setLevel(int level)    { this.level = level;   }
     
     public int getAddress() { return this.address; }
