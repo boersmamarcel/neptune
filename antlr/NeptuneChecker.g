@@ -49,12 +49,12 @@ while_statement
 	;
 
 foreach_statement
-	: ^(FOREACH identifier identifier lines)
+	: ^(FOREACH IDENTIFIER IDENTIFIER lines)
 	;
 
 if_statement
 	:	^(IF expression lines 
-		(ELSIF expressions lines)* 
+		(ELSIF expression lines)* 
 		(ELSE lines)?)
 	;
 
@@ -77,7 +77,7 @@ expression
 
 assignment_expr
 	: boolean_expr 
-	| ^(BECOMES IDENTIFIER expression)?
+	| ^(BECOMES IDENTIFIER expression)
 	;
 
 boolean_expr
@@ -105,25 +105,15 @@ multi_expr
 operand
 	: IDENTIFIER
 	| NUMBER
-	| assignment_expr
 	| ^(ARRAY_SET expression+)
-	| print_statement
-	| read_statement
-	| TRUE 
-	| FALSE
-	| CHAR_LITERAL
-	| STRING_LITERAL
-	| codeblock
 	;
 
 type
-	: ^(IDENTIFIER array_def?)
-	| ^(CHAR array_def?)
-	| ^(BOOLEAN array_def?)
+	: IDENTIFIER
+	| CHAR
+	| BOOLEAN
 	;
 
-array_def
-	: NUMBER?
-	;
+
 
 
