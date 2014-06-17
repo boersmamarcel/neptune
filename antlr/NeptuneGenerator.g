@@ -1,4 +1,4 @@
-tree grammar NeptuneChecker;
+tree grammar NeptuneGenerator;
 
 options{
 	tokenVocab=Neptune;

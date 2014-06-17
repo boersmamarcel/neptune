@@ -238,7 +238,7 @@ NUMBER
     :   DIGIT+
     ;
 
-
+ 
 COMMENT
     :   '//' .* '\n' 
             { $channel=HIDDEN; }

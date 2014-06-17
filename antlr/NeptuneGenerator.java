@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/NeptuneChecker.g 2014-06-17 13:52:15
+// $ANTLR 3.5.2 antlr/NeptuneGenerator.g 2014-06-17 13:52:14
 
 	package Neptune;
 
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @SuppressWarnings("all")
-public class NeptuneChecker extends TreeParser {
+public class NeptuneGenerator extends TreeParser {
 	public static final String[] tokenNames = new String[] {
 		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ARRAY_SET", "BECOMES", "BLOCK", 
 		"BOOLEAN", "CHAR", "CHAR_LITERAL", "COLON", "COMMA", "COMMENT", "CONST", 
@@ -86,15 +86,15 @@ public class NeptuneChecker extends TreeParser {
 	// delegators
 
 
-	public NeptuneChecker(TreeNodeStream input) {
+	public NeptuneGenerator(TreeNodeStream input) {
 		this(input, new RecognizerSharedState());
 	}
-	public NeptuneChecker(TreeNodeStream input, RecognizerSharedState state) {
+	public NeptuneGenerator(TreeNodeStream input, RecognizerSharedState state) {
 		super(input, state);
 	}
 
-	@Override public String[] getTokenNames() { return NeptuneChecker.tokenNames; }
-	@Override public String getGrammarFileName() { return "antlr/NeptuneChecker.g"; }
+	@Override public String[] getTokenNames() { return NeptuneGenerator.tokenNames; }
+	@Override public String getGrammarFileName() { return "antlr/NeptuneGenerator.g"; }
 
 
 
@@ -102,11 +102,11 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "program"
-	// antlr/NeptuneChecker.g:23:1: program : ^( PROGRAM lines ) ;
+	// antlr/NeptuneGenerator.g:23:1: program : ^( PROGRAM lines ) ;
 	public final void program() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:24:2: ( ^( PROGRAM lines ) )
-			// antlr/NeptuneChecker.g:24:4: ^( PROGRAM lines )
+			// antlr/NeptuneGenerator.g:24:2: ( ^( PROGRAM lines ) )
+			// antlr/NeptuneGenerator.g:24:4: ^( PROGRAM lines )
 			{
 			match(input,PROGRAM,FOLLOW_PROGRAM_in_program47); 
 			match(input, Token.DOWN, null); 
@@ -133,13 +133,13 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "lines"
-	// antlr/NeptuneChecker.g:27:1: lines : ( line )+ ;
+	// antlr/NeptuneGenerator.g:27:1: lines : ( line )+ ;
 	public final void lines() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:28:2: ( ( line )+ )
-			// antlr/NeptuneChecker.g:28:4: ( line )+
+			// antlr/NeptuneGenerator.g:28:2: ( ( line )+ )
+			// antlr/NeptuneGenerator.g:28:4: ( line )+
 			{
-			// antlr/NeptuneChecker.g:28:4: ( line )+
+			// antlr/NeptuneGenerator.g:28:4: ( line )+
 			int cnt1=0;
 			loop1:
 			while (true) {
@@ -151,7 +151,7 @@ public class NeptuneChecker extends TreeParser {
 
 				switch (alt1) {
 				case 1 :
-					// antlr/NeptuneChecker.g:28:4: line
+					// antlr/NeptuneGenerator.g:28:4: line
 					{
 					pushFollow(FOLLOW_line_in_lines61);
 					line();
@@ -185,10 +185,10 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "line"
-	// antlr/NeptuneChecker.g:31:1: line : ( expression | declaration | logic_statement );
+	// antlr/NeptuneGenerator.g:31:1: line : ( expression | declaration | logic_statement );
 	public final void line() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:32:2: ( expression | declaration | logic_statement )
+			// antlr/NeptuneGenerator.g:32:2: ( expression | declaration | logic_statement )
 			int alt2=3;
 			switch ( input.LA(1) ) {
 			case ARRAY_SET:
@@ -229,7 +229,7 @@ public class NeptuneChecker extends TreeParser {
 			}
 			switch (alt2) {
 				case 1 :
-					// antlr/NeptuneChecker.g:32:4: expression
+					// antlr/NeptuneGenerator.g:32:4: expression
 					{
 					pushFollow(FOLLOW_expression_in_line73);
 					expression();
@@ -238,7 +238,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneChecker.g:33:4: declaration
+					// antlr/NeptuneGenerator.g:33:4: declaration
 					{
 					pushFollow(FOLLOW_declaration_in_line78);
 					declaration();
@@ -247,7 +247,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneChecker.g:34:4: logic_statement
+					// antlr/NeptuneGenerator.g:34:4: logic_statement
 					{
 					pushFollow(FOLLOW_logic_statement_in_line83);
 					logic_statement();
@@ -272,11 +272,11 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "codeblock"
-	// antlr/NeptuneChecker.g:37:1: codeblock : ^( BLOCK lines ) ;
+	// antlr/NeptuneGenerator.g:37:1: codeblock : ^( BLOCK lines ) ;
 	public final void codeblock() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:38:2: ( ^( BLOCK lines ) )
-			// antlr/NeptuneChecker.g:38:4: ^( BLOCK lines )
+			// antlr/NeptuneGenerator.g:38:2: ( ^( BLOCK lines ) )
+			// antlr/NeptuneGenerator.g:38:4: ^( BLOCK lines )
 			{
 			match(input,BLOCK,FOLLOW_BLOCK_in_codeblock95); 
 			match(input, Token.DOWN, null); 
@@ -303,10 +303,10 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "logic_statement"
-	// antlr/NeptuneChecker.g:41:1: logic_statement : ( while_statement | foreach_statement | if_statement );
+	// antlr/NeptuneGenerator.g:41:1: logic_statement : ( while_statement | foreach_statement | if_statement );
 	public final void logic_statement() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:42:2: ( while_statement | foreach_statement | if_statement )
+			// antlr/NeptuneGenerator.g:42:2: ( while_statement | foreach_statement | if_statement )
 			int alt3=3;
 			switch ( input.LA(1) ) {
 			case WHILE:
@@ -331,7 +331,7 @@ public class NeptuneChecker extends TreeParser {
 			}
 			switch (alt3) {
 				case 1 :
-					// antlr/NeptuneChecker.g:42:4: while_statement
+					// antlr/NeptuneGenerator.g:42:4: while_statement
 					{
 					pushFollow(FOLLOW_while_statement_in_logic_statement109);
 					while_statement();
@@ -340,7 +340,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneChecker.g:43:4: foreach_statement
+					// antlr/NeptuneGenerator.g:43:4: foreach_statement
 					{
 					pushFollow(FOLLOW_foreach_statement_in_logic_statement114);
 					foreach_statement();
@@ -349,7 +349,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneChecker.g:44:4: if_statement
+					// antlr/NeptuneGenerator.g:44:4: if_statement
 					{
 					pushFollow(FOLLOW_if_statement_in_logic_statement119);
 					if_statement();
@@ -374,11 +374,11 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "while_statement"
-	// antlr/NeptuneChecker.g:47:1: while_statement : ^( WHILE expression lines ) ;
+	// antlr/NeptuneGenerator.g:47:1: while_statement : ^( WHILE expression lines ) ;
 	public final void while_statement() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:48:2: ( ^( WHILE expression lines ) )
-			// antlr/NeptuneChecker.g:48:4: ^( WHILE expression lines )
+			// antlr/NeptuneGenerator.g:48:2: ( ^( WHILE expression lines ) )
+			// antlr/NeptuneGenerator.g:48:4: ^( WHILE expression lines )
 			{
 			match(input,WHILE,FOLLOW_WHILE_in_while_statement131); 
 			match(input, Token.DOWN, null); 
@@ -409,11 +409,11 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "foreach_statement"
-	// antlr/NeptuneChecker.g:51:1: foreach_statement : ^( FOREACH IDENTIFIER IDENTIFIER lines ) ;
+	// antlr/NeptuneGenerator.g:51:1: foreach_statement : ^( FOREACH IDENTIFIER IDENTIFIER lines ) ;
 	public final void foreach_statement() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:52:2: ( ^( FOREACH IDENTIFIER IDENTIFIER lines ) )
-			// antlr/NeptuneChecker.g:52:4: ^( FOREACH IDENTIFIER IDENTIFIER lines )
+			// antlr/NeptuneGenerator.g:52:2: ( ^( FOREACH IDENTIFIER IDENTIFIER lines ) )
+			// antlr/NeptuneGenerator.g:52:4: ^( FOREACH IDENTIFIER IDENTIFIER lines )
 			{
 			match(input,FOREACH,FOLLOW_FOREACH_in_foreach_statement148); 
 			match(input, Token.DOWN, null); 
@@ -442,11 +442,11 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "if_statement"
-	// antlr/NeptuneChecker.g:55:1: if_statement : ^( IF expression lines ( ELSIF expression lines )* ( ELSE lines )? ) ;
+	// antlr/NeptuneGenerator.g:55:1: if_statement : ^( IF expression lines ( ELSIF expression lines )* ( ELSE lines )? ) ;
 	public final void if_statement() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:56:2: ( ^( IF expression lines ( ELSIF expression lines )* ( ELSE lines )? ) )
-			// antlr/NeptuneChecker.g:56:4: ^( IF expression lines ( ELSIF expression lines )* ( ELSE lines )? )
+			// antlr/NeptuneGenerator.g:56:2: ( ^( IF expression lines ( ELSIF expression lines )* ( ELSE lines )? ) )
+			// antlr/NeptuneGenerator.g:56:4: ^( IF expression lines ( ELSIF expression lines )* ( ELSE lines )? )
 			{
 			match(input,IF,FOLLOW_IF_in_if_statement167); 
 			match(input, Token.DOWN, null); 
@@ -458,7 +458,7 @@ public class NeptuneChecker extends TreeParser {
 			lines();
 			state._fsp--;
 
-			// antlr/NeptuneChecker.g:57:3: ( ELSIF expression lines )*
+			// antlr/NeptuneGenerator.g:57:3: ( ELSIF expression lines )*
 			loop4:
 			while (true) {
 				int alt4=2;
@@ -469,7 +469,7 @@ public class NeptuneChecker extends TreeParser {
 
 				switch (alt4) {
 				case 1 :
-					// antlr/NeptuneChecker.g:57:4: ELSIF expression lines
+					// antlr/NeptuneGenerator.g:57:4: ELSIF expression lines
 					{
 					match(input,ELSIF,FOLLOW_ELSIF_in_if_statement177); 
 					pushFollow(FOLLOW_expression_in_if_statement179);
@@ -488,7 +488,7 @@ public class NeptuneChecker extends TreeParser {
 				}
 			}
 
-			// antlr/NeptuneChecker.g:58:3: ( ELSE lines )?
+			// antlr/NeptuneGenerator.g:58:3: ( ELSE lines )?
 			int alt5=2;
 			int LA5_0 = input.LA(1);
 			if ( (LA5_0==ELSE) ) {
@@ -496,7 +496,7 @@ public class NeptuneChecker extends TreeParser {
 			}
 			switch (alt5) {
 				case 1 :
-					// antlr/NeptuneChecker.g:58:4: ELSE lines
+					// antlr/NeptuneGenerator.g:58:4: ELSE lines
 					{
 					match(input,ELSE,FOLLOW_ELSE_in_if_statement189); 
 					pushFollow(FOLLOW_lines_in_if_statement191);
@@ -527,11 +527,11 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "print_statement"
-	// antlr/NeptuneChecker.g:61:1: print_statement : ^( PRINT expression ( COMMA expression )* ) ;
+	// antlr/NeptuneGenerator.g:61:1: print_statement : ^( PRINT expression ( COMMA expression )* ) ;
 	public final void print_statement() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:62:2: ( ^( PRINT expression ( COMMA expression )* ) )
-			// antlr/NeptuneChecker.g:62:3: ^( PRINT expression ( COMMA expression )* )
+			// antlr/NeptuneGenerator.g:62:2: ( ^( PRINT expression ( COMMA expression )* ) )
+			// antlr/NeptuneGenerator.g:62:3: ^( PRINT expression ( COMMA expression )* )
 			{
 			match(input,PRINT,FOLLOW_PRINT_in_print_statement205); 
 			match(input, Token.DOWN, null); 
@@ -539,7 +539,7 @@ public class NeptuneChecker extends TreeParser {
 			expression();
 			state._fsp--;
 
-			// antlr/NeptuneChecker.g:62:22: ( COMMA expression )*
+			// antlr/NeptuneGenerator.g:62:22: ( COMMA expression )*
 			loop6:
 			while (true) {
 				int alt6=2;
@@ -550,7 +550,7 @@ public class NeptuneChecker extends TreeParser {
 
 				switch (alt6) {
 				case 1 :
-					// antlr/NeptuneChecker.g:62:23: COMMA expression
+					// antlr/NeptuneGenerator.g:62:23: COMMA expression
 					{
 					match(input,COMMA,FOLLOW_COMMA_in_print_statement210); 
 					pushFollow(FOLLOW_expression_in_print_statement212);
@@ -584,11 +584,11 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "read_statement"
-	// antlr/NeptuneChecker.g:65:1: read_statement : ^( READ expression ( COMMA expression )* ) ;
+	// antlr/NeptuneGenerator.g:65:1: read_statement : ^( READ expression ( COMMA expression )* ) ;
 	public final void read_statement() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:66:2: ( ^( READ expression ( COMMA expression )* ) )
-			// antlr/NeptuneChecker.g:66:4: ^( READ expression ( COMMA expression )* )
+			// antlr/NeptuneGenerator.g:66:2: ( ^( READ expression ( COMMA expression )* ) )
+			// antlr/NeptuneGenerator.g:66:4: ^( READ expression ( COMMA expression )* )
 			{
 			match(input,READ,FOLLOW_READ_in_read_statement227); 
 			match(input, Token.DOWN, null); 
@@ -596,7 +596,7 @@ public class NeptuneChecker extends TreeParser {
 			expression();
 			state._fsp--;
 
-			// antlr/NeptuneChecker.g:66:22: ( COMMA expression )*
+			// antlr/NeptuneGenerator.g:66:22: ( COMMA expression )*
 			loop7:
 			while (true) {
 				int alt7=2;
@@ -607,7 +607,7 @@ public class NeptuneChecker extends TreeParser {
 
 				switch (alt7) {
 				case 1 :
-					// antlr/NeptuneChecker.g:66:23: COMMA expression
+					// antlr/NeptuneGenerator.g:66:23: COMMA expression
 					{
 					match(input,COMMA,FOLLOW_COMMA_in_read_statement232); 
 					pushFollow(FOLLOW_expression_in_read_statement234);
@@ -641,10 +641,10 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "declaration"
-	// antlr/NeptuneChecker.g:69:1: declaration : ( ^( VAR type IDENTIFIER ( BECOMES expression )? ) | ^( CONST type IDENTIFIER BECOMES expression ) );
+	// antlr/NeptuneGenerator.g:69:1: declaration : ( ^( VAR type IDENTIFIER ( BECOMES expression )? ) | ^( CONST type IDENTIFIER BECOMES expression ) );
 	public final void declaration() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:70:2: ( ^( VAR type IDENTIFIER ( BECOMES expression )? ) | ^( CONST type IDENTIFIER BECOMES expression ) )
+			// antlr/NeptuneGenerator.g:70:2: ( ^( VAR type IDENTIFIER ( BECOMES expression )? ) | ^( CONST type IDENTIFIER BECOMES expression ) )
 			int alt9=2;
 			int LA9_0 = input.LA(1);
 			if ( (LA9_0==VAR) ) {
@@ -662,7 +662,7 @@ public class NeptuneChecker extends TreeParser {
 
 			switch (alt9) {
 				case 1 :
-					// antlr/NeptuneChecker.g:70:4: ^( VAR type IDENTIFIER ( BECOMES expression )? )
+					// antlr/NeptuneGenerator.g:70:4: ^( VAR type IDENTIFIER ( BECOMES expression )? )
 					{
 					match(input,VAR,FOLLOW_VAR_in_declaration249); 
 					match(input, Token.DOWN, null); 
@@ -671,7 +671,7 @@ public class NeptuneChecker extends TreeParser {
 					state._fsp--;
 
 					match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_declaration253); 
-					// antlr/NeptuneChecker.g:70:26: ( BECOMES expression )?
+					// antlr/NeptuneGenerator.g:70:26: ( BECOMES expression )?
 					int alt8=2;
 					int LA8_0 = input.LA(1);
 					if ( (LA8_0==BECOMES) ) {
@@ -679,7 +679,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					switch (alt8) {
 						case 1 :
-							// antlr/NeptuneChecker.g:70:27: BECOMES expression
+							// antlr/NeptuneGenerator.g:70:27: BECOMES expression
 							{
 							match(input,BECOMES,FOLLOW_BECOMES_in_declaration256); 
 							pushFollow(FOLLOW_expression_in_declaration258);
@@ -696,7 +696,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneChecker.g:71:4: ^( CONST type IDENTIFIER BECOMES expression )
+					// antlr/NeptuneGenerator.g:71:4: ^( CONST type IDENTIFIER BECOMES expression )
 					{
 					match(input,CONST,FOLLOW_CONST_in_declaration267); 
 					match(input, Token.DOWN, null); 
@@ -731,11 +731,11 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "expression"
-	// antlr/NeptuneChecker.g:74:1: expression : assignment_expr ;
+	// antlr/NeptuneGenerator.g:74:1: expression : assignment_expr ;
 	public final void expression() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:75:2: ( assignment_expr )
-			// antlr/NeptuneChecker.g:75:4: assignment_expr
+			// antlr/NeptuneGenerator.g:75:2: ( assignment_expr )
+			// antlr/NeptuneGenerator.g:75:4: assignment_expr
 			{
 			pushFollow(FOLLOW_assignment_expr_in_expression287);
 			assignment_expr();
@@ -758,10 +758,10 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "assignment_expr"
-	// antlr/NeptuneChecker.g:78:1: assignment_expr : ( boolean_expr | ^( BECOMES IDENTIFIER expression ) );
+	// antlr/NeptuneGenerator.g:78:1: assignment_expr : ( boolean_expr | ^( BECOMES IDENTIFIER expression ) );
 	public final void assignment_expr() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:79:2: ( boolean_expr | ^( BECOMES IDENTIFIER expression ) )
+			// antlr/NeptuneGenerator.g:79:2: ( boolean_expr | ^( BECOMES IDENTIFIER expression ) )
 			int alt10=2;
 			int LA10_0 = input.LA(1);
 			if ( (LA10_0==ARRAY_SET||LA10_0==DIVIDE||LA10_0==EQ||(LA10_0 >= GT && LA10_0 <= IDENTIFIER)||(LA10_0 >= LT && LA10_0 <= PLUS)||LA10_0==TIMES) ) {
@@ -779,7 +779,7 @@ public class NeptuneChecker extends TreeParser {
 
 			switch (alt10) {
 				case 1 :
-					// antlr/NeptuneChecker.g:79:4: boolean_expr
+					// antlr/NeptuneGenerator.g:79:4: boolean_expr
 					{
 					pushFollow(FOLLOW_boolean_expr_in_assignment_expr298);
 					boolean_expr();
@@ -788,7 +788,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneChecker.g:80:4: ^( BECOMES IDENTIFIER expression )
+					// antlr/NeptuneGenerator.g:80:4: ^( BECOMES IDENTIFIER expression )
 					{
 					match(input,BECOMES,FOLLOW_BECOMES_in_assignment_expr305); 
 					match(input, Token.DOWN, null); 
@@ -818,10 +818,10 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "boolean_expr"
-	// antlr/NeptuneChecker.g:83:1: boolean_expr : ( plus_expr | ^( LT expression expression ) | ^( LT_EQ expression expression ) | ^( GT expression expression ) | ^( GT_EQ expression expression ) | ^( EQ expression expression ) | ^( NEQ expression expression ) );
+	// antlr/NeptuneGenerator.g:83:1: boolean_expr : ( plus_expr | ^( LT expression expression ) | ^( LT_EQ expression expression ) | ^( GT expression expression ) | ^( GT_EQ expression expression ) | ^( EQ expression expression ) | ^( NEQ expression expression ) );
 	public final void boolean_expr() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:84:2: ( plus_expr | ^( LT expression expression ) | ^( LT_EQ expression expression ) | ^( GT expression expression ) | ^( GT_EQ expression expression ) | ^( EQ expression expression ) | ^( NEQ expression expression ) )
+			// antlr/NeptuneGenerator.g:84:2: ( plus_expr | ^( LT expression expression ) | ^( LT_EQ expression expression ) | ^( GT expression expression ) | ^( GT_EQ expression expression ) | ^( EQ expression expression ) | ^( NEQ expression expression ) )
 			int alt11=7;
 			switch ( input.LA(1) ) {
 			case ARRAY_SET:
@@ -872,7 +872,7 @@ public class NeptuneChecker extends TreeParser {
 			}
 			switch (alt11) {
 				case 1 :
-					// antlr/NeptuneChecker.g:84:4: plus_expr
+					// antlr/NeptuneGenerator.g:84:4: plus_expr
 					{
 					pushFollow(FOLLOW_plus_expr_in_boolean_expr321);
 					plus_expr();
@@ -881,7 +881,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneChecker.g:85:4: ^( LT expression expression )
+					// antlr/NeptuneGenerator.g:85:4: ^( LT expression expression )
 					{
 					match(input,LT,FOLLOW_LT_in_boolean_expr327); 
 					match(input, Token.DOWN, null); 
@@ -898,7 +898,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneChecker.g:86:4: ^( LT_EQ expression expression )
+					// antlr/NeptuneGenerator.g:86:4: ^( LT_EQ expression expression )
 					{
 					match(input,LT_EQ,FOLLOW_LT_EQ_in_boolean_expr338); 
 					match(input, Token.DOWN, null); 
@@ -915,7 +915,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 4 :
-					// antlr/NeptuneChecker.g:87:4: ^( GT expression expression )
+					// antlr/NeptuneGenerator.g:87:4: ^( GT expression expression )
 					{
 					match(input,GT,FOLLOW_GT_in_boolean_expr349); 
 					match(input, Token.DOWN, null); 
@@ -932,7 +932,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 5 :
-					// antlr/NeptuneChecker.g:88:4: ^( GT_EQ expression expression )
+					// antlr/NeptuneGenerator.g:88:4: ^( GT_EQ expression expression )
 					{
 					match(input,GT_EQ,FOLLOW_GT_EQ_in_boolean_expr360); 
 					match(input, Token.DOWN, null); 
@@ -949,7 +949,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 6 :
-					// antlr/NeptuneChecker.g:89:4: ^( EQ expression expression )
+					// antlr/NeptuneGenerator.g:89:4: ^( EQ expression expression )
 					{
 					match(input,EQ,FOLLOW_EQ_in_boolean_expr371); 
 					match(input, Token.DOWN, null); 
@@ -966,7 +966,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 7 :
-					// antlr/NeptuneChecker.g:90:4: ^( NEQ expression expression )
+					// antlr/NeptuneGenerator.g:90:4: ^( NEQ expression expression )
 					{
 					match(input,NEQ,FOLLOW_NEQ_in_boolean_expr382); 
 					match(input, Token.DOWN, null); 
@@ -999,10 +999,10 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "plus_expr"
-	// antlr/NeptuneChecker.g:93:1: plus_expr : ( multi_expr | ^( PLUS expression expression ) | ^( MINUS expression expression ) );
+	// antlr/NeptuneGenerator.g:93:1: plus_expr : ( multi_expr | ^( PLUS expression expression ) | ^( MINUS expression expression ) );
 	public final void plus_expr() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:94:2: ( multi_expr | ^( PLUS expression expression ) | ^( MINUS expression expression ) )
+			// antlr/NeptuneGenerator.g:94:2: ( multi_expr | ^( PLUS expression expression ) | ^( MINUS expression expression ) )
 			int alt12=3;
 			switch ( input.LA(1) ) {
 			case ARRAY_SET:
@@ -1031,7 +1031,7 @@ public class NeptuneChecker extends TreeParser {
 			}
 			switch (alt12) {
 				case 1 :
-					// antlr/NeptuneChecker.g:94:4: multi_expr
+					// antlr/NeptuneGenerator.g:94:4: multi_expr
 					{
 					pushFollow(FOLLOW_multi_expr_in_plus_expr398);
 					multi_expr();
@@ -1040,7 +1040,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneChecker.g:95:4: ^( PLUS expression expression )
+					// antlr/NeptuneGenerator.g:95:4: ^( PLUS expression expression )
 					{
 					match(input,PLUS,FOLLOW_PLUS_in_plus_expr405); 
 					match(input, Token.DOWN, null); 
@@ -1057,7 +1057,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneChecker.g:96:4: ^( MINUS expression expression )
+					// antlr/NeptuneGenerator.g:96:4: ^( MINUS expression expression )
 					{
 					match(input,MINUS,FOLLOW_MINUS_in_plus_expr416); 
 					match(input, Token.DOWN, null); 
@@ -1090,10 +1090,10 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "multi_expr"
-	// antlr/NeptuneChecker.g:99:1: multi_expr : ( operand | ^( TIMES expression expression ) | ^( DIVIDE expression expression ) );
+	// antlr/NeptuneGenerator.g:99:1: multi_expr : ( operand | ^( TIMES expression expression ) | ^( DIVIDE expression expression ) );
 	public final void multi_expr() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:100:2: ( operand | ^( TIMES expression expression ) | ^( DIVIDE expression expression ) )
+			// antlr/NeptuneGenerator.g:100:2: ( operand | ^( TIMES expression expression ) | ^( DIVIDE expression expression ) )
 			int alt13=3;
 			switch ( input.LA(1) ) {
 			case ARRAY_SET:
@@ -1120,7 +1120,7 @@ public class NeptuneChecker extends TreeParser {
 			}
 			switch (alt13) {
 				case 1 :
-					// antlr/NeptuneChecker.g:100:4: operand
+					// antlr/NeptuneGenerator.g:100:4: operand
 					{
 					pushFollow(FOLLOW_operand_in_multi_expr432);
 					operand();
@@ -1129,7 +1129,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneChecker.g:101:4: ^( TIMES expression expression )
+					// antlr/NeptuneGenerator.g:101:4: ^( TIMES expression expression )
 					{
 					match(input,TIMES,FOLLOW_TIMES_in_multi_expr438); 
 					match(input, Token.DOWN, null); 
@@ -1146,7 +1146,7 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneChecker.g:102:4: ^( DIVIDE expression expression )
+					// antlr/NeptuneGenerator.g:102:4: ^( DIVIDE expression expression )
 					{
 					match(input,DIVIDE,FOLLOW_DIVIDE_in_multi_expr449); 
 					match(input, Token.DOWN, null); 
@@ -1179,10 +1179,10 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "operand"
-	// antlr/NeptuneChecker.g:105:1: operand : ( IDENTIFIER | NUMBER | ^( ARRAY_SET ( expression )+ ) );
+	// antlr/NeptuneGenerator.g:105:1: operand : ( IDENTIFIER | NUMBER | ^( ARRAY_SET ( expression )+ ) );
 	public final void operand() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:106:2: ( IDENTIFIER | NUMBER | ^( ARRAY_SET ( expression )+ ) )
+			// antlr/NeptuneGenerator.g:106:2: ( IDENTIFIER | NUMBER | ^( ARRAY_SET ( expression )+ ) )
 			int alt15=3;
 			switch ( input.LA(1) ) {
 			case IDENTIFIER:
@@ -1207,23 +1207,23 @@ public class NeptuneChecker extends TreeParser {
 			}
 			switch (alt15) {
 				case 1 :
-					// antlr/NeptuneChecker.g:106:4: IDENTIFIER
+					// antlr/NeptuneGenerator.g:106:4: IDENTIFIER
 					{
 					match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_operand465); 
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneChecker.g:107:4: NUMBER
+					// antlr/NeptuneGenerator.g:107:4: NUMBER
 					{
 					match(input,NUMBER,FOLLOW_NUMBER_in_operand470); 
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneChecker.g:108:4: ^( ARRAY_SET ( expression )+ )
+					// antlr/NeptuneGenerator.g:108:4: ^( ARRAY_SET ( expression )+ )
 					{
 					match(input,ARRAY_SET,FOLLOW_ARRAY_SET_in_operand476); 
 					match(input, Token.DOWN, null); 
-					// antlr/NeptuneChecker.g:108:16: ( expression )+
+					// antlr/NeptuneGenerator.g:108:16: ( expression )+
 					int cnt14=0;
 					loop14:
 					while (true) {
@@ -1235,7 +1235,7 @@ public class NeptuneChecker extends TreeParser {
 
 						switch (alt14) {
 						case 1 :
-							// antlr/NeptuneChecker.g:108:16: expression
+							// antlr/NeptuneGenerator.g:108:16: expression
 							{
 							pushFollow(FOLLOW_expression_in_operand478);
 							expression();
@@ -1273,11 +1273,11 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "type"
-	// antlr/NeptuneChecker.g:111:1: type : ( IDENTIFIER | CHAR | BOOLEAN );
+	// antlr/NeptuneGenerator.g:111:1: type : ( IDENTIFIER | CHAR | BOOLEAN );
 	public final void type() throws RecognitionException {
 		try {
-			// antlr/NeptuneChecker.g:112:2: ( IDENTIFIER | CHAR | BOOLEAN )
-			// antlr/NeptuneChecker.g:
+			// antlr/NeptuneGenerator.g:112:2: ( IDENTIFIER | CHAR | BOOLEAN )
+			// antlr/NeptuneGenerator.g:
 			{
 			if ( (input.LA(1) >= BOOLEAN && input.LA(1) <= CHAR)||input.LA(1)==IDENTIFIER ) {
 				input.consume();
