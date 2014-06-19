@@ -33,7 +33,7 @@ public class TestNeptune {
 		};
 		
 		for(String s: tests) {
-			String inputFile = new File("").getAbsolutePath() + "/src/test/sample/" + s + ".npt";
+			String inputFile = new File("").getAbsolutePath() + "/neptune/src/test/sample/" + s + ".npt";
 			System.out.println("Testing file: "+ inputFile);
 			
 			InputStream in = inputFile == null ? System.in : new FileInputStream(inputFile);

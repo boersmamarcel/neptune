@@ -62,6 +62,17 @@ namespace :copy do
 	end
 end
 
+namespace :run do
+	desc "Run test"
+	task :test do
+		sh "java -classpath neptune/bin:neptune/antlr-3.5.2-complete.jar test.TestNeptune"
+	end
+	desc "Run compiler"
+	task :compiler, [:args] do |t, args|
+		sh "java -classpath neptune/bin:neptune/antlr-3.5.2-complete.jar neptune.Neptune"
+	end
+end
+
 
 task :default do
  puts "Build your compiler for the Neptune language"
