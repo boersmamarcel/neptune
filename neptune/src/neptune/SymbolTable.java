@@ -1,6 +1,7 @@
 package neptune;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +82,7 @@ public class SymbolTable {
     		this.symtab.put(id, new Stack<IdEntry>());
     	}
     	
+    	this.scopeStack.peek().add(id);
     	this.symtab.get(id).push(entry);
 //    	System.out.println("Array size: " + this.symbols.size());
         
@@ -94,7 +96,11 @@ public class SymbolTable {
      */
     public IdEntry retrieve(String id) {
     	if(this.symtab.get(id) != null) {
-    		return this.symtab.get(id).peek();    		
+            try{
+                return this.symtab.get(id).peek();      
+            }catch(EmptyStackException e){
+            	return null;
+            }
     	}else{
     		return null;
     	}

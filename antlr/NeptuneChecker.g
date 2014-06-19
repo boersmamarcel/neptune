@@ -6,7 +6,7 @@ options{
 }
 
 @header{
-	package Neptune;
+	package neptune;
 }
 
 @rulecatch{
@@ -16,26 +16,36 @@ options{
 }
 
 @members{
+	private SymbolTable symtab = new SymbolTable();
+	public void declare(String s, Type type) throws NeptuneException {
+			try {
+				symtab.enter(s, new IdEntry(0, type));
+			} catch (SymbolTableException e) {
+				throw new NeptuneException(e.getMessage());
+			}
+	}
+
+	public boolean isDeclared(String s){ return (symtab.retrieve(s) != null);}
 
 }
 
 
 program
-	: ^(PROGRAM lines)
+	: ^(PROGRAM {symtab.openScope();} lines) {symtab.closeScope();}
 	;
 
-lines
-	: line+
+lines returns[ Type type = null]
+	: t=line+ {type=t;}
 	;
 
-line
-	: expression
-	| declaration
-	| logic_statement
+line returns [Type type = null]
+	: t=expression {type=t;}
+	| declaration {type = new Type(Type.primitive.VOID);}
+	| logic_statement {type = new Type(Type.primitive.VOID);}
 	;
 
-codeblock
-	: ^(BLOCK lines)
+codeblock returns [Type type = null]
+	: ^(BLOCK {symtab.openScope();} lines {symtab.closeScope();})
 	;
 
 logic_statement
@@ -45,73 +55,134 @@ logic_statement
 	;
 
 while_statement
-	: ^(WHILE expression lines)
+	: ^(WHILE expression {symtab.openScope();} lines {symtab.closeScope();})
 	;
 
 foreach_statement
-	: ^(FOREACH IDENTIFIER IDENTIFIER lines)
+	: ^(FOREACH x=IDENTIFIER {symtab.openScope();} y=IDENTIFIER { 
+		if(!isDeclared($y.text)){
+			throw new NeptuneException($y,"is not declared");
+		}
+		if(!symtab.retrieve($y.text).getType().isArray){
+			throw new NeptuneException($y,"is not an array");
+		}
+		declare($x.text, new Type(symtab.retrieve($y.text).getType().type));
+		} lines {symtab.closeScope();}) 
 	;
 
 if_statement
-	:	^(IF expression lines 
-		(ELSIF expression lines)* 
-		(ELSE lines)?)
+	:	^(IF expression {symtab.openScope();} lines {symtab.closeScope();}
+		(ELSIF expression {symtab.openScope();} lines {symtab.closeScope();})* 
+		(ELSE {symtab.openScope();} lines {symtab.closeScope();})?)
 	;
 
-print_statement
-	:^(PRINT expression (COMMA expression)*)
+print_statement returns [Type type = null]
+	@init{boolean one=true;}
+	: ^(PRINT t=expression (COMMA expression{one=false;})*) {
+		if(one){
+			type=t; 
+		}else{
+			type = new Type(Type.primitive.VOID);
+			}}
 	;
 
-read_statement
-	: ^(READ expression (COMMA expression)*)
+read_statement returns [Type type = null]
+	@init{boolean one=true;}
+	: ^(READ (t=IDENTIFIER) (COMMA IDENTIFIER{one=false;})*) {
+		if(one){
+			type=symtab.retrieve($t.text).getType(); 
+		}else{
+			type = new Type(Type.primitive.VOID);
+		}}
 	;
 
 declaration
-	: ^(VAR type IDENTIFIER (BECOMES expression)?)
-	| ^(CONST type IDENTIFIER BECOMES expression)
+	: ^(VAR t=type x=IDENTIFIER (BECOMES expression)?) {
+			declare($x.text, t);
+		}
+	| ^(CONST t=type x=IDENTIFIER BECOMES expression) {
+		//const cannot change in the future
+			declare($x.text, t);
+		}
 	;
 
-expression
-	: assignment_expr
+expression returns [Type type = null]
+	: t=assignment_expr {type = t;}
 	;
 
-assignment_expr
-	: boolean_expr 
-	| ^(BECOMES IDENTIFIER expression)
+assignment_expr returns [Type type = null]
+	: t=boolean_expr {type=t;}
+	| ^(BECOMES x=IDENTIFIER expression) {
+		//x needs to be defined beforehand
+		if(!isDeclared($x.text)){
+			throw new NeptuneException($x,"is not declared");
+		}
+	}
 	;
 
-boolean_expr
-	: plus_expr
-	| ^(LT expression expression)
-	| ^(LT_EQ expression expression)
-	| ^(GT expression expression)
-	| ^(GT_EQ expression expression)
-	| ^(EQ expression expression)
-	| ^(NEQ expression expression)
+boolean_expr returns [Type type = null]
+	: t=plus_expr 								{type = t;}
+	| ^(LT expression expression) 				{type = new Type(Type.primitive.BOOLEAN);}
+	| ^(LT_EQ expression expression)			{type = new Type(Type.primitive.BOOLEAN);}
+	| ^(GT expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
+	| ^(GT_EQ expression expression)			{type = new Type(Type.primitive.BOOLEAN);}	
+	| ^(EQ expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
+	| ^(NEQ expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
 	;
 
-plus_expr
-	: multi_expr 
-	| ^(PLUS expression expression)
-	| ^(MINUS expression expression)
+plus_expr returns [Type type = null]
+	: t=multi_expr 						{type=t;}
+	| ^(PLUS expression expression)		{type = new Type(Type.primitive.INTEGER);}
+	| ^(MINUS expression expression) 	{type = new Type(Type.primitive.INTEGER);}
 	;
 
-multi_expr
-	: operand
-	| ^(TIMES expression expression)
-	| ^(DIVIDE expression expression)
+multi_expr returns [Type type = null]
+	: t=operand							{type=t;}
+	| ^(TIMES expression expression)	{type = new Type(Type.primitive.INTEGER);}
+	| ^(DIVIDE expression expression)	{type = new Type(Type.primitive.INTEGER);}
 	;
 
-operand
-	: IDENTIFIER
-	| NUMBER
-	| ^(ARRAY_SET expression+)
+operand returns [Type type=null]
+	: x=IDENTIFIER					{
+		if(!isDeclared($x.text)){
+			throw new NeptuneException($x,"is not declared");
+		}
+		type = symtab.retrieve($x.text).getType();
+	}
+	| NUMBER 						{type = new Type(Type.primitive.INTEGER);}
+	| ^(ARRAY_SET (t=expression{type = t;})+)	
+	| TRUE 							{type = new Type(Type.primitive.BOOLEAN);}
+	| FALSE 						{type = new Type(Type.primitive.BOOLEAN);}
+	| CHAR_LITERAL 					{type = new Type(Type.primitive.CHAR);}
+	| STRING_LITERAL				{type = new Type(Type.primitive.CHAR, 0);}
+	| t=codeblock					{type = t;}						
+	| t=print_statement				{type = t;}
+	| t=read_statement				{type = t;}
 	;
 
-type
-	: IDENTIFIER
-	| CHAR
-	| BOOLEAN
+type returns [Type type = null]
+	: INTEGER count=array_def? {
+		if(count > 0){
+			type = new Type(Type.primitive.INTEGER, count);
+		}else{
+			type = new Type(Type.primitive.INTEGER);
+		}}
+	| CHAR count=array_def? {
+		if(count > 0){
+			type = new Type(Type.primitive.CHAR, count);
+		}else{
+			type = new Type(Type.primitive.CHAR);
+		}}
+	| BOOLEAN count=array_def? {
+		if(count > 0){
+			type = new Type(Type.primitive.BOOLEAN, count);
+		}else{
+			type = new Type(Type.primitive.BOOLEAN);
+		}}
+	;
+
+array_def returns [int count = 0]
+	: ^(ARRAY_DEF x=NUMBER) {count = Integer.parseInt($x.text);System.out.println("Count: " + count);}
 	;
 
 

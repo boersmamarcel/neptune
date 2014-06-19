@@ -6,7 +6,7 @@ options{
 }
 
 @header{
-	package Neptune;
+	package neptune;
 }
 
 @rulecatch{
@@ -59,7 +59,7 @@ if_statement
 	;
 
 print_statement
-	:^(PRINT expression (COMMA expression)*)
+	: ^(PRINT expression (COMMA expression)*)
 	;
 
 read_statement
@@ -106,12 +106,23 @@ operand
 	: IDENTIFIER
 	| NUMBER
 	| ^(ARRAY_SET expression+)
+	| TRUE
+	| FALSE
+	| CHAR_LITERAL
+	| STRING_LITERAL
+	| codeblock
+	| print_statement
+	| read_statement
 	;
 
 type
-	: IDENTIFIER
-	| CHAR
-	| BOOLEAN
+	: INTEGER array_def?
+	| CHAR array_def?
+	| BOOLEAN array_def?
+	;
+
+array_def
+	: ARRAY_DEF NUMBER?
 	;
 
 

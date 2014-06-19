@@ -8,7 +8,7 @@ print(a);
 bool b = true;
 
 print(b);
-
+char c = 'c';
 print(a,b,c);
 
 print("Hello world");

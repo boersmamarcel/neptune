@@ -63,6 +63,7 @@ tokens {
     EQ          =   '=='        ;
     NEQ         =   '!='        ;
 	ARRAY_SET	=	'array_set'	;
+	ARRAY_DEF	=	'array_def'	;
 }
 
 @lexer::members {
@@ -207,7 +208,8 @@ type
 	;
 	
 array_def
-	:	 LBRACKET NUMBER? RBRACKET
+	:	 LBRACKET NUMBER RBRACKET
+		-> ^(ARRAY_DEF NUMBER)
 	;
 
 // Lexer rules

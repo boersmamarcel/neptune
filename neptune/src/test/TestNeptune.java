@@ -8,11 +8,13 @@ import java.io.InputStream;
 
 import neptune.NeptuneLexer;
 import neptune.NeptuneParser;
+import neptune.NeptuneChecker;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.CommonTreeNodeStream;
 
 public class TestNeptune {
 
@@ -32,7 +34,7 @@ public class TestNeptune {
 		
 		for(String s: tests) {
 			String inputFile = new File("").getAbsolutePath() + "/src/test/sample/" + s + ".npt";
-			System.out.println(s);
+			System.out.println("Testing file: "+ inputFile);
 			
 			InputStream in = inputFile == null ? System.in : new FileInputStream(inputFile);
 	        NeptuneLexer lexer = new NeptuneLexer(new ANTLRInputStream(in));
@@ -41,6 +43,11 @@ public class TestNeptune {
 
 	        NeptuneParser.program_return result = parser.program();
 	        CommonTree tree = (CommonTree) result.getTree();
+	        System.out.println(tree.toStringTree());
+	        
+	        CommonTreeNodeStream treeStream = new CommonTreeNodeStream(tree);
+	        NeptuneChecker checker = new NeptuneChecker(treeStream);
+	        checker.program();
 
             System.out.println(tree.toStringTree());
             
