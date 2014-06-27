@@ -62,14 +62,22 @@ namespace :copy do
 	end
 end
 
+
+
 namespace :run do
 	desc "Run test"
 	task :test do
 		sh "java -classpath neptune/bin:neptune/antlr-3.5.2-complete.jar test.TestNeptune"
 	end
 	desc "Run compiler"
-	task :compiler, [:args] do |t, args|
-		sh "java -classpath neptune/bin:neptune/antlr-3.5.2-complete.jar neptune.Neptune"
+	task :compiler, [:ast, :dot, :file] do |t, args|
+		add_args = ""
+		
+		add_args = add_args + "-ast" if args[:ast] == "ast"
+		add_args = add_args + " -dot " if args[:dot] == "dot"
+		add_args = add_args + args[:file]
+
+		sh "java -classpath neptune/bin:neptune/antlr-3.5.2-complete.jar neptune.Neptune #{add_args}"
 	end
 end
 
