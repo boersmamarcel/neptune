@@ -8,8 +8,6 @@ char h = 'h';
 
 bool u = false;
 
-bool u = true;
-
 bool d = 4;
 
 int e = 'a';

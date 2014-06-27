@@ -1,0 +1,18 @@
+int a = 5;
+int b = a + 5;
+int c = b * 10;
+int d = c / 4;
+char newLine = 10;
+
+if(a < 10) {
+	if(b < 20) {
+		print('Y');
+	}else{
+		print('N');
+	}
+}
+
+print(newLine);
+print(c);
+print(newLine);
+print(d);

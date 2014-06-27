@@ -16,7 +16,7 @@ options{
 }
 
 @members{
-	private SymbolTable symtab = new SymbolTable();
+	protected SymbolTable symtab = new SymbolTable();
 	public void declare(String s, Type type) throws NeptuneException {
 			try {
 				symtab.enter(s, new IdEntry(0, type));

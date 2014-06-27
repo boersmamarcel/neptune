@@ -8,8 +8,10 @@ if( i + 1 < 4){
     i = 101;
 }
 
+int u = 3;
+
 if(i > 400){
-	int u = 4;
+	u = 4;
     print('N');
     a =1;
     print(u);
@@ -21,7 +23,7 @@ if(i > 400){
 if( i > 400){
     print('N');
     a =1;
-}elsif(i > 100){
+}elsif(i > 200){
     print('Y');
     a =1;
 }else{

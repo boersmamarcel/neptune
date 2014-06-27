@@ -13,6 +13,9 @@ public class SymbolTable {
 	protected Map<String, Stack<IdEntry>> symtab;
 	protected Stack<List<String>> scopeStack;
 	
+	protected int largestSize = 0;
+	protected int currentSize = 0;
+	
     /**
      * Constructor.
      * @ensures  this.currentLevel() == -1
@@ -39,6 +42,10 @@ public class SymbolTable {
      * @ensures  this.currentLevel() == old.currentLevel()-1;
      */
     public void closeScope() {
+    	
+    	largestSize = largestSize < currentSize ? currentSize : largestSize;
+    	
+    	currentSize -= this.scopeStack.peek().size();
     	
     	List<String> scopeList = this.scopeStack.pop();
     	
@@ -77,6 +84,7 @@ public class SymbolTable {
     	}
     	
     	entry.setLevel(this.currentLevel());
+    	entry.setAddress(currentSize);
     	
     	if(this.symtab.get(id) == null) {
     		this.symtab.put(id, new Stack<IdEntry>());
@@ -84,8 +92,8 @@ public class SymbolTable {
     	
     	this.scopeStack.peek().add(id);
     	this.symtab.get(id).push(entry);
-//    	System.out.println("Array size: " + this.symbols.size());
-        
+    	
+    	currentSize++;
     }
 
     /**
@@ -104,6 +112,10 @@ public class SymbolTable {
     	}else{
     		return null;
     	}
+    }
+    
+    public int getLargestSize() {
+    	return largestSize;
     }
 }
 

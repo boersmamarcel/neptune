@@ -1,6 +1,10 @@
 int a = {
 	int b = 25;
 	print(b*3); // should assign 75 to a!
+	{
+		int c = 43;
+		int d = 44;
+	};
 };
 
 
@@ -8,5 +12,3 @@ int a = {
 int c = 3;
 print(c);
 };
-
-print(c);

@@ -21,6 +21,7 @@ public class IdEntry {
     public void  setLevel(int level)    { this.level = level;   }
     
     public int getAddress() { return this.address; }
+    public void setAddress(int address) { this.address = address; }
 
     public Type getType(){return this.type;}
 }

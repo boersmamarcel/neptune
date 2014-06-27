@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/Neptune.g 2014-06-19 15:58:57
+// $ANTLR 3.5.2 antlr/Neptune.g 2014-06-27 17:22:10
 
 package neptune;
 
@@ -1200,7 +1200,7 @@ public class NeptuneParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: IDENTIFIER, expression, BECOMES, type
+					// elements: type, expression, IDENTIFIER, BECOMES
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 

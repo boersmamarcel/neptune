@@ -218,7 +218,7 @@ DROPIN_STATEMENT
 	:	'#dropin' LPAREN f=STRING_LITERAL RPAREN {
 	       String name = $f.text;
 	       name = name.substring(1,name.length()-1);
-			name = new File("").getAbsolutePath() + "/src/test/sample/" + name;
+			name = new File("").getAbsolutePath() + "/neptune/src/test/sample/" + name;
 	       try {
 	        // save current lexer's state
 	         SaveStruct ss = new SaveStruct(input);

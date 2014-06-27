@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/Neptune.g 2014-06-19 15:58:57
+// $ANTLR 3.5.2 antlr/Neptune.g 2014-06-27 17:22:10
 
 package neptune;
 
@@ -1073,7 +1073,7 @@ public class NeptuneLexer extends Lexer {
 
 				       String name = (f!=null?f.getText():null);
 				       name = name.substring(1,name.length()-1);
-						name = new File("").getAbsolutePath() + "/src/test/sample/" + name;
+						name = new File("").getAbsolutePath() + "/neptune/src/test/sample/" + name;
 				       try {
 				        // save current lexer's state
 				         SaveStruct ss = new SaveStruct(input);

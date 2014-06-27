@@ -86,3 +86,7 @@ task :default do
  puts "Build your compiler for the Neptune language"
  puts "Start with rake build:all or try rake -T"
 end
+
+task :all => ["build:all", "copy:all"] do
+  puts "Doing all things related to building and copying. Lorem Ipsum."
+end

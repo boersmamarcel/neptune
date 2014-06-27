@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/NeptuneChecker.g 2014-06-19 16:19:38
+// $ANTLR 3.5.2 antlr/NeptuneChecker.g 2014-06-27 15:25:05
 
 	package neptune;
 
@@ -98,7 +98,7 @@ public class NeptuneChecker extends TreeParser {
 	@Override public String getGrammarFileName() { return "antlr/NeptuneChecker.g"; }
 
 
-		private SymbolTable symtab = new SymbolTable();
+		protected SymbolTable symtab = new SymbolTable();
 		public void declare(String s, Type type) throws NeptuneException {
 				try {
 					symtab.enter(s, new IdEntry(0, type));
