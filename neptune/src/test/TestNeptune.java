@@ -39,10 +39,10 @@ public class TestNeptune {
 		
 		String tests2[] = {"loadnstore"};
 		
-//		for(File a: dir.listFiles()) {
-		for(String s: tests2) {
-//			String inputFile = a.getAbsolutePath();
-			String inputFile = new File("").getAbsolutePath() + "/neptune/src/test/sample/" + s + ".npt";
+		for(File a: dir.listFiles()) {
+//		for(String s: tests2) {
+			String inputFile = a.getAbsolutePath();
+	//		String inputFile = new File("").getAbsolutePath() + "/neptune/src/test/sample/" + s + ".npt";
 			System.out.println("Testing file: "+ inputFile);
 			
 			InputStream in = inputFile == null ? System.in : new FileInputStream(inputFile);
