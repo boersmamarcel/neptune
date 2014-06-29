@@ -102,6 +102,7 @@ declaration
 		}
 	| ^(CONST t=type x=IDENTIFIER BECOMES expression) {
 		//const cannot change in the future
+			t.isConstant = true;
 			declare($x.text, t);
 		}
 	;
@@ -111,11 +112,45 @@ expression returns [Type type = null]
 	;
 
 assignment_expr returns [Type type = null]
-	: t=boolean_expr {type=t;}
-	| ^(BECOMES x=IDENTIFIER expression) {
+	: t=and_or_expr {type=t;}
+	| ^(BECOMES x=IDENTIFIER {
 		//x needs to be defined beforehand
 		if(!isDeclared($x.text)){
 			throw new NeptuneException($x,"is not declared");
+		}
+		if(symtab.retrieve($x.text).getType().isConstant) {
+			throw new NeptuneException($x,"cannot be redeclared (constant)");
+		}
+	} (^(ARRAY_DEF n=NUMBER {
+		Type tmp = symtab.retrieve($x.text).getType();
+		if(!tmp.isArray) {
+			throw new NeptuneException($x,"is not an array");
+		}
+		
+		if(Integer.parseInt($n.text) >= tmp.elemCount) {
+			throw new NeptuneException($x,"index out of bounds");
+		}
+	}))? expression)
+	;
+	
+and_or_expr returns [Type type = null]
+	: t=boolean_expr							{type = t;}
+	| ^(AND e1=expression e2=expression) 		{
+		type = new Type(Type.primitive.BOOLEAN);
+		if(e1.isArray || e1.type != Type.primitive.BOOLEAN) {
+			throw new NeptuneException("invalid left operand type for function &&");
+		}
+		if(e2.isArray || e2.type != Type.primitive.BOOLEAN) {
+			throw new NeptuneException("invalid right operand type for function &&");
+		}
+	}
+	| ^(OR e1=expression e2=expression) 		{
+		type = new Type(Type.primitive.BOOLEAN);
+		if(e1.isArray || e1.type != Type.primitive.BOOLEAN) {
+			throw new NeptuneException("invalid left operand type for function ||");
+		}
+		if(e2.isArray || e2.type != Type.primitive.BOOLEAN) {
+			throw new NeptuneException("invalid right operand type for function ||");
 		}
 	}
 	;
@@ -148,7 +183,15 @@ operand returns [Type type=null]
 			throw new NeptuneException($x,"is not declared");
 		}
 		type = symtab.retrieve($x.text).getType();
-	}
+	} (^(ARRAY_DEF n=NUMBER {
+		type = symtab.retrieve($x.text).getType();
+		if(!type.isArray) {
+			throw new NeptuneException($x,"is not an array");
+		}
+		if(Integer.parseInt($n.text) >= type.elemCount) {
+			throw new NeptuneException($x,"array out of bounds");
+		}
+	}))?
 	| NUMBER 						{type = new Type(Type.primitive.INTEGER);}
 	| ^(ARRAY_SET (t=expression{type = t;})+)	
 	| TRUE 							{type = new Type(Type.primitive.BOOLEAN);}

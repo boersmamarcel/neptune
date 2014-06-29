@@ -24,4 +24,12 @@ public class IdEntry {
     public void setAddress(int address) { this.address = address; }
 
     public Type getType(){return this.type;}
+    
+    public int getSize() {
+    	if(this.type.isArray) {
+    		return this.type.elemCount * this.type.getPrimitiveSize();
+    	}else{
+    		return this.type.getPrimitiveSize();
+    	}
+    }
 }

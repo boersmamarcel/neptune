@@ -45,15 +45,16 @@ public class SymbolTable {
     	
     	largestSize = largestSize < currentSize ? currentSize : largestSize;
     	
-    	currentSize -= this.scopeStack.peek().size();
-    	
     	List<String> scopeList = this.scopeStack.pop();
     	
     	for(String identifier : scopeList) {
-    		this.symtab.get(identifier).pop();
+    		IdEntry poppedElement = this.symtab.get(identifier).pop();
+    		currentSize -= poppedElement.getSize();
     	}
     	
     	this.currentLevel--;
+    	
+    	System.out.println("Largest size: " + largestSize);
     	
     }
 
@@ -93,7 +94,7 @@ public class SymbolTable {
     	this.scopeStack.peek().add(id);
     	this.symtab.get(id).push(entry);
     	
-    	currentSize++;
+    	currentSize += entry.getSize();
     }
 
     /**

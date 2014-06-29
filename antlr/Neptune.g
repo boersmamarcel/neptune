@@ -62,6 +62,8 @@ tokens {
     GT_EQ       =   '>='        ;
     EQ          =   '=='        ;
     NEQ         =   '!='        ;
+	AND			=	'&&'		;
+	OR			=	'||'		;
 	ARRAY_SET	=	'array_set'	;
 	ARRAY_DEF	=	'array_def'	;
 }
@@ -172,7 +174,11 @@ expression
 	;
 
 assignment_expr
-	:	boolean_expr (BECOMES^ assignment_expr)?
+	:	and_or_expr (BECOMES^ assignment_expr)?
+	;
+	
+and_or_expr
+	:	boolean_expr ((AND^ | OR^) boolean_expr)*
 	;
 	
 boolean_expr
@@ -188,7 +194,7 @@ multi_expr
 	;
 
 operand
-    :   IDENTIFIER
+    :   IDENTIFIER array_def?
     |   NUMBER
     |   LPAREN! assignment_expr RPAREN!
 	|	LBRACKET expression (COMMA expression)* RBRACKET

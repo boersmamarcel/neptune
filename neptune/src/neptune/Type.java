@@ -6,6 +6,7 @@ public class Type {
 	}
 	
 	public boolean isArray = false;
+	public boolean isConstant = false;
 	public int elemCount = 0;
 	public primitive type;
 
@@ -17,6 +18,10 @@ public class Type {
 		this.isArray = true;
 		this.elemCount = elemCount;
 		this.type = t;
+	}
+	
+	public int getPrimitiveSize() {
+		return 1;
 	}
 
 }

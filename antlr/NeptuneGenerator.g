@@ -142,7 +142,14 @@ read_statement returns [Type type = null]
 declaration
 	: ^(VAR t=type x=IDENTIFIER { declare($x.text, t); } (BECOMES expression {
 		IdEntry var = symtab.retrieve($x.text);
-		addInstruction(Instruction.STORE(var.getAddress(), var.getType()));
+		
+		if(var.getType().isArray) {
+			for(int i = var.getType().elemCount-1; i >=0; i--) {
+				addInstruction(Instruction.STORE(var.getAddress() + i, var.getType()));
+			}
+		}else{
+			addInstruction(Instruction.STORE(var.getAddress(), var.getType()));
+		}
 	})? )
 	| ^(CONST t=type x=IDENTIFIER BECOMES expression) {
 		//const cannot change in the future
@@ -155,10 +162,33 @@ expression returns [Type type = null]
 	;
 
 assignment_expr returns [Type type = null]
-	: t=boolean_expr {type=t;}
-	| ^(BECOMES x=IDENTIFIER expression) {
+	: t=and_or_expr {type=t;}
+	| { int index = -1; }^(BECOMES x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? expression) {
 		IdEntry var = symtab.retrieve($x.text);
-		addInstruction(Instruction.STORE(var.getAddress(), var.getType()));
+		
+		if(var.getType().isArray && index == -1) {
+			for(int i = var.getType().elemCount-1; i >=0; i--) {
+				addInstruction(Instruction.STORE(var.getAddress() + i, var.getType()));
+			}
+		}else{
+			if(index == -1) {
+				index = 0;
+			}
+			
+			addInstruction(Instruction.STORE(var.getAddress() + index, var.getType()));
+		}
+	}
+	;
+
+and_or_expr returns [Type type = null]
+	: t=boolean_expr							{type = t;}
+	| ^(AND expression expression) 				{
+		type = new Type(Type.primitive.BOOLEAN);
+		addInstruction(Instruction.BINARY("and"));
+	}
+	| ^(OR expression expression)			{
+		type = new Type(Type.primitive.BOOLEAN);
+		addInstruction(Instruction.BINARY("or"));
 	}
 	;
 
@@ -215,10 +245,10 @@ multi_expr returns [Type type = null]
 	;
 
 operand returns [Type type=null]
-	: x=IDENTIFIER {
+	: { int index = 0; } x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? {
 		IdEntry var = symtab.retrieve($x.text);
 		type = var.getType();
-		addInstruction(Instruction.LOAD(var.getAddress(), var.getType()));
+		addInstruction(Instruction.LOAD(var.getAddress() + index, var.getType()));
 	}
 	| n=NUMBER 						{
 		type = new Type(Type.primitive.INTEGER);
@@ -237,7 +267,14 @@ operand returns [Type type=null]
 		type = new Type(Type.primitive.CHAR);
 		addInstruction(Instruction.LOADL((int)$c.text.charAt(1)));
 	}
-	| STRING_LITERAL				{type = new Type(Type.primitive.CHAR, 0);}
+	| s=STRING_LITERAL				{
+		type = new Type(Type.primitive.CHAR, 0);
+		String ts = $s.text;
+		ts = ts.substring(1, ts.length()-1);
+		for(int i = 0; i < ts.length(); i++) {
+			addInstruction(Instruction.LOADL((int)ts.charAt(i)));
+		}
+	}
 	| t=codeblock					{type = t;}						
 	| t=print_statement				{type = t;}
 	| t=read_statement				{type = t;}

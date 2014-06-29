@@ -2,6 +2,8 @@ int a = 5;
 int b = a + 5;
 int c = b * 10;
 int d = c / 4;
+char[5] e = "HELLO";
+const int con = 0;
 char newLine = 10;
 
 if(a < 10) {
@@ -12,7 +14,23 @@ if(a < 10) {
 	}
 }
 
+if(a < 10 || a > 10) {
+	print('N');
+	print('O');
+	print('T');
+	print(' ');
+	print(10);
+	print(newLine);
+}
+
 print(newLine);
 print(c);
 print(newLine);
 print(d);
+
+print(newLine);
+
+e[2] = 89;
+print(e[0]);
+print(e[1]);
+print(e[2]);
