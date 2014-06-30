@@ -5,3 +5,10 @@ foreach( item in array){
     print(item);
     a = a+item;
 }
+
+
+char[6] marcel = "Marcel";
+
+foreach( ch in marcel){
+	print(ch);
+}

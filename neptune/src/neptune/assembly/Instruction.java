@@ -100,4 +100,12 @@ public class Instruction {
 	public static Instruction BINARY(String operatorType) {
 		return new Instruction("CALL " + operatorType, true, true);
 	}
+	
+	public static Instruction READ(Type type){
+		if(type.type.equals(Type.primitive.CHAR)){
+			return new Instruction("CALL get",true, false);
+		}else{
+			return new Instruction("CALL getint", true, false);
+		}
+	}
 }

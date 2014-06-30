@@ -82,7 +82,39 @@ while_statement
 	;
 
 foreach_statement
-	: ^(FOREACH x=IDENTIFIER {symtab.openScope();} y=IDENTIFIER { declare($x.text, new Type(symtab.retrieve($y.text).getType().type)); } lines {symtab.closeScope();}) 
+	@init {int count = 0; int lastlabel = 0;}
+	: ^(FOREACH x=IDENTIFIER {symtab.openScope();} y=IDENTIFIER {
+		Type temp_type = symtab.retrieve($y.text).getType();
+		count = temp_type.elemCount; 
+		declare($x.text, new Type(symtab.retrieve($y.text).getType().type));
+
+		declare("", new Type(Type.primitive.INTEGER)); //loop counter
+
+		addInstruction(Instruction.LOADL(0));
+		addInstruction(Instruction.STORE(symtab.retrieve("").getAddress(), new Type(Type.primitive.INTEGER)));
+
+		addInstruction(Instruction.LABEL(labelCounter));
+		lastlabel = labelCounter;
+		labelCounter++;
+
+		addTextualInstruction("LOADA " + symtab.retrieve($y.text).getAddress() + "[SB]", true, false);
+		addInstruction(Instruction.LOAD(symtab.retrieve("").getAddress(), new Type(Type.primitive.INTEGER)));
+		addInstruction(Instruction.ADD());
+		addTextualInstruction("LOADI(1)",true, true);
+		addInstruction(Instruction.STORE(symtab.retrieve($x.text).getAddress(), temp_type));
+	}
+    lines 
+	{
+		addInstruction(Instruction.LOAD(symtab.retrieve("").getAddress(), new Type(Type.primitive.INTEGER)));
+		addInstruction(Instruction.BINARY("succ"));
+		addInstruction(Instruction.STORE(symtab.retrieve("").getAddress(), new Type(Type.primitive.INTEGER)));
+		addInstruction(Instruction.LOAD(symtab.retrieve("").getAddress(), new Type(Type.primitive.INTEGER)));
+		addInstruction(Instruction.JUMPIF(count, labelCounter));
+		addInstruction(Instruction.JUMP(lastlabel));
+		addInstruction(Instruction.LABEL(labelCounter));
+		labelCounter++;
+		symtab.closeScope();
+	}) 
 	;
 
 if_statement
@@ -120,7 +152,9 @@ if_statement
 print_statement returns [Type type = null]
 	@init{boolean one=true;}
 	: ^(PRINT t=expression {
-		
+	
+		program.markInstructionStart();
+
 		if(t.isArray) {
 			for(int i = 0; i < t.elemCount; i++) {
 				addInstruction(Instruction.PRINT(t));
@@ -128,9 +162,28 @@ print_statement returns [Type type = null]
 		}else{
 			addInstruction(Instruction.PRINT(t));
 		}
-	} (COMMA expression{one=false;})*) {
+	} (COMMA t2=expression{
+
+		one=false;
+		if(t2.isArray) {
+			for(int i = 0; i < t2.elemCount; i++) {
+				addInstruction(Instruction.PRINT(t2));
+			}
+		}else{
+			addInstruction(Instruction.PRINT(t2));
+		}
+	})*) {
 		if(one){
 			type=t; 
+			ArrayList<Instruction> tmp = program.popLastInstructions();
+
+			if(t.isArray) {
+				addTextualInstruction("LOAD(" + t.elemCount + ") -" + t.elemCount + "[ST]", true, false);
+			}else{
+				addTextualInstruction("LOAD(1) -1[ST]", true, false);	
+			}
+			program.addMultiple(tmp);
+
 		}else{
 			type = new Type(Type.primitive.VOID);
 			}}
@@ -138,9 +191,22 @@ print_statement returns [Type type = null]
 
 read_statement returns [Type type = null]
 	@init{boolean one=true;}
-	: ^(READ (t=IDENTIFIER) (COMMA IDENTIFIER{one=false;})*) {
+	: ^(READ (t=IDENTIFIER {
+			IdEntry entry= symtab.retrieve($t.text);
+			addTextualInstruction("LOADA " + entry.getAddress() + "[SB]", true, false);
+			addInstruction(Instruction.READ(entry.getType()));
+
+		}) (COMMA t2=IDENTIFIER{
+			one=false;
+			IdEntry entry= symtab.retrieve($t2.text);
+			addTextualInstruction("LOADA " + entry.getAddress() + "[SB]", true, false);
+			addInstruction(Instruction.READ(entry.getType()));
+		})*) {
 		if(one){
+			IdEntry entry= symtab.retrieve($t.text);
+			addInstruction(Instruction.LOAD(entry.getAddress(), entry.getType()));
 			type=symtab.retrieve($t.text).getType(); 
+
 		}else{
 			type = new Type(Type.primitive.VOID);
 		}}
@@ -219,10 +285,12 @@ boolean_expr returns [Type type = null]
 	}
 	| ^(EQ expression expression)				{
 		type = new Type(Type.primitive.BOOLEAN);
+		addInstruction(Instruction.LOADL(1));
 		addInstruction(Instruction.BINARY("eq"));
 	}
 	| ^(NEQ expression expression)				{
 		type = new Type(Type.primitive.BOOLEAN);
+		addInstruction(Instruction.LOADL(1));
 		addInstruction(Instruction.BINARY("neq"));
 	}
 	;
@@ -278,9 +346,16 @@ operand returns [Type type=null]
 		type = new Type(Type.primitive.INTEGER);
 		addInstruction(Instruction.LOADL(Integer.parseInt($n.text)));
 	}
-	| ^(ARRAY_SET (t=expression {
+	| {ArrayList<ArrayList<Instruction>> tmp_instructions = new ArrayList<ArrayList<Instruction>>(); int index = 0;} ^(ARRAY_SET ({program.markInstructionStart(); index++;}t=expression {
 		type = t;
-	})+)	
+		tmp_instructions.add(program.popLastInstructions());
+	})+) { 
+		for(int i = tmp_instructions.size() - 1; i >= 0; i--){
+			program.addMultiple(tmp_instructions.get(i));
+		}
+		t.isArray = true;
+		t.elemCount = index;
+	}	
 	| TRUE 							{
 		type = new Type(Type.primitive.BOOLEAN);
 		addInstruction(Instruction.LOADL(1));

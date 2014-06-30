@@ -1,11 +1,20 @@
 int a;
-bool b;
+int b;
 char c;
+char[2] e = ['a','b']; 
 
 read(a,b,c);
+print(a,b,c);
+
 
 int d = read(a);
+print(d);
+print(a);
 
-read(c,b,a);
+//read(c,b,a);
+
+//char u[4];
+
+//read(u);
 
 

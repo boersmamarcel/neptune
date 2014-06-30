@@ -4,3 +4,14 @@ char[6] name = "Marcel";
 print("Hallo");
 print(space);
 print(name);
+
+int[6] a = [1,2,3,4,5+6,6];
+
+
+
+print(a);
+char newLine = 10;
+print(newLine);
+char[6] b = ['M', 'a', 'r', 'c', 'e', 'l'];
+print(b);
+print( ['M', 'a', 'r', 'c', 'e', 'l', 'l']);
