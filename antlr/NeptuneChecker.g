@@ -89,7 +89,24 @@ print_statement returns [Type type = new Type(Type.primitive.VOID) ]
 
 read_statement returns [Type type = new Type(Type.primitive.VOID) ]
 	@init{boolean one=true;}
-	: ^(READ (t=IDENTIFIER) (COMMA IDENTIFIER{one=false;})*) {
+	: ^(READ (t=IDENTIFIER {
+		if(symtab.retrieve($t.text).getType().type == Type.primitive.BOOLEAN) {
+			throw new NeptuneException($t,"cannot read into boolean variable");
+		}
+		
+		if(symtab.retrieve($t.text).getType().isConstant) {
+			throw new NeptuneException($t,"cannot read into constant variable");
+		}
+	}) (COMMA t1=IDENTIFIER {
+		if(symtab.retrieve($t1.text).getType().type == Type.primitive.BOOLEAN) {
+			throw new NeptuneException($t1,"cannot read into boolean variable");
+		}
+		
+		if(symtab.retrieve($t1.text).getType().isConstant) {
+			throw new NeptuneException($t1,"cannot read into constant variable");
+		}
+		one=false;
+	})*) {
 		if(one){
 			type=symtab.retrieve($t.text).getType(); 
 		}else{

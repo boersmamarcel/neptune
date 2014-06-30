@@ -38,6 +38,10 @@ options{
 	}
 	
 	protected int labelCounter = 0;
+	
+	protected int newUniqueLabel() {
+		return labelCounter++;
+	}
 
 }
 
@@ -67,7 +71,7 @@ logic_statement
 	;
 
 while_statement
-	@init { int beginLabel = labelCounter; labelCounter++; int endLabel = labelCounter; labelCounter++; }
+	@init { int beginLabel = newUniqueLabel(); int endLabel = newUniqueLabel(); }
 	: ^(WHILE {
 			addInstruction(Instruction.LABEL(beginLabel));
 		} expression {
@@ -93,9 +97,8 @@ foreach_statement
 		addInstruction(Instruction.LOADL(0));
 		addInstruction(Instruction.STORE(symtab.retrieve("").getAddress(), new Type(Type.primitive.INTEGER)));
 
-		addInstruction(Instruction.LABEL(labelCounter));
-		lastlabel = labelCounter;
-		labelCounter++;
+		lastlabel = newUniqueLabel();
+		addInstruction(Instruction.LABEL(lastlabel));
 
 		addTextualInstruction("LOADA " + symtab.retrieve($y.text).getAddress() + "[SB]", true, false);
 		addInstruction(Instruction.LOAD(symtab.retrieve("").getAddress(), new Type(Type.primitive.INTEGER)));
@@ -109,16 +112,16 @@ foreach_statement
 		addInstruction(Instruction.BINARY("succ"));
 		addInstruction(Instruction.STORE(symtab.retrieve("").getAddress(), new Type(Type.primitive.INTEGER)));
 		addInstruction(Instruction.LOAD(symtab.retrieve("").getAddress(), new Type(Type.primitive.INTEGER)));
-		addInstruction(Instruction.JUMPIF(count, labelCounter));
+		int endLabel = newUniqueLabel();
+		addInstruction(Instruction.JUMPIF(count, endLabel));
 		addInstruction(Instruction.JUMP(lastlabel));
-		addInstruction(Instruction.LABEL(labelCounter));
-		labelCounter++;
+		addInstruction(Instruction.LABEL(endLabel));
 		symtab.closeScope();
 	}) 
 	;
 
 if_statement
-	@init { int endLabel = labelCounter; labelCounter++; int nextLabel = labelCounter; labelCounter++; boolean containsElse = false; }
+	@init { int endLabel = newUniqueLabel(); int nextLabel = newUniqueLabel(); boolean containsElse = false; }
 	:	^(IF expression {
 		addInstruction(Instruction.JUMPIF(0, nextLabel));
 		symtab.openScope();
@@ -128,8 +131,7 @@ if_statement
 	}
 		(ELSIF {
 			addInstruction(Instruction.LABEL(nextLabel));
-			nextLabel = labelCounter;
-			labelCounter++;
+			nextLabel = newUniqueLabel();
 		} expression {
 			addInstruction(Instruction.JUMPIF(0, nextLabel));
 			symtab.openScope();

@@ -12,3 +12,13 @@ if(!(decision == 't')) {
 }
 
 print(theUltimateTest);
+
+int i = 10;
+while(i >= 0) {
+	char n = 10;
+	print(i, n);
+	i = i + -1;
+}
+
+bool check = 5;
+read(check);
