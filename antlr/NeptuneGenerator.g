@@ -400,6 +400,15 @@ operand returns [Type type=null]
 	| t=codeblock					{type = t;}						
 	| t=print_statement				{type = t;}
 	| t=read_statement				{type = t;}
+	| ^(SIZEOF id=IDENTIFIER) {
+		type = new Type(Type.primitive.INTEGER);
+		IdEntry entry = symtab.retrieve($id.text);
+		if(!entry.getType().isArray) {
+			throw new NeptuneException($id,"not an array, invalid use of sizeof function");
+		}
+		
+		addInstruction(Instruction.LOADL(entry.getType().elemCount));
+	}
 	;
 
 type returns [Type type = null]

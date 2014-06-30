@@ -3,6 +3,8 @@ char decision;
 
 read(decision);
 
+print(sizeof(theUltimateTest));
+
 if(!(decision == 't')) {
 	theUltimateTest = print("TEST");
 }elsif(decision == 't' && 1==1) {

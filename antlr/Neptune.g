@@ -44,6 +44,7 @@ tokens {
 	READ		=	'read'		;
 	FUNCTION	=	'function'	;
 	RETURN		=	'return'	;
+	SIZEOF		=	'sizeof'	;
 
 	// types
     INTEGER     =   'int'   ;
@@ -217,6 +218,7 @@ operand
 		->	^(ARRAY_SET expression+)
 	|	print_statement
 	|	read_statement
+	|	SIZEOF^ LPAREN! IDENTIFIER RPAREN!
 	|	(TRUE | FALSE)
 	|	CHAR_LITERAL
 	|	STRING_LITERAL
