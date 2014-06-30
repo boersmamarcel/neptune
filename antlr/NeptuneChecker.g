@@ -196,21 +196,21 @@ multi_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	
 unary_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=operand								{type = t;}
-	| ^(UNARY_MINUS o=operand) {
+	| ^(UNARY_MINUS o=expression) {
 		if(o.type != Type.primitive.INTEGER || o.isArray) {
 			throw new NeptuneException("invalid operand for unary -");
 		}
 
 		type = o;
 	}
-	| ^(UNARY_PLUS o=operand) {
+	| ^(UNARY_PLUS o=expression) {
 		if(o.type != Type.primitive.INTEGER || o.isArray) {
 			throw new NeptuneException("invalid operand for unary +");
 		}
 
 		type = o;
 	}
-	| ^(NEGATE o=operand) {
+	| ^(NEGATE o=expression) {
 		if(o.type != Type.primitive.BOOLEAN || o.isArray) {
 			throw new NeptuneException("invalid operand for unary !");
 		}

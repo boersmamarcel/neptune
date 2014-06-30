@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/NeptuneChecker.g 2014-06-30 22:05:38
+// $ANTLR 3.5.2 antlr/NeptuneChecker.g 2014-06-30 22:16:27
 
 	package neptune;
 
@@ -1593,7 +1593,7 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "unary_expr"
-	// antlr/NeptuneChecker.g:197:1: unary_expr returns [Type type = new Type(Type.primitive.VOID) ] : (t= operand | ^( UNARY_MINUS o= operand ) | ^( UNARY_PLUS o= operand ) | ^( NEGATE o= operand ) );
+	// antlr/NeptuneChecker.g:197:1: unary_expr returns [Type type = new Type(Type.primitive.VOID) ] : (t= operand | ^( UNARY_MINUS o= expression ) | ^( UNARY_PLUS o= expression ) | ^( NEGATE o= expression ) );
 	public final Type unary_expr() throws RecognitionException {
 		Type type =  new Type(Type.primitive.VOID);
 
@@ -1602,7 +1602,7 @@ public class NeptuneChecker extends TreeParser {
 		Type o =null;
 
 		try {
-			// antlr/NeptuneChecker.g:198:2: (t= operand | ^( UNARY_MINUS o= operand ) | ^( UNARY_PLUS o= operand ) | ^( NEGATE o= operand ) )
+			// antlr/NeptuneChecker.g:198:2: (t= operand | ^( UNARY_MINUS o= expression ) | ^( UNARY_PLUS o= expression ) | ^( NEGATE o= expression ) )
 			int alt16=4;
 			switch ( input.LA(1) ) {
 			case ARRAY_SET:
@@ -1651,12 +1651,12 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneChecker.g:199:4: ^( UNARY_MINUS o= operand )
+					// antlr/NeptuneChecker.g:199:4: ^( UNARY_MINUS o= expression )
 					{
 					match(input,UNARY_MINUS,FOLLOW_UNARY_MINUS_in_unary_expr790); 
 					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_operand_in_unary_expr794);
-					o=operand();
+					pushFollow(FOLLOW_expression_in_unary_expr794);
+					o=expression();
 					state._fsp--;
 
 					match(input, Token.UP, null); 
@@ -1671,12 +1671,12 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneChecker.g:206:4: ^( UNARY_PLUS o= operand )
+					// antlr/NeptuneChecker.g:206:4: ^( UNARY_PLUS o= expression )
 					{
 					match(input,UNARY_PLUS,FOLLOW_UNARY_PLUS_in_unary_expr803); 
 					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_operand_in_unary_expr807);
-					o=operand();
+					pushFollow(FOLLOW_expression_in_unary_expr807);
+					o=expression();
 					state._fsp--;
 
 					match(input, Token.UP, null); 
@@ -1691,12 +1691,12 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 4 :
-					// antlr/NeptuneChecker.g:213:4: ^( NEGATE o= operand )
+					// antlr/NeptuneChecker.g:213:4: ^( NEGATE o= expression )
 					{
 					match(input,NEGATE,FOLLOW_NEGATE_in_unary_expr816); 
 					match(input, Token.DOWN, null); 
-					pushFollow(FOLLOW_operand_in_unary_expr820);
-					o=operand();
+					pushFollow(FOLLOW_expression_in_unary_expr820);
+					o=expression();
 					state._fsp--;
 
 					match(input, Token.UP, null); 
@@ -2242,11 +2242,11 @@ public class NeptuneChecker extends TreeParser {
 	public static final BitSet FOLLOW_expression_in_multi_expr753 = new BitSet(new long[]{0x0000000000000008L});
 	public static final BitSet FOLLOW_operand_in_unary_expr775 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_UNARY_MINUS_in_unary_expr790 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_operand_in_unary_expr794 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_expression_in_unary_expr794 = new BitSet(new long[]{0x0000000000000008L});
 	public static final BitSet FOLLOW_UNARY_PLUS_in_unary_expr803 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_operand_in_unary_expr807 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_expression_in_unary_expr807 = new BitSet(new long[]{0x0000000000000008L});
 	public static final BitSet FOLLOW_NEGATE_in_unary_expr816 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_operand_in_unary_expr820 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_expression_in_unary_expr820 = new BitSet(new long[]{0x0000000000000008L});
 	public static final BitSet FOLLOW_IDENTIFIER_in_operand840 = new BitSet(new long[]{0x0000000000000022L});
 	public static final BitSet FOLLOW_ARRAY_DEF_in_operand850 = new BitSet(new long[]{0x0000000000000004L});
 	public static final BitSet FOLLOW_NUMBER_in_operand854 = new BitSet(new long[]{0x0000000000000008L});

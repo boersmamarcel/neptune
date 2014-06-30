@@ -236,7 +236,7 @@ expression returns [Type type = null]
 
 assignment_expr returns [Type type = null]
 	: t=and_or_expr {type=t;}
-	| { int index = -1; }^(BECOMES x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? expression) {
+	| { int index = -1; } ^(BECOMES x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? expression) {
 		IdEntry var = symtab.retrieve($x.text);
 		
 		if(var.getType().isArray && index == -1) {
@@ -308,7 +308,7 @@ plus_expr returns [Type type = null]
 	;
 
 multi_expr returns [Type type = null]
-	: t=operand							{type=t;}
+	: t=unary_expr						{type=t;}
 	| ^(TIMES expression expression)	{
 		type = new Type(Type.primitive.INTEGER);
 		addInstruction(Instruction.MULT());
@@ -325,14 +325,14 @@ multi_expr returns [Type type = null]
 	
 unary_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=operand								{type = t;}
-	| ^(UNARY_MINUS o=operand) {
+	| ^(UNARY_MINUS o=expression) {
 		type = o;
 		addInstruction(Instruction.BINARY("neg"));
 	}
-	| ^(UNARY_PLUS o=operand) {
+	| ^(UNARY_PLUS o=expression) {
 		type = o;
 	}
-	| ^(UNARY_NEGATE o=operand) {
+	| ^(NEGATE o=expression) {
 		type = o;
 		addInstruction(Instruction.BINARY("not"));
 	}
