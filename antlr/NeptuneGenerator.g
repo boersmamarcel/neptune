@@ -120,7 +120,14 @@ if_statement
 print_statement returns [Type type = null]
 	@init{boolean one=true;}
 	: ^(PRINT t=expression {
-		addInstruction(Instruction.PRINT(t));
+		
+		if(t.isArray) {
+			for(int i = 0; i < t.elemCount; i++) {
+				addInstruction(Instruction.PRINT(t));
+			}
+		}else{
+			addInstruction(Instruction.PRINT(t));
+		}
 	} (COMMA expression{one=false;})*) {
 		if(one){
 			type=t; 
@@ -144,7 +151,7 @@ declaration
 		IdEntry var = symtab.retrieve($x.text);
 		
 		if(var.getType().isArray) {
-			for(int i = var.getType().elemCount-1; i >=0; i--) {
+			for(int i = 0; i < var.getType().elemCount; i++) {
 				addInstruction(Instruction.STORE(var.getAddress() + i, var.getType()));
 			}
 		}else{
@@ -167,7 +174,7 @@ assignment_expr returns [Type type = null]
 		IdEntry var = symtab.retrieve($x.text);
 		
 		if(var.getType().isArray && index == -1) {
-			for(int i = var.getType().elemCount-1; i >=0; i--) {
+			for(int i = 0; i < var.getType().elemCount; i++) {
 				addInstruction(Instruction.STORE(var.getAddress() + i, var.getType()));
 			}
 		}else{
@@ -245,16 +252,35 @@ multi_expr returns [Type type = null]
 	;
 
 operand returns [Type type=null]
-	: { int index = 0; } x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? {
+	: { int index = -1; } x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? {
 		IdEntry var = symtab.retrieve($x.text);
-		type = var.getType();
-		addInstruction(Instruction.LOAD(var.getAddress() + index, var.getType()));
+		type = new Type(var.getType().type);
+		type.isArray = var.getType().isArray;
+		type.elemCount = var.getType().elemCount;
+		
+		if(index > -1) {
+			type.isArray = false;
+		}
+		
+		if(index == -1) {
+			index = 0;
+		}
+		
+		if(type.isArray) {
+			for(int i = type.elemCount - 1; i >= 0; i--) {
+				addInstruction(Instruction.LOAD(var.getAddress() + i, type));
+			}
+		}else{
+			addInstruction(Instruction.LOAD(var.getAddress() + index, var.getType()));
+		}
 	}
 	| n=NUMBER 						{
 		type = new Type(Type.primitive.INTEGER);
 		addInstruction(Instruction.LOADL(Integer.parseInt($n.text)));
 	}
-	| ^(ARRAY_SET (t=expression{type = t;})+)	
+	| ^(ARRAY_SET (t=expression {
+		type = t;
+	})+)	
 	| TRUE 							{
 		type = new Type(Type.primitive.BOOLEAN);
 		addInstruction(Instruction.LOADL(1));
@@ -271,9 +297,11 @@ operand returns [Type type=null]
 		type = new Type(Type.primitive.CHAR, 0);
 		String ts = $s.text;
 		ts = ts.substring(1, ts.length()-1);
-		for(int i = 0; i < ts.length(); i++) {
+		for(int i = ts.length() - 1; i >= 0; i--) {
 			addInstruction(Instruction.LOADL((int)ts.charAt(i)));
 		}
+		type.elemCount = ts.length();
+		type.isArray = true;
 	}
 	| t=codeblock					{type = t;}						
 	| t=print_statement				{type = t;}
@@ -302,7 +330,7 @@ type returns [Type type = null]
 	;
 
 array_def returns [int count = 0]
-	: ^(ARRAY_DEF x=NUMBER) { count = Integer.parseInt($x.text); }
+	: ^(ARRAY_DEF x=NUMBER { count = Integer.parseInt($x.text); })
 	;
 
 

@@ -2,7 +2,6 @@ package test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -42,7 +41,7 @@ public class TestNeptune {
 		for(File a: dir.listFiles()) {
 //		for(String s: tests2) {
 			String inputFile = a.getAbsolutePath();
-	//		String inputFile = new File("").getAbsolutePath() + "/neptune/src/test/sample/" + s + ".npt";
+//			String inputFile = new File("").getAbsolutePath() + "/neptune/src/test/sample/" + s + ".npt";
 			System.out.println("Testing file: "+ inputFile);
 			
 			InputStream in = inputFile == null ? System.in : new FileInputStream(inputFile);

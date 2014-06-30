@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/NeptuneGenerator.g 2014-06-29 16:05:41
+// $ANTLR 3.5.2 antlr/NeptuneGenerator.g 2014-06-30 01:36:18
 
 	package neptune;
 	
@@ -658,9 +658,16 @@ public class NeptuneGenerator extends TreeParser {
 			state._fsp--;
 
 
-					addInstruction(Instruction.PRINT(t));
+					
+					if(t.isArray) {
+						for(int i = 0; i < t.elemCount; i++) {
+							addInstruction(Instruction.PRINT(t));
+						}
+					}else{
+						addInstruction(Instruction.PRINT(t));
+					}
 				
-			// antlr/NeptuneGenerator.g:124:4: ( COMMA expression )*
+			// antlr/NeptuneGenerator.g:131:4: ( COMMA expression )*
 			loop6:
 			while (true) {
 				int alt6=2;
@@ -671,7 +678,7 @@ public class NeptuneGenerator extends TreeParser {
 
 				switch (alt6) {
 				case 1 :
-					// antlr/NeptuneGenerator.g:124:5: COMMA expression
+					// antlr/NeptuneGenerator.g:131:5: COMMA expression
 					{
 					match(input,COMMA,FOLLOW_COMMA_in_print_statement302); 
 					pushFollow(FOLLOW_expression_in_print_statement304);
@@ -713,7 +720,7 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "read_statement"
-	// antlr/NeptuneGenerator.g:132:1: read_statement returns [Type type = null] : ^( READ (t= IDENTIFIER ) ( COMMA IDENTIFIER )* ) ;
+	// antlr/NeptuneGenerator.g:139:1: read_statement returns [Type type = null] : ^( READ (t= IDENTIFIER ) ( COMMA IDENTIFIER )* ) ;
 	public final Type read_statement() throws RecognitionException {
 		Type type =  null;
 
@@ -722,18 +729,18 @@ public class NeptuneGenerator extends TreeParser {
 
 		boolean one=true;
 		try {
-			// antlr/NeptuneGenerator.g:134:2: ( ^( READ (t= IDENTIFIER ) ( COMMA IDENTIFIER )* ) )
-			// antlr/NeptuneGenerator.g:134:4: ^( READ (t= IDENTIFIER ) ( COMMA IDENTIFIER )* )
+			// antlr/NeptuneGenerator.g:141:2: ( ^( READ (t= IDENTIFIER ) ( COMMA IDENTIFIER )* ) )
+			// antlr/NeptuneGenerator.g:141:4: ^( READ (t= IDENTIFIER ) ( COMMA IDENTIFIER )* )
 			{
 			match(input,READ,FOLLOW_READ_in_read_statement331); 
 			match(input, Token.DOWN, null); 
-			// antlr/NeptuneGenerator.g:134:11: (t= IDENTIFIER )
-			// antlr/NeptuneGenerator.g:134:12: t= IDENTIFIER
+			// antlr/NeptuneGenerator.g:141:11: (t= IDENTIFIER )
+			// antlr/NeptuneGenerator.g:141:12: t= IDENTIFIER
 			{
 			t=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_read_statement336); 
 			}
 
-			// antlr/NeptuneGenerator.g:134:26: ( COMMA IDENTIFIER )*
+			// antlr/NeptuneGenerator.g:141:26: ( COMMA IDENTIFIER )*
 			loop7:
 			while (true) {
 				int alt7=2;
@@ -744,7 +751,7 @@ public class NeptuneGenerator extends TreeParser {
 
 				switch (alt7) {
 				case 1 :
-					// antlr/NeptuneGenerator.g:134:27: COMMA IDENTIFIER
+					// antlr/NeptuneGenerator.g:141:27: COMMA IDENTIFIER
 					{
 					match(input,COMMA,FOLLOW_COMMA_in_read_statement340); 
 					match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_read_statement342); 
@@ -783,13 +790,13 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "declaration"
-	// antlr/NeptuneGenerator.g:142:1: declaration : ( ^( VAR t= type x= IDENTIFIER ( BECOMES expression )? ) | ^( CONST t= type x= IDENTIFIER BECOMES expression ) );
+	// antlr/NeptuneGenerator.g:149:1: declaration : ( ^( VAR t= type x= IDENTIFIER ( BECOMES expression )? ) | ^( CONST t= type x= IDENTIFIER BECOMES expression ) );
 	public final void declaration() throws RecognitionException {
 		CommonTree x=null;
 		Type t =null;
 
 		try {
-			// antlr/NeptuneGenerator.g:143:2: ( ^( VAR t= type x= IDENTIFIER ( BECOMES expression )? ) | ^( CONST t= type x= IDENTIFIER BECOMES expression ) )
+			// antlr/NeptuneGenerator.g:150:2: ( ^( VAR t= type x= IDENTIFIER ( BECOMES expression )? ) | ^( CONST t= type x= IDENTIFIER BECOMES expression ) )
 			int alt9=2;
 			int LA9_0 = input.LA(1);
 			if ( (LA9_0==VAR) ) {
@@ -807,7 +814,7 @@ public class NeptuneGenerator extends TreeParser {
 
 			switch (alt9) {
 				case 1 :
-					// antlr/NeptuneGenerator.g:143:4: ^( VAR t= type x= IDENTIFIER ( BECOMES expression )? )
+					// antlr/NeptuneGenerator.g:150:4: ^( VAR t= type x= IDENTIFIER ( BECOMES expression )? )
 					{
 					match(input,VAR,FOLLOW_VAR_in_declaration360); 
 					match(input, Token.DOWN, null); 
@@ -817,7 +824,7 @@ public class NeptuneGenerator extends TreeParser {
 
 					x=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_declaration368); 
 					 declare((x!=null?x.getText():null), t); 
-					// antlr/NeptuneGenerator.g:143:55: ( BECOMES expression )?
+					// antlr/NeptuneGenerator.g:150:55: ( BECOMES expression )?
 					int alt8=2;
 					int LA8_0 = input.LA(1);
 					if ( (LA8_0==BECOMES) ) {
@@ -825,7 +832,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					switch (alt8) {
 						case 1 :
-							// antlr/NeptuneGenerator.g:143:56: BECOMES expression
+							// antlr/NeptuneGenerator.g:150:56: BECOMES expression
 							{
 							match(input,BECOMES,FOLLOW_BECOMES_in_declaration373); 
 							pushFollow(FOLLOW_expression_in_declaration375);
@@ -836,7 +843,7 @@ public class NeptuneGenerator extends TreeParser {
 									IdEntry var = symtab.retrieve((x!=null?x.getText():null));
 									
 									if(var.getType().isArray) {
-										for(int i = var.getType().elemCount-1; i >=0; i--) {
+										for(int i = 0; i < var.getType().elemCount; i++) {
 											addInstruction(Instruction.STORE(var.getAddress() + i, var.getType()));
 										}
 									}else{
@@ -853,7 +860,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneGenerator.g:154:4: ^( CONST t= type x= IDENTIFIER BECOMES expression )
+					// antlr/NeptuneGenerator.g:161:4: ^( CONST t= type x= IDENTIFIER BECOMES expression )
 					{
 					match(input,CONST,FOLLOW_CONST_in_declaration387); 
 					match(input, Token.DOWN, null); 
@@ -892,7 +899,7 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "expression"
-	// antlr/NeptuneGenerator.g:160:1: expression returns [Type type = null] : t= assignment_expr ;
+	// antlr/NeptuneGenerator.g:167:1: expression returns [Type type = null] : t= assignment_expr ;
 	public final Type expression() throws RecognitionException {
 		Type type =  null;
 
@@ -900,8 +907,8 @@ public class NeptuneGenerator extends TreeParser {
 		Type t =null;
 
 		try {
-			// antlr/NeptuneGenerator.g:161:2: (t= assignment_expr )
-			// antlr/NeptuneGenerator.g:161:4: t= assignment_expr
+			// antlr/NeptuneGenerator.g:168:2: (t= assignment_expr )
+			// antlr/NeptuneGenerator.g:168:4: t= assignment_expr
 			{
 			pushFollow(FOLLOW_assignment_expr_in_expression419);
 			t=assignment_expr();
@@ -926,7 +933,7 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "assignment_expr"
-	// antlr/NeptuneGenerator.g:164:1: assignment_expr returns [Type type = null] : (t= and_or_expr | ^( BECOMES x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )? expression ) );
+	// antlr/NeptuneGenerator.g:171:1: assignment_expr returns [Type type = null] : (t= and_or_expr | ^( BECOMES x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )? expression ) );
 	public final Type assignment_expr() throws RecognitionException {
 		Type type =  null;
 
@@ -936,7 +943,7 @@ public class NeptuneGenerator extends TreeParser {
 		Type t =null;
 
 		try {
-			// antlr/NeptuneGenerator.g:165:2: (t= and_or_expr | ^( BECOMES x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )? expression ) )
+			// antlr/NeptuneGenerator.g:172:2: (t= and_or_expr | ^( BECOMES x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )? expression ) )
 			int alt11=2;
 			int LA11_0 = input.LA(1);
 			if ( (LA11_0==AND||LA11_0==ARRAY_SET||LA11_0==BLOCK||LA11_0==CHAR_LITERAL||LA11_0==DIVIDE||(LA11_0 >= EQ && LA11_0 <= FALSE)||(LA11_0 >= GT && LA11_0 <= IDENTIFIER)||(LA11_0 >= LT && LA11_0 <= PRINT)||LA11_0==READ||LA11_0==STRING_LITERAL||(LA11_0 >= TIMES && LA11_0 <= TRUE)) ) {
@@ -954,7 +961,7 @@ public class NeptuneGenerator extends TreeParser {
 
 			switch (alt11) {
 				case 1 :
-					// antlr/NeptuneGenerator.g:165:4: t= and_or_expr
+					// antlr/NeptuneGenerator.g:172:4: t= and_or_expr
 					{
 					pushFollow(FOLLOW_and_or_expr_in_assignment_expr438);
 					t=and_or_expr();
@@ -964,13 +971,13 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneGenerator.g:166:4: ^( BECOMES x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )? expression )
+					// antlr/NeptuneGenerator.g:173:4: ^( BECOMES x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )? expression )
 					{
 					 int index = -1; 
 					match(input,BECOMES,FOLLOW_BECOMES_in_assignment_expr447); 
 					match(input, Token.DOWN, null); 
 					x=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_assignment_expr451); 
-					// antlr/NeptuneGenerator.g:166:46: ( ^( ARRAY_DEF n= NUMBER ) )?
+					// antlr/NeptuneGenerator.g:173:46: ( ^( ARRAY_DEF n= NUMBER ) )?
 					int alt10=2;
 					int LA10_0 = input.LA(1);
 					if ( (LA10_0==ARRAY_DEF) ) {
@@ -978,7 +985,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					switch (alt10) {
 						case 1 :
-							// antlr/NeptuneGenerator.g:166:47: ^( ARRAY_DEF n= NUMBER )
+							// antlr/NeptuneGenerator.g:173:47: ^( ARRAY_DEF n= NUMBER )
 							{
 							match(input,ARRAY_DEF,FOLLOW_ARRAY_DEF_in_assignment_expr455); 
 							match(input, Token.DOWN, null); 
@@ -1001,7 +1008,7 @@ public class NeptuneGenerator extends TreeParser {
 							IdEntry var = symtab.retrieve((x!=null?x.getText():null));
 							
 							if(var.getType().isArray && index == -1) {
-								for(int i = var.getType().elemCount-1; i >=0; i--) {
+								for(int i = 0; i < var.getType().elemCount; i++) {
 									addInstruction(Instruction.STORE(var.getAddress() + i, var.getType()));
 								}
 							}else{
@@ -1032,7 +1039,7 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "and_or_expr"
-	// antlr/NeptuneGenerator.g:183:1: and_or_expr returns [Type type = null] : (t= boolean_expr | ^( AND expression expression ) | ^( OR expression expression ) );
+	// antlr/NeptuneGenerator.g:190:1: and_or_expr returns [Type type = null] : (t= boolean_expr | ^( AND expression expression ) | ^( OR expression expression ) );
 	public final Type and_or_expr() throws RecognitionException {
 		Type type =  null;
 
@@ -1040,7 +1047,7 @@ public class NeptuneGenerator extends TreeParser {
 		Type t =null;
 
 		try {
-			// antlr/NeptuneGenerator.g:184:2: (t= boolean_expr | ^( AND expression expression ) | ^( OR expression expression ) )
+			// antlr/NeptuneGenerator.g:191:2: (t= boolean_expr | ^( AND expression expression ) | ^( OR expression expression ) )
 			int alt12=3;
 			switch ( input.LA(1) ) {
 			case ARRAY_SET:
@@ -1084,7 +1091,7 @@ public class NeptuneGenerator extends TreeParser {
 			}
 			switch (alt12) {
 				case 1 :
-					// antlr/NeptuneGenerator.g:184:4: t= boolean_expr
+					// antlr/NeptuneGenerator.g:191:4: t= boolean_expr
 					{
 					pushFollow(FOLLOW_boolean_expr_in_and_or_expr486);
 					t=boolean_expr();
@@ -1094,7 +1101,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneGenerator.g:185:4: ^( AND expression expression )
+					// antlr/NeptuneGenerator.g:192:4: ^( AND expression expression )
 					{
 					match(input,AND,FOLLOW_AND_in_and_or_expr500); 
 					match(input, Token.DOWN, null); 
@@ -1115,7 +1122,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneGenerator.g:189:4: ^( OR expression expression )
+					// antlr/NeptuneGenerator.g:196:4: ^( OR expression expression )
 					{
 					match(input,OR,FOLLOW_OR_in_and_or_expr517); 
 					match(input, Token.DOWN, null); 
@@ -1153,7 +1160,7 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "boolean_expr"
-	// antlr/NeptuneGenerator.g:195:1: boolean_expr returns [Type type = null] : (t= plus_expr | ^( LT expression expression ) | ^( LT_EQ expression expression ) | ^( GT expression expression ) | ^( GT_EQ expression expression ) | ^( EQ expression expression ) | ^( NEQ expression expression ) );
+	// antlr/NeptuneGenerator.g:202:1: boolean_expr returns [Type type = null] : (t= plus_expr | ^( LT expression expression ) | ^( LT_EQ expression expression ) | ^( GT expression expression ) | ^( GT_EQ expression expression ) | ^( EQ expression expression ) | ^( NEQ expression expression ) );
 	public final Type boolean_expr() throws RecognitionException {
 		Type type =  null;
 
@@ -1161,7 +1168,7 @@ public class NeptuneGenerator extends TreeParser {
 		Type t =null;
 
 		try {
-			// antlr/NeptuneGenerator.g:196:2: (t= plus_expr | ^( LT expression expression ) | ^( LT_EQ expression expression ) | ^( GT expression expression ) | ^( GT_EQ expression expression ) | ^( EQ expression expression ) | ^( NEQ expression expression ) )
+			// antlr/NeptuneGenerator.g:203:2: (t= plus_expr | ^( LT expression expression ) | ^( LT_EQ expression expression ) | ^( GT expression expression ) | ^( GT_EQ expression expression ) | ^( EQ expression expression ) | ^( NEQ expression expression ) )
 			int alt13=7;
 			switch ( input.LA(1) ) {
 			case ARRAY_SET:
@@ -1219,7 +1226,7 @@ public class NeptuneGenerator extends TreeParser {
 			}
 			switch (alt13) {
 				case 1 :
-					// antlr/NeptuneGenerator.g:196:4: t= plus_expr
+					// antlr/NeptuneGenerator.g:203:4: t= plus_expr
 					{
 					pushFollow(FOLLOW_plus_expr_in_boolean_expr543);
 					t=plus_expr();
@@ -1229,7 +1236,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneGenerator.g:197:4: ^( LT expression expression )
+					// antlr/NeptuneGenerator.g:204:4: ^( LT expression expression )
 					{
 					match(input,LT,FOLLOW_LT_in_boolean_expr559); 
 					match(input, Token.DOWN, null); 
@@ -1250,7 +1257,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneGenerator.g:201:4: ^( LT_EQ expression expression )
+					// antlr/NeptuneGenerator.g:208:4: ^( LT_EQ expression expression )
 					{
 					match(input,LT_EQ,FOLLOW_LT_EQ_in_boolean_expr576); 
 					match(input, Token.DOWN, null); 
@@ -1271,7 +1278,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 4 :
-					// antlr/NeptuneGenerator.g:205:4: ^( GT expression expression )
+					// antlr/NeptuneGenerator.g:212:4: ^( GT expression expression )
 					{
 					match(input,GT,FOLLOW_GT_in_boolean_expr591); 
 					match(input, Token.DOWN, null); 
@@ -1292,7 +1299,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 5 :
-					// antlr/NeptuneGenerator.g:209:4: ^( GT_EQ expression expression )
+					// antlr/NeptuneGenerator.g:216:4: ^( GT_EQ expression expression )
 					{
 					match(input,GT_EQ,FOLLOW_GT_EQ_in_boolean_expr607); 
 					match(input, Token.DOWN, null); 
@@ -1313,7 +1320,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 6 :
-					// antlr/NeptuneGenerator.g:213:4: ^( EQ expression expression )
+					// antlr/NeptuneGenerator.g:220:4: ^( EQ expression expression )
 					{
 					match(input,EQ,FOLLOW_EQ_in_boolean_expr622); 
 					match(input, Token.DOWN, null); 
@@ -1334,7 +1341,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 7 :
-					// antlr/NeptuneGenerator.g:217:4: ^( NEQ expression expression )
+					// antlr/NeptuneGenerator.g:224:4: ^( NEQ expression expression )
 					{
 					match(input,NEQ,FOLLOW_NEQ_in_boolean_expr638); 
 					match(input, Token.DOWN, null); 
@@ -1372,7 +1379,7 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "plus_expr"
-	// antlr/NeptuneGenerator.g:223:1: plus_expr returns [Type type = null] : (t= multi_expr | ^( PLUS expression expression ) | ^( MINUS expression expression ) );
+	// antlr/NeptuneGenerator.g:230:1: plus_expr returns [Type type = null] : (t= multi_expr | ^( PLUS expression expression ) | ^( MINUS expression expression ) );
 	public final Type plus_expr() throws RecognitionException {
 		Type type =  null;
 
@@ -1380,7 +1387,7 @@ public class NeptuneGenerator extends TreeParser {
 		Type t =null;
 
 		try {
-			// antlr/NeptuneGenerator.g:224:2: (t= multi_expr | ^( PLUS expression expression ) | ^( MINUS expression expression ) )
+			// antlr/NeptuneGenerator.g:231:2: (t= multi_expr | ^( PLUS expression expression ) | ^( MINUS expression expression ) )
 			int alt14=3;
 			switch ( input.LA(1) ) {
 			case ARRAY_SET:
@@ -1416,7 +1423,7 @@ public class NeptuneGenerator extends TreeParser {
 			}
 			switch (alt14) {
 				case 1 :
-					// antlr/NeptuneGenerator.g:224:4: t= multi_expr
+					// antlr/NeptuneGenerator.g:231:4: t= multi_expr
 					{
 					pushFollow(FOLLOW_multi_expr_in_plus_expr665);
 					t=multi_expr();
@@ -1426,7 +1433,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneGenerator.g:225:4: ^( PLUS expression expression )
+					// antlr/NeptuneGenerator.g:232:4: ^( PLUS expression expression )
 					{
 					match(input,PLUS,FOLLOW_PLUS_in_plus_expr679); 
 					match(input, Token.DOWN, null); 
@@ -1447,7 +1454,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneGenerator.g:229:4: ^( MINUS expression expression )
+					// antlr/NeptuneGenerator.g:236:4: ^( MINUS expression expression )
 					{
 					match(input,MINUS,FOLLOW_MINUS_in_plus_expr693); 
 					match(input, Token.DOWN, null); 
@@ -1485,7 +1492,7 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "multi_expr"
-	// antlr/NeptuneGenerator.g:235:1: multi_expr returns [Type type = null] : (t= operand | ^( TIMES expression expression ) | ^( DIVIDE expression expression ) );
+	// antlr/NeptuneGenerator.g:242:1: multi_expr returns [Type type = null] : (t= operand | ^( TIMES expression expression ) | ^( DIVIDE expression expression ) );
 	public final Type multi_expr() throws RecognitionException {
 		Type type =  null;
 
@@ -1493,7 +1500,7 @@ public class NeptuneGenerator extends TreeParser {
 		Type t =null;
 
 		try {
-			// antlr/NeptuneGenerator.g:236:2: (t= operand | ^( TIMES expression expression ) | ^( DIVIDE expression expression ) )
+			// antlr/NeptuneGenerator.g:243:2: (t= operand | ^( TIMES expression expression ) | ^( DIVIDE expression expression ) )
 			int alt15=3;
 			switch ( input.LA(1) ) {
 			case ARRAY_SET:
@@ -1527,7 +1534,7 @@ public class NeptuneGenerator extends TreeParser {
 			}
 			switch (alt15) {
 				case 1 :
-					// antlr/NeptuneGenerator.g:236:4: t= operand
+					// antlr/NeptuneGenerator.g:243:4: t= operand
 					{
 					pushFollow(FOLLOW_operand_in_multi_expr718);
 					t=operand();
@@ -1537,7 +1544,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneGenerator.g:237:4: ^( TIMES expression expression )
+					// antlr/NeptuneGenerator.g:244:4: ^( TIMES expression expression )
 					{
 					match(input,TIMES,FOLLOW_TIMES_in_multi_expr732); 
 					match(input, Token.DOWN, null); 
@@ -1558,7 +1565,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneGenerator.g:241:4: ^( DIVIDE expression expression )
+					// antlr/NeptuneGenerator.g:248:4: ^( DIVIDE expression expression )
 					{
 					match(input,DIVIDE,FOLLOW_DIVIDE_in_multi_expr745); 
 					match(input, Token.DOWN, null); 
@@ -1596,7 +1603,7 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "operand"
-	// antlr/NeptuneGenerator.g:247:1: operand returns [Type type=null] : (x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )? |n= NUMBER | ^( ARRAY_SET (t= expression )+ ) | TRUE | FALSE |c= CHAR_LITERAL |s= STRING_LITERAL |t= codeblock |t= print_statement |t= read_statement );
+	// antlr/NeptuneGenerator.g:254:1: operand returns [Type type=null] : (x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )? |n= NUMBER | ^( ARRAY_SET (t= expression )+ ) | TRUE | FALSE |c= CHAR_LITERAL |s= STRING_LITERAL |t= codeblock |t= print_statement |t= read_statement );
 	public final Type operand() throws RecognitionException {
 		Type type = null;
 
@@ -1608,7 +1615,7 @@ public class NeptuneGenerator extends TreeParser {
 		Type t =null;
 
 		try {
-			// antlr/NeptuneGenerator.g:248:2: (x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )? |n= NUMBER | ^( ARRAY_SET (t= expression )+ ) | TRUE | FALSE |c= CHAR_LITERAL |s= STRING_LITERAL |t= codeblock |t= print_statement |t= read_statement )
+			// antlr/NeptuneGenerator.g:255:2: (x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )? |n= NUMBER | ^( ARRAY_SET (t= expression )+ ) | TRUE | FALSE |c= CHAR_LITERAL |s= STRING_LITERAL |t= codeblock |t= print_statement |t= read_statement )
 			int alt18=10;
 			switch ( input.LA(1) ) {
 			case IDENTIFIER:
@@ -1668,11 +1675,11 @@ public class NeptuneGenerator extends TreeParser {
 			}
 			switch (alt18) {
 				case 1 :
-					// antlr/NeptuneGenerator.g:248:4: x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )?
+					// antlr/NeptuneGenerator.g:255:4: x= IDENTIFIER ( ^( ARRAY_DEF n= NUMBER ) )?
 					{
-					 int index = 0; 
+					 int index = -1; 
 					x=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_operand771); 
-					// antlr/NeptuneGenerator.g:248:36: ( ^( ARRAY_DEF n= NUMBER ) )?
+					// antlr/NeptuneGenerator.g:255:37: ( ^( ARRAY_DEF n= NUMBER ) )?
 					int alt16=2;
 					int LA16_0 = input.LA(1);
 					if ( (LA16_0==ARRAY_DEF) ) {
@@ -1680,7 +1687,7 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					switch (alt16) {
 						case 1 :
-							// antlr/NeptuneGenerator.g:248:37: ^( ARRAY_DEF n= NUMBER )
+							// antlr/NeptuneGenerator.g:255:38: ^( ARRAY_DEF n= NUMBER )
 							{
 							match(input,ARRAY_DEF,FOLLOW_ARRAY_DEF_in_operand775); 
 							match(input, Token.DOWN, null); 
@@ -1695,13 +1702,30 @@ public class NeptuneGenerator extends TreeParser {
 
 
 							IdEntry var = symtab.retrieve((x!=null?x.getText():null));
-							type = var.getType();
-							addInstruction(Instruction.LOAD(var.getAddress() + index, var.getType()));
+							type = new Type(var.getType().type);
+							type.isArray = var.getType().isArray;
+							type.elemCount = var.getType().elemCount;
+							
+							if(index > -1) {
+								type.isArray = false;
+							}
+							
+							if(index == -1) {
+								index = 0;
+							}
+							
+							if(type.isArray) {
+								for(int i = type.elemCount - 1; i >= 0; i--) {
+									addInstruction(Instruction.LOAD(var.getAddress() + i, type));
+								}
+							}else{
+								addInstruction(Instruction.LOAD(var.getAddress() + index, var.getType()));
+							}
 						
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneGenerator.g:253:4: n= NUMBER
+					// antlr/NeptuneGenerator.g:277:4: n= NUMBER
 					{
 					n=(CommonTree)match(input,NUMBER,FOLLOW_NUMBER_in_operand793); 
 
@@ -1711,11 +1735,11 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneGenerator.g:257:4: ^( ARRAY_SET (t= expression )+ )
+					// antlr/NeptuneGenerator.g:281:4: ^( ARRAY_SET (t= expression )+ )
 					{
 					match(input,ARRAY_SET,FOLLOW_ARRAY_SET_in_operand807); 
 					match(input, Token.DOWN, null); 
-					// antlr/NeptuneGenerator.g:257:16: (t= expression )+
+					// antlr/NeptuneGenerator.g:281:16: (t= expression )+
 					int cnt17=0;
 					loop17:
 					while (true) {
@@ -1727,13 +1751,15 @@ public class NeptuneGenerator extends TreeParser {
 
 						switch (alt17) {
 						case 1 :
-							// antlr/NeptuneGenerator.g:257:17: t= expression
+							// antlr/NeptuneGenerator.g:281:17: t= expression
 							{
 							pushFollow(FOLLOW_expression_in_operand812);
 							t=expression();
 							state._fsp--;
 
-							type = t;
+
+									type = t;
+								
 							}
 							break;
 
@@ -1750,9 +1776,9 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 4 :
-					// antlr/NeptuneGenerator.g:258:4: TRUE
+					// antlr/NeptuneGenerator.g:284:4: TRUE
 					{
-					match(input,TRUE,FOLLOW_TRUE_in_operand822); 
+					match(input,TRUE,FOLLOW_TRUE_in_operand823); 
 
 							type = new Type(Type.primitive.BOOLEAN);
 							addInstruction(Instruction.LOADL(1));
@@ -1760,9 +1786,9 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 5 :
-					// antlr/NeptuneGenerator.g:262:4: FALSE
+					// antlr/NeptuneGenerator.g:288:4: FALSE
 					{
-					match(input,FALSE,FOLLOW_FALSE_in_operand836); 
+					match(input,FALSE,FOLLOW_FALSE_in_operand837); 
 
 							type = new Type(Type.primitive.BOOLEAN);
 							addInstruction(Instruction.LOADL(0));
@@ -1770,9 +1796,9 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 6 :
-					// antlr/NeptuneGenerator.g:266:4: c= CHAR_LITERAL
+					// antlr/NeptuneGenerator.g:292:4: c= CHAR_LITERAL
 					{
-					c=(CommonTree)match(input,CHAR_LITERAL,FOLLOW_CHAR_LITERAL_in_operand851); 
+					c=(CommonTree)match(input,CHAR_LITERAL,FOLLOW_CHAR_LITERAL_in_operand852); 
 
 							type = new Type(Type.primitive.CHAR);
 							addInstruction(Instruction.LOADL((int)(c!=null?c.getText():null).charAt(1)));
@@ -1780,23 +1806,25 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 7 :
-					// antlr/NeptuneGenerator.g:270:4: s= STRING_LITERAL
+					// antlr/NeptuneGenerator.g:296:4: s= STRING_LITERAL
 					{
-					s=(CommonTree)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_operand865); 
+					s=(CommonTree)match(input,STRING_LITERAL,FOLLOW_STRING_LITERAL_in_operand866); 
 
 							type = new Type(Type.primitive.CHAR, 0);
 							String ts = (s!=null?s.getText():null);
 							ts = ts.substring(1, ts.length()-1);
-							for(int i = 0; i < ts.length(); i++) {
+							for(int i = ts.length() - 1; i >= 0; i--) {
 								addInstruction(Instruction.LOADL((int)ts.charAt(i)));
 							}
+							type.elemCount = ts.length();
+							type.isArray = true;
 						
 					}
 					break;
 				case 8 :
-					// antlr/NeptuneGenerator.g:278:4: t= codeblock
+					// antlr/NeptuneGenerator.g:306:4: t= codeblock
 					{
-					pushFollow(FOLLOW_codeblock_in_operand877);
+					pushFollow(FOLLOW_codeblock_in_operand878);
 					t=codeblock();
 					state._fsp--;
 
@@ -1804,9 +1832,9 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 9 :
-					// antlr/NeptuneGenerator.g:279:4: t= print_statement
+					// antlr/NeptuneGenerator.g:307:4: t= print_statement
 					{
-					pushFollow(FOLLOW_print_statement_in_operand896);
+					pushFollow(FOLLOW_print_statement_in_operand897);
 					t=print_statement();
 					state._fsp--;
 
@@ -1814,9 +1842,9 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 10 :
-					// antlr/NeptuneGenerator.g:280:4: t= read_statement
+					// antlr/NeptuneGenerator.g:308:4: t= read_statement
 					{
-					pushFollow(FOLLOW_read_statement_in_operand908);
+					pushFollow(FOLLOW_read_statement_in_operand909);
 					t=read_statement();
 					state._fsp--;
 
@@ -1841,7 +1869,7 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "type"
-	// antlr/NeptuneGenerator.g:283:1: type returns [Type type = null] : ( INTEGER (count= array_def )? | CHAR (count= array_def )? | BOOLEAN (count= array_def )? );
+	// antlr/NeptuneGenerator.g:311:1: type returns [Type type = null] : ( INTEGER (count= array_def )? | CHAR (count= array_def )? | BOOLEAN (count= array_def )? );
 	public final Type type() throws RecognitionException {
 		Type type =  null;
 
@@ -1849,7 +1877,7 @@ public class NeptuneGenerator extends TreeParser {
 		int count =0;
 
 		try {
-			// antlr/NeptuneGenerator.g:284:2: ( INTEGER (count= array_def )? | CHAR (count= array_def )? | BOOLEAN (count= array_def )? )
+			// antlr/NeptuneGenerator.g:312:2: ( INTEGER (count= array_def )? | CHAR (count= array_def )? | BOOLEAN (count= array_def )? )
 			int alt22=3;
 			switch ( input.LA(1) ) {
 			case INTEGER:
@@ -1874,10 +1902,10 @@ public class NeptuneGenerator extends TreeParser {
 			}
 			switch (alt22) {
 				case 1 :
-					// antlr/NeptuneGenerator.g:284:4: INTEGER (count= array_def )?
+					// antlr/NeptuneGenerator.g:312:4: INTEGER (count= array_def )?
 					{
-					match(input,INTEGER,FOLLOW_INTEGER_in_type928); 
-					// antlr/NeptuneGenerator.g:284:17: (count= array_def )?
+					match(input,INTEGER,FOLLOW_INTEGER_in_type929); 
+					// antlr/NeptuneGenerator.g:312:17: (count= array_def )?
 					int alt19=2;
 					int LA19_0 = input.LA(1);
 					if ( (LA19_0==ARRAY_DEF) ) {
@@ -1885,9 +1913,9 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					switch (alt19) {
 						case 1 :
-							// antlr/NeptuneGenerator.g:284:17: count= array_def
+							// antlr/NeptuneGenerator.g:312:17: count= array_def
 							{
-							pushFollow(FOLLOW_array_def_in_type932);
+							pushFollow(FOLLOW_array_def_in_type933);
 							count=array_def();
 							state._fsp--;
 
@@ -1905,10 +1933,10 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 2 :
-					// antlr/NeptuneGenerator.g:290:4: CHAR (count= array_def )?
+					// antlr/NeptuneGenerator.g:318:4: CHAR (count= array_def )?
 					{
-					match(input,CHAR,FOLLOW_CHAR_in_type940); 
-					// antlr/NeptuneGenerator.g:290:14: (count= array_def )?
+					match(input,CHAR,FOLLOW_CHAR_in_type941); 
+					// antlr/NeptuneGenerator.g:318:14: (count= array_def )?
 					int alt20=2;
 					int LA20_0 = input.LA(1);
 					if ( (LA20_0==ARRAY_DEF) ) {
@@ -1916,9 +1944,9 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					switch (alt20) {
 						case 1 :
-							// antlr/NeptuneGenerator.g:290:14: count= array_def
+							// antlr/NeptuneGenerator.g:318:14: count= array_def
 							{
-							pushFollow(FOLLOW_array_def_in_type944);
+							pushFollow(FOLLOW_array_def_in_type945);
 							count=array_def();
 							state._fsp--;
 
@@ -1936,10 +1964,10 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneGenerator.g:296:4: BOOLEAN (count= array_def )?
+					// antlr/NeptuneGenerator.g:324:4: BOOLEAN (count= array_def )?
 					{
-					match(input,BOOLEAN,FOLLOW_BOOLEAN_in_type952); 
-					// antlr/NeptuneGenerator.g:296:17: (count= array_def )?
+					match(input,BOOLEAN,FOLLOW_BOOLEAN_in_type953); 
+					// antlr/NeptuneGenerator.g:324:17: (count= array_def )?
 					int alt21=2;
 					int LA21_0 = input.LA(1);
 					if ( (LA21_0==ARRAY_DEF) ) {
@@ -1947,9 +1975,9 @@ public class NeptuneGenerator extends TreeParser {
 					}
 					switch (alt21) {
 						case 1 :
-							// antlr/NeptuneGenerator.g:296:17: count= array_def
+							// antlr/NeptuneGenerator.g:324:17: count= array_def
 							{
-							pushFollow(FOLLOW_array_def_in_type956);
+							pushFollow(FOLLOW_array_def_in_type957);
 							count=array_def();
 							state._fsp--;
 
@@ -1984,7 +2012,7 @@ public class NeptuneGenerator extends TreeParser {
 
 
 	// $ANTLR start "array_def"
-	// antlr/NeptuneGenerator.g:304:1: array_def returns [int count = 0] : ^( ARRAY_DEF x= NUMBER ) ;
+	// antlr/NeptuneGenerator.g:332:1: array_def returns [int count = 0] : ^( ARRAY_DEF x= NUMBER ) ;
 	public final int array_def() throws RecognitionException {
 		int count =  0;
 
@@ -1992,15 +2020,15 @@ public class NeptuneGenerator extends TreeParser {
 		CommonTree x=null;
 
 		try {
-			// antlr/NeptuneGenerator.g:305:2: ( ^( ARRAY_DEF x= NUMBER ) )
-			// antlr/NeptuneGenerator.g:305:4: ^( ARRAY_DEF x= NUMBER )
+			// antlr/NeptuneGenerator.g:333:2: ( ^( ARRAY_DEF x= NUMBER ) )
+			// antlr/NeptuneGenerator.g:333:4: ^( ARRAY_DEF x= NUMBER )
 			{
-			match(input,ARRAY_DEF,FOLLOW_ARRAY_DEF_in_array_def975); 
+			match(input,ARRAY_DEF,FOLLOW_ARRAY_DEF_in_array_def976); 
 			match(input, Token.DOWN, null); 
-			x=(CommonTree)match(input,NUMBER,FOLLOW_NUMBER_in_array_def979); 
+			x=(CommonTree)match(input,NUMBER,FOLLOW_NUMBER_in_array_def980); 
+			 count = Integer.parseInt((x!=null?x.getText():null)); 
 			match(input, Token.UP, null); 
 
-			 count = Integer.parseInt((x!=null?x.getText():null)); 
 			}
 
 		}
@@ -2117,19 +2145,19 @@ public class NeptuneGenerator extends TreeParser {
 	public static final BitSet FOLLOW_NUMBER_in_operand793 = new BitSet(new long[]{0x0000000000000002L});
 	public static final BitSet FOLLOW_ARRAY_SET_in_operand807 = new BitSet(new long[]{0x0000000000000004L});
 	public static final BitSet FOLLOW_expression_in_operand812 = new BitSet(new long[]{0x03443FC0398209D8L});
-	public static final BitSet FOLLOW_TRUE_in_operand822 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_FALSE_in_operand836 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_CHAR_LITERAL_in_operand851 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_STRING_LITERAL_in_operand865 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_codeblock_in_operand877 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_print_statement_in_operand896 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_read_statement_in_operand908 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_INTEGER_in_type928 = new BitSet(new long[]{0x0000000000000022L});
-	public static final BitSet FOLLOW_array_def_in_type932 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_CHAR_in_type940 = new BitSet(new long[]{0x0000000000000022L});
-	public static final BitSet FOLLOW_array_def_in_type944 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_BOOLEAN_in_type952 = new BitSet(new long[]{0x0000000000000022L});
-	public static final BitSet FOLLOW_array_def_in_type956 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_ARRAY_DEF_in_array_def975 = new BitSet(new long[]{0x0000000000000004L});
-	public static final BitSet FOLLOW_NUMBER_in_array_def979 = new BitSet(new long[]{0x0000000000000008L});
+	public static final BitSet FOLLOW_TRUE_in_operand823 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_FALSE_in_operand837 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_CHAR_LITERAL_in_operand852 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_STRING_LITERAL_in_operand866 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_codeblock_in_operand878 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_print_statement_in_operand897 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_read_statement_in_operand909 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_INTEGER_in_type929 = new BitSet(new long[]{0x0000000000000022L});
+	public static final BitSet FOLLOW_array_def_in_type933 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_CHAR_in_type941 = new BitSet(new long[]{0x0000000000000022L});
+	public static final BitSet FOLLOW_array_def_in_type945 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_BOOLEAN_in_type953 = new BitSet(new long[]{0x0000000000000022L});
+	public static final BitSet FOLLOW_array_def_in_type957 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_ARRAY_DEF_in_array_def976 = new BitSet(new long[]{0x0000000000000004L});
+	public static final BitSet FOLLOW_NUMBER_in_array_def980 = new BitSet(new long[]{0x0000000000000008L});
 }

@@ -54,8 +54,6 @@ public class SymbolTable {
     	
     	this.currentLevel--;
     	
-    	System.out.println("Largest size: " + largestSize);
-    	
     }
 
     /** Returns the current scope level. */
@@ -76,8 +74,8 @@ public class SymbolTable {
     public void enter(String id, IdEntry entry) throws SymbolTableException {
     	IdEntry currentEntry = this.retrieve(id);
     	if(currentEntry != null && currentEntry.getLevel() == this.currentLevel()) {
-//    		throw new SymbolTableException("Failure. ID '" + id + "' already exists within scope.");
-    		System.err.println("WARNING: ID '" + id + "' already exists within scope.");
+    		throw new SymbolTableException("Failure. ID '" + id + "' already exists within scope.");
+//    		System.err.println("WARNING: ID '" + id + "' already exists within scope.");
     	}
     		
     	if(this.currentLevel() < 0) {
