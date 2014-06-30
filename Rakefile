@@ -79,6 +79,13 @@ namespace :run do
 
 		sh "java -classpath neptune/bin:neptune/antlr-3.5.2-complete.jar neptune.Neptune #{add_args}"
 	end
+
+	desc "Assembly"
+	task :assembly, [:file] do |t, args|
+		dir_name = File.dirname(__FILE__)
+		ENV['CLASSPATH'] = "#{ENV['CLASSPATH']}:#{dir_name}/TAM/Assembler.jar:#{dir_name}/TAM/Triangle.jar"
+		sh "java TAM.Assembler #{args[:file]} tam.obj; java TAM.Interpreter tam.obj"
+	end
 end
 
 
