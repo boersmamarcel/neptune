@@ -1,1 +1,12 @@
-print("Marco");
+char[4] theUltimateTest;
+char decision;
+
+read(decision);
+
+if(decision == 't') {
+	theUltimateTest = print("TEST");
+}elsif(decision == 'f') {
+	theUltimateTest = print("FAIL");
+}
+
+print(theUltimateTest);
