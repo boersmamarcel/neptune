@@ -148,7 +148,7 @@ assignment_expr returns [Type type = new Type(Type.primitive.VOID) ]
 		}
 	})
 	;
-	
+
 and_or_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=boolean_expr							{type = t;}
 	| ^(AND e1=expression e2=expression) 		{
@@ -188,9 +188,35 @@ plus_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	;
 
 multi_expr returns [Type type = new Type(Type.primitive.VOID) ]
-	: t=operand							{type=t;}
+	: t=unary_expr						{type=t;}
 	| ^(TIMES expression expression)	{type = new Type(Type.primitive.INTEGER);}
 	| ^(DIVIDE expression expression)	{type = new Type(Type.primitive.INTEGER);}
+	| ^(MOD expression expression)		{type = new Type(Type.primitive.INTEGER);}
+	;
+	
+unary_expr returns [Type type = new Type(Type.primitive.VOID) ]
+	: t=operand								{type = t;}
+	| ^(UNARY_MINUS o=operand) {
+		if(o.type != Type.primitive.INTEGER || o.isArray) {
+			throw new NeptuneException("invalid operand for unary -");
+		}
+
+		type = o;
+	}
+	| ^(UNARY_PLUS o=operand) {
+		if(o.type != Type.primitive.INTEGER || o.isArray) {
+			throw new NeptuneException("invalid operand for unary +");
+		}
+
+		type = o;
+	}
+	| ^(NEGATE o=operand) {
+		if(o.type != Type.primitive.BOOLEAN || o.isArray) {
+			throw new NeptuneException("invalid operand for unary !");
+		}
+
+		type = o;
+	}
 	;
 
 operand returns [Type type=new Type(Type.primitive.VOID) ]

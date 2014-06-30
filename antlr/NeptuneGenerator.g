@@ -317,6 +317,25 @@ multi_expr returns [Type type = null]
 		type = new Type(Type.primitive.INTEGER);
 		addInstruction(Instruction.DIV());
 	}
+	| ^(MOD expression expression)		{
+		type = new Type(Type.primitive.INTEGER);
+		addInstruction(Instruction.BINARY("mod"));
+	}
+	;
+	
+unary_expr returns [Type type = new Type(Type.primitive.VOID) ]
+	: t=operand								{type = t;}
+	| ^(UNARY_MINUS o=operand) {
+		type = o;
+		addInstruction(Instruction.BINARY("neg"));
+	}
+	| ^(UNARY_PLUS o=operand) {
+		type = o;
+	}
+	| ^(UNARY_NEGATE o=operand) {
+		type = o;
+		addInstruction(Instruction.BINARY("not"));
+	}
 	;
 
 operand returns [Type type=null]
