@@ -46,11 +46,11 @@ program
 	: ^(PROGRAM {symtab.openScope();} lines) {symtab.closeScope(); program.assemble(symtab.getLargestSize()); }
 	;
 
-lines returns[ Type type = null]
+lines returns[ Type type = new Type(Type.primitive.VOID)]
 	: t=line+ {type=t;}
 	;
 
-line returns [Type type = null]
+line returns [Type type = new Type(Type.primitive.VOID)]
 	: t=expression {type=t;}
 	| declaration {type = new Type(Type.primitive.VOID);}
 	| logic_statement {type = new Type(Type.primitive.VOID);}
@@ -149,7 +149,7 @@ if_statement
 		}
 	;
 
-print_statement returns [Type type = null]
+print_statement returns [Type type = new Type(Type.primitive.VOID)]
 	@init{boolean one=true;}
 	: ^(PRINT t=expression {
 	
@@ -189,7 +189,7 @@ print_statement returns [Type type = null]
 			}}
 	;
 
-read_statement returns [Type type = null]
+read_statement returns [Type type = new Type(Type.primitive.VOID)]
 	@init{boolean one=true;}
 	: ^(READ (t=IDENTIFIER {
 			IdEntry entry= symtab.retrieve($t.text);
@@ -228,13 +228,51 @@ declaration
 		//const cannot change in the future
 			declare($x.text, t);
 		}
+	| ^(FUNCTION 
+		t=type x=IDENTIFIER 
+		{
+		int argcount=1; 
+		String expression_label = $x.text +"0";
+		String jump_over_label = $x.text +"1";
+		// jump over the function code
+		addInstruction(Instruction.JUMP(jump_over_label));
+		//add the expression label for function calls
+		//TODO: STORE FUNCTION ADDRESS IN FUNCTION TABLE
+		addInstruction(Instruction.LABEL(expression_label));
+		}
+		(
+		argt=type args=IDENTIFIER 
+		{
+			//arguments are on top of the stack
+			symtab.openScope(); 
+			declare($args.text, argt);
+
+			//store the argument value on top of the stack into the local variables
+			//TODO: wrong order
+			addTextualInstruction("LOAD(1) -"+argcount+"[LB]", true, false);
+			IdEntry arg = symtab.retrieve($args.text);
+			addInstruction(Instruction.STORE(arg.getAddress(), arg.getType())); 
+
+			argcount++;
+		}
+		)+ line* return_type=return_statement) 
+	 {
+		symtab.closeScope();
+		addInstruction(Instruction.RETURN(t,argcount));
+		addInstruction(Instruction.LABEL(jump_over_label));
+
+	}
 	;
 
-expression returns [Type type = null]
+return_statement returns[Type type = new Type(Type.primitive.VOID)]
+	:	^(RETURN t=expression {type = t;})
+;
+
+expression returns [Type type = new Type(Type.primitive.VOID)]
 	: t=assignment_expr {type = t;}
 	;
 
-assignment_expr returns [Type type = null]
+assignment_expr returns [Type type = new Type(Type.primitive.VOID)]
 	: t=and_or_expr {type=t;}
 	| { int index = -1; }^(BECOMES x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? expression) {
 		IdEntry var = symtab.retrieve($x.text);
@@ -253,7 +291,7 @@ assignment_expr returns [Type type = null]
 	}
 	;
 
-and_or_expr returns [Type type = null]
+and_or_expr returns [Type type = new Type(Type.primitive.VOID)]
 	: t=boolean_expr							{type = t;}
 	| ^(AND expression expression) 				{
 		type = new Type(Type.primitive.BOOLEAN);
@@ -265,7 +303,7 @@ and_or_expr returns [Type type = null]
 	}
 	;
 
-boolean_expr returns [Type type = null]
+boolean_expr returns [Type type = new Type(Type.primitive.VOID)]
 	: t=plus_expr 								{type = t;}
 	| ^(LT expression expression) 				{
 		type = new Type(Type.primitive.BOOLEAN);
@@ -295,7 +333,7 @@ boolean_expr returns [Type type = null]
 	}
 	;
 
-plus_expr returns [Type type = null]
+plus_expr returns [Type type = new Type(Type.primitive.VOID)]
 	: t=multi_expr 						{type=t;}
 	| ^(PLUS expression expression)		{
 		type = new Type(Type.primitive.INTEGER);
@@ -307,7 +345,7 @@ plus_expr returns [Type type = null]
 	}
 	;
 
-multi_expr returns [Type type = null]
+multi_expr returns [Type type = new Type(Type.primitive.VOID)]
 	: t=operand							{type=t;}
 	| ^(TIMES expression expression)	{
 		type = new Type(Type.primitive.INTEGER);
@@ -319,8 +357,13 @@ multi_expr returns [Type type = null]
 	}
 	;
 
-operand returns [Type type=null]
-	: { int index = -1; } x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? {
+operand returns [Type type=new Type(Type.primitive.VOID)]
+	: t=print_statement				{type = t;}
+	| t=read_statement				{type = t;}
+	| ^(FUNCTION x=IDENTIFIER ^(ARRAY_SET expression+) {
+		addTextualInstruction("CALL(LB) "+$x.text+"0[CB]", true, false);
+		})
+	| { int index = -1; } x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? {
 		IdEntry var = symtab.retrieve($x.text);
 		type = new Type(var.getType().type);
 		type.isArray = var.getType().isArray;
@@ -379,11 +422,10 @@ operand returns [Type type=null]
 		type.isArray = true;
 	}
 	| t=codeblock					{type = t;}						
-	| t=print_statement				{type = t;}
-	| t=read_statement				{type = t;}
+	
 	;
 
-type returns [Type type = null]
+type returns [Type type = new Type(Type.primitive.VOID)]
 	: INTEGER count=array_def? {
 		if(count > 0){
 			type = new Type(Type.primitive.INTEGER, count);

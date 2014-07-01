@@ -1,0 +1,9 @@
+int a=0;
+int b= 2;
+a=b;
+function int square(int c){
+	return(c*c);
+};
+
+a = square(b);
+print(a);

@@ -36,19 +36,19 @@ public class TestNeptune {
 				"codeblock"
 		};
 		
-		String tests2[] = {"loadnstore"};
+		String tests2[] = {"function"};
 		
-		for(File a: dir.listFiles()) {
-//		for(String s: tests2) {
-			String inputFile = a.getAbsolutePath();
-//			String inputFile = new File("").getAbsolutePath() + "/neptune/src/test/sample/" + s + ".npt";
+//		for(File a: dir.listFiles()) {
+		for(String s: tests2) {
+//			String inputFile = a.getAbsolutePath();
+			String inputFile = new File("").getAbsolutePath() + "/neptune/src/test/sample/" + s + ".npt";
 			System.out.println("Testing file: "+ inputFile);
 			
 			InputStream in = inputFile == null ? System.in : new FileInputStream(inputFile);
 	        NeptuneLexer lexer = new NeptuneLexer(new ANTLRInputStream(in));
 	        CommonTokenStream tokens = new CommonTokenStream(lexer);
 	        NeptuneParser parser = new NeptuneParser(tokens);
-
+	        	        
 	        NeptuneParser.program_return result = parser.program();
 	        CommonTree tree = (CommonTree) result.getTree();
 	        System.out.println(tree.toStringTree());

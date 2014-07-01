@@ -89,8 +89,19 @@ public class Instruction {
 		return instr;
 	}
 	
+	public static Instruction LABEL(String str){
+		Instruction instr = new Instruction("", false, false);
+		instr.label = str;
+		
+		return instr;
+	}
+	
 	public static Instruction JUMP(int labelNumber) {
 		return new Instruction("JUMP L" + labelNumber + "[CB]", false, false);
+	}
+	
+	public static Instruction JUMP(String labelNumber) {
+		return new Instruction("JUMP " + labelNumber + "[CB]", false, false);
 	}
 	
 	public static Instruction JUMPIF(int value, int labelNumber) {
@@ -107,5 +118,9 @@ public class Instruction {
 		}else{
 			return new Instruction("CALL getint", true, false);
 		}
+	}
+
+	public static Instruction RETURN(Type type, int pop_n_word){
+		return new Instruction("RETURN(1) "+pop_n_word, true, true);
 	}
 }

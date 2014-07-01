@@ -140,6 +140,8 @@ logic_statement
 	|	foreach_statement
 	|	if_statement
 	;
+
+
 	
 while_statement
 	:	WHILE^ LPAREN! expression RPAREN! LCURLY! lines RCURLY!
@@ -167,10 +169,16 @@ declaration
 	:	type IDENTIFIER (BECOMES expression)?
 		-> ^(VAR type IDENTIFIER (BECOMES expression)?)
 	|	CONST^ type IDENTIFIER BECOMES expression
+	|   FUNCTION type IDENTIFIER LPAREN type IDENTIFIER (COMMA type IDENTIFIER)* RPAREN LCURLY line* return_statement RCURLY
+		-> ^(FUNCTION type IDENTIFIER (type IDENTIFIER)* line* return_statement)
 	;
+
+return_statement
+	:	RETURN^ LPAREN! expression RPAREN! SEMICOLON!
+;
 	
 expression
-	:	assignment_expr
+	:  assignment_expr
 	;
 
 assignment_expr
@@ -194,7 +202,7 @@ multi_expr
 	;
 
 operand
-    :   IDENTIFIER array_def?
+    :   IDENTIFIER ((array_def? ->	^(IDENTIFIER array_def?))| (LPAREN (expression (COMMA expression)*)? RPAREN -> ^(FUNCTION IDENTIFIER ^(ARRAY_SET expression+)?)))
     |   NUMBER
     |   LPAREN! assignment_expr RPAREN!
 	|	LBRACKET expression (COMMA expression)* RBRACKET

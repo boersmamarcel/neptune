@@ -1,3 +1,5 @@
+int u = 0;
+int g = u;
 int a = {
 	int b = 25;
 	print(b*3); // should assign 75 to a!

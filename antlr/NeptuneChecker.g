@@ -114,7 +114,22 @@ declaration
 			throw new NeptuneException($x,"invalid declaration assignment (non-array or count mismatch)");
 		}
 	}
+	| ^(FUNCTION t=type x=IDENTIFIER 
+	{
+		declare($x.text, t);
+	} 
+	(argt=type args=IDENTIFIER {symtab.openScope(); declare($args.text, argt); })+ line* return_type=return_statement) 
+	{
+		if(t.type != return_type.type){
+			throw new NeptuneException("invalid return type");
+		}
+
+		symtab.closeScope();}
 	;
+
+return_statement returns[Type type = null]
+	:	^(RETURN t=expression {type = t;})
+;
 
 expression returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=assignment_expr {type = t;}
@@ -194,7 +209,8 @@ multi_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	;
 
 operand returns [Type type=new Type(Type.primitive.VOID) ]
-	: x=IDENTIFIER					{
+	: ^(FUNCTION IDENTIFIER ^(ARRAY_SET expression+))
+	| ^(x=IDENTIFIER 			{
 		if(!isDeclared($x.text)){
 			throw new NeptuneException($x,"is not declared");
 		}
@@ -207,7 +223,7 @@ operand returns [Type type=new Type(Type.primitive.VOID) ]
 		if(Integer.parseInt($n.text) >= type.elemCount) {
 			throw new NeptuneException($x,"array out of bounds");
 		}
-	}))?
+	}))?)
 	| NUMBER 						{type = new Type(Type.primitive.INTEGER);}
 	| {int numElements = 0; } ^(ARRAY_SET (t=expression{type = t; numElements++; })+) { type.elemCount = numElements; type.isArray = true; }
 	| TRUE 							{type = new Type(Type.primitive.BOOLEAN);}
