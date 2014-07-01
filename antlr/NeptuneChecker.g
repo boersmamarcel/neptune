@@ -26,6 +26,24 @@ options{
 	}
 
 	public boolean isDeclared(String s){ return (symtab.retrieve(s) != null);}
+	
+	public void checkBinaryOperator(Type e1, Type e2) throws NeptuneException {
+		if(e1.isArray) {
+			throw new NeptuneException("left hand side of operator cannot be array");
+		}
+		
+		if(e2.isArray) {
+			throw new NeptuneException("right hand side of operator cannot be array");
+		}
+		
+		if(e1.type == Type.primitive.BOOLEAN || e1.type == Type.primitive.VOID) {
+			throw new NeptuneException("invalid operand type for left hand side");
+		}
+		
+		if(e2.type == Type.primitive.BOOLEAN || e2.type == Type.primitive.VOID) {
+			throw new NeptuneException("invalid operand type for right hand side");
+		}
+	}
 
 }
 
@@ -89,7 +107,24 @@ print_statement returns [Type type = new Type(Type.primitive.VOID) ]
 
 read_statement returns [Type type = new Type(Type.primitive.VOID) ]
 	@init{boolean one=true;}
-	: ^(READ (t=IDENTIFIER) (COMMA IDENTIFIER{one=false;})*) {
+	: ^(READ (t=IDENTIFIER {
+		if(symtab.retrieve($t.text).getType().type == Type.primitive.BOOLEAN) {
+			throw new NeptuneException($t,"cannot read into boolean variable");
+		}
+		
+		if(symtab.retrieve($t.text).getType().isConstant) {
+			throw new NeptuneException($t,"cannot read into constant variable");
+		}
+	}) (COMMA t1=IDENTIFIER {
+		if(symtab.retrieve($t1.text).getType().type == Type.primitive.BOOLEAN) {
+			throw new NeptuneException($t1,"cannot read into boolean variable");
+		}
+		
+		if(symtab.retrieve($t1.text).getType().isConstant) {
+			throw new NeptuneException($t1,"cannot read into constant variable");
+		}
+		one=false;
+	})*) {
 		if(one){
 			type=symtab.retrieve($t.text).getType(); 
 		}else{
@@ -163,7 +198,7 @@ assignment_expr returns [Type type = new Type(Type.primitive.VOID) ]
 		}
 	})
 	;
-	
+ 
 and_or_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=boolean_expr							{type = t;}
 	| ^(AND e1=expression e2=expression) 		{
@@ -188,24 +223,76 @@ and_or_expr returns [Type type = new Type(Type.primitive.VOID) ]
 
 boolean_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=plus_expr 								{type = t;}
-	| ^(LT expression expression) 				{type = new Type(Type.primitive.BOOLEAN);}
-	| ^(LT_EQ expression expression)			{type = new Type(Type.primitive.BOOLEAN);}
-	| ^(GT expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
-	| ^(GT_EQ expression expression)			{type = new Type(Type.primitive.BOOLEAN);}	
+	| ^(LT e1=expression e2=expression) 				{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.BOOLEAN);
+	}
+	| ^(LT_EQ e1=expression e2=expression)			{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.BOOLEAN);
+	}
+	| ^(GT e1=expression e2=expression)				{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.BOOLEAN);
+	}
+	| ^(GT_EQ e1=expression e2=expression)			{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.BOOLEAN);
+	}
 	| ^(EQ expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
 	| ^(NEQ expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
 	;
 
 plus_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=multi_expr 						{type=t;}
-	| ^(PLUS expression expression)		{type = new Type(Type.primitive.INTEGER);}
-	| ^(MINUS expression expression) 	{type = new Type(Type.primitive.INTEGER);}
+	| ^(PLUS e1=expression e2=expression)		{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.INTEGER);
+	}
+	| ^(MINUS e1=expression e2=expression) 	{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.INTEGER);
+	}
 	;
 
 multi_expr returns [Type type = new Type(Type.primitive.VOID) ]
-	: t=operand							{type=t;}
-	| ^(TIMES expression expression)	{type = new Type(Type.primitive.INTEGER);}
-	| ^(DIVIDE expression expression)	{type = new Type(Type.primitive.INTEGER);}
+	: t=unary_expr						{type=t;}
+	| ^(TIMES e1=expression e2=expression)	{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.INTEGER);}
+	| ^(DIVIDE e1=expression e2=expression)	{
+		type = new Type(Type.primitive.INTEGER);
+		checkBinaryOperator(e1, e2);
+	}
+	| ^(MOD e1=expression e2=expression)		{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.INTEGER);
+	}
+	;
+	
+unary_expr returns [Type type = new Type(Type.primitive.VOID) ]
+	: t=operand								{type = t;}
+	| ^(UNARY_MINUS o=expression) {
+		if(o.type != Type.primitive.INTEGER || o.isArray) {
+			throw new NeptuneException("invalid operand for unary -");
+		}
+
+		type = o;
+	}
+	| ^(UNARY_PLUS o=expression) {
+		if(o.type != Type.primitive.INTEGER || o.isArray) {
+			throw new NeptuneException("invalid operand for unary +");
+		}
+
+		type = o;
+	}
+	| ^(NEGATE o=expression) {
+		if(o.type != Type.primitive.BOOLEAN || o.isArray) {
+			throw new NeptuneException("invalid operand for unary !");
+		}
+
+		type = o;
+	}
 	;
 
 operand returns [Type type=new Type(Type.primitive.VOID) ]
@@ -237,6 +324,13 @@ operand returns [Type type=new Type(Type.primitive.VOID) ]
 	| t=codeblock					{type = t;}						
 	| t=print_statement				{type = t;}
 	| t=read_statement				{type = t;}
+	| ^(SIZEOF id=IDENTIFIER) {
+		type = new Type(Type.primitive.INTEGER);
+		IdEntry entry = symtab.retrieve($id.text);
+		if(!entry.getType().isArray) {
+			throw new NeptuneException($id,"not an array, invalid use of sizeof function");
+		}
+	}
 	;
 
 type returns [Type type = new Type(Type.primitive.VOID) ]

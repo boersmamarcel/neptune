@@ -3,10 +3,24 @@ char decision;
 
 read(decision);
 
-if(decision == 't') {
+print(sizeof(theUltimateTest));
+
+if(!(decision == 't')) {
 	theUltimateTest = print("TEST");
-}elsif(decision == 'f') {
+}elsif(decision == 't' && 1==1) {
 	theUltimateTest = print("FAIL");
 }
 
 print(theUltimateTest);
+
+int i = 10;
+while(i >= 0) {
+	char n = 10;
+	print(i, n);
+	i = i + -1;
+}
+
+int[5] h = "HALLO";
+int[5] a = "ALLOH";
+
+h+a; 

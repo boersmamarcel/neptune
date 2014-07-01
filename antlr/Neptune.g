@@ -24,6 +24,11 @@ tokens {
     TIMES       =   '*'     ;
 	DIVIDE		=	'/'		;
 	
+	UNARY_MINUS	=	'u-'		;
+	UNARY_PLUS	=	'u+'		;
+	NEGATE		=	'!'		;
+	MOD			=	'%'		;
+	
 	// strings
 	DQUOTE		=	'"'		;
 	QUOTE		=	'\''	;
@@ -39,6 +44,7 @@ tokens {
 	READ		=	'read'		;
 	FUNCTION	=	'function'	;
 	RETURN		=	'return'	;
+	SIZEOF		=	'sizeof'	;
 
 	// types
     INTEGER     =   'int'   ;
@@ -180,13 +186,17 @@ return_statement
 expression
 	:  assignment_expr
 	;
-
+ 
 assignment_expr
-	:	and_or_expr (BECOMES^ assignment_expr)?
+	:	or_expr (BECOMES^ assignment_expr)?
 	;
 	
-and_or_expr
-	:	boolean_expr ((AND^ | OR^) boolean_expr)*
+or_expr
+	:	and_expr (OR^ and_expr)*
+	;
+	
+and_expr
+	:	boolean_expr (AND^ boolean_expr)*
 	;
 	
 boolean_expr
@@ -198,7 +208,14 @@ plus_expr
 	;
 
 multi_expr
-	:	operand ((TIMES^ | DIVIDE^) operand)*
+	:	unary_expr ((TIMES^ | DIVIDE^ | MOD^) unary_expr)*
+	;
+	
+unary_expr
+	:	operand
+	|	MINUS operand -> ^(UNARY_MINUS operand)
+	|	PLUS operand -> ^(UNARY_PLUS operand)
+	|	NEGATE^ operand
 	;
 
 operand
@@ -209,6 +226,7 @@ operand
 		->	^(ARRAY_SET expression+)
 	|	print_statement
 	|	read_statement
+	|	SIZEOF^ LPAREN! IDENTIFIER RPAREN!
 	|	(TRUE | FALSE)
 	|	CHAR_LITERAL
 	|	STRING_LITERAL
