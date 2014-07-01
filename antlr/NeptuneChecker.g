@@ -26,6 +26,24 @@ options{
 	}
 
 	public boolean isDeclared(String s){ return (symtab.retrieve(s) != null);}
+	
+	public void checkBinaryOperator(Type e1, Type e2) throws NeptuneException {
+		if(e1.isArray) {
+			throw new NeptuneException("left hand side of operator cannot be array");
+		}
+		
+		if(e2.isArray) {
+			throw new NeptuneException("right hand side of operator cannot be array");
+		}
+		
+		if(e1.type == Type.primitive.BOOLEAN || e1.type == Type.primitive.VOID) {
+			throw new NeptuneException("invalid operand type for left hand side");
+		}
+		
+		if(e2.type == Type.primitive.BOOLEAN || e2.type == Type.primitive.VOID) {
+			throw new NeptuneException("invalid operand type for right hand side");
+		}
+	}
 
 }
 
@@ -190,25 +208,51 @@ and_or_expr returns [Type type = new Type(Type.primitive.VOID) ]
 
 boolean_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=plus_expr 								{type = t;}
-	| ^(LT expression expression) 				{type = new Type(Type.primitive.BOOLEAN);}
-	| ^(LT_EQ expression expression)			{type = new Type(Type.primitive.BOOLEAN);}
-	| ^(GT expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
-	| ^(GT_EQ expression expression)			{type = new Type(Type.primitive.BOOLEAN);}	
+	| ^(LT e1=expression e2=expression) 				{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.BOOLEAN);
+	}
+	| ^(LT_EQ e1=expression e2=expression)			{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.BOOLEAN);
+	}
+	| ^(GT e1=expression e2=expression)				{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.BOOLEAN);
+	}
+	| ^(GT_EQ e1=expression e2=expression)			{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.BOOLEAN);
+	}
 	| ^(EQ expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
 	| ^(NEQ expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
 	;
 
 plus_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=multi_expr 						{type=t;}
-	| ^(PLUS expression expression)		{type = new Type(Type.primitive.INTEGER);}
-	| ^(MINUS expression expression) 	{type = new Type(Type.primitive.INTEGER);}
+	| ^(PLUS e1=expression e2=expression)		{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.INTEGER);
+	}
+	| ^(MINUS e1=expression e2=expression) 	{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.INTEGER);
+	}
 	;
 
 multi_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=unary_expr						{type=t;}
-	| ^(TIMES expression expression)	{type = new Type(Type.primitive.INTEGER);}
-	| ^(DIVIDE expression expression)	{type = new Type(Type.primitive.INTEGER);}
-	| ^(MOD expression expression)		{type = new Type(Type.primitive.INTEGER);}
+	| ^(TIMES e1=expression e2=expression)	{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.INTEGER);}
+	| ^(DIVIDE e1=expression e2=expression)	{
+		type = new Type(Type.primitive.INTEGER);
+		checkBinaryOperator(e1, e2);
+	}
+	| ^(MOD e1=expression e2=expression)		{
+		checkBinaryOperator(e1, e2);
+		type = new Type(Type.primitive.INTEGER);
+	}
 	;
 	
 unary_expr returns [Type type = new Type(Type.primitive.VOID) ]

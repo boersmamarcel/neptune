@@ -20,5 +20,7 @@ while(i >= 0) {
 	i = i + -1;
 }
 
-bool check = 5;
-read(check);
+int[5] h = "HALLO";
+int[5] a = "ALLOH";
+
+h+a; 
