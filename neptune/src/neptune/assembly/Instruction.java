@@ -26,7 +26,7 @@ public class Instruction {
 	public static Instruction STORE(int address, Type type) {
 		String instr = "STORE(";
 		instr = instr + 1; // all types have word length 1
-		instr = instr + ") " + address + "[SB]";
+		instr = instr + ") " + address + "[LB]";
 		
 		return new Instruction(instr, false, true);
 	}
@@ -34,7 +34,7 @@ public class Instruction {
 	public static Instruction LOAD(int address, Type type) {
 		String instr = "LOAD(";
 		instr = instr + 1; // all types have word length 1
-		instr = instr + ") " + address + "[SB]";
+		instr = instr + ") " + address + "[LB]";
 		
 		return new Instruction(instr, true, false);
 	}
