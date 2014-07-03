@@ -1,0 +1,7 @@
+//semantics (e.g. run-time errors)
+int a = 0;
+int b = 1;
+int c;
+
+//division by zero runtime error
+c = b/a;

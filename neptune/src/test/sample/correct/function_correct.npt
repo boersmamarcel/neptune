@@ -1,0 +1,45 @@
+//correct function calls
+function int square(int c){
+	return(c*c);
+}
+
+function int fibo(int n){
+	int result = 1;
+	if(n >1 ){
+		int a = fibo(n - 2);
+		int b = fibo(n - 1);
+		result = a + b;
+	}
+	return(result);
+}
+
+
+function char identity(char a){
+	return(a);
+}
+
+function bool inverse(bool b){
+	return(!b);
+}
+
+function bool nand(bool a, bool b){
+	return(!(a && b));
+}
+
+char a = 'a';
+bool b = 1;
+bool c = 1;
+
+print(square(1));
+print(square(2));
+print(identity(a));
+print(inverse(b));
+print(inverse(inverse(b)));
+print(fibo(-1));
+print(fibo(0));
+print(fibo(1));
+print(fibo(3));
+print(nand(b,c));
+print(nand(!b, !c));
+print(nand(b, !c));
+
