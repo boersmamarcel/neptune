@@ -9,7 +9,7 @@ public class Program {
 
 	private List<Instruction> instructions;
 	public SymbolTable symtab;
-	public boolean isFunctionCall = false;
+	public static boolean isFunctionCall = false;
 	
 	private List<Instruction> functionInstructions;
 	
@@ -21,16 +21,12 @@ public class Program {
 	}
 	
 	public void add(Instruction i) {
-		if(isFunctionCall) {
-			functionInstructions.add(i);
-		}else{
-			instructions.add(i);
-		}
+		instructionSet().add(i);
 	}
 	
 	public void addMultiple(ArrayList<Instruction> instrs) {
 		for(Instruction i: instrs) {
-			instructions.add(i);
+			add(i);
 		}
 	}
 	
@@ -51,20 +47,27 @@ public class Program {
 	}
 	
 	public void markInstructionStart() {
-		instructionMarker = instructions.size();
+		instructionMarker = instructionSet().size();
 	}
 	
 	public ArrayList<Instruction> popLastInstructions() {
 		
 		ArrayList<Instruction> result = new ArrayList<Instruction>();
-		int count = instructions.size();
+		int count = instructionSet().size();
 		for(int i = instructionMarker; i < count; i++) {
-			Instruction instr = instructions.get(instructionMarker);
+			Instruction instr = instructionSet().get(instructionMarker);
 			result.add(instr);
-			instructions.remove(instructionMarker);		
+			instructionSet().remove(instructionMarker);		
 		}
 		
 		return result;
 	}
 	
+	private List<Instruction> instructionSet() {
+		if(isFunctionCall) {
+			return functionInstructions;
+		}else{
+			return instructions;
+		}
+	}
 }
