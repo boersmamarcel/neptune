@@ -188,7 +188,8 @@ print_statement returns [Type type = new Type(Type.primitive.VOID)]
 
 		}else{
 			type = new Type(Type.primitive.VOID);
-			}}
+		}
+	}
 	;
 
 read_statement returns [Type type = new Type(Type.primitive.VOID)]

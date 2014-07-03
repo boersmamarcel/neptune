@@ -9,15 +9,23 @@ public class Program {
 
 	private List<Instruction> instructions;
 	public SymbolTable symtab;
+	public boolean isFunctionCall = false;
+	
+	private List<Instruction> functionInstructions;
 	
 	private int instructionMarker = 0;
 	
 	public Program() {
 		instructions = new ArrayList<Instruction>();
+		functionInstructions = new ArrayList<Instruction>();
 	}
 	
 	public void add(Instruction i) {
-		instructions.add(i);
+		if(isFunctionCall) {
+			functionInstructions.add(i);
+		}else{
+			instructions.add(i);
+		}
 	}
 	
 	public void addMultiple(ArrayList<Instruction> instrs) {
@@ -36,6 +44,10 @@ public class Program {
 		
 		System.out.println("POP(0) " + variableStackSize);
 		System.out.println("HALT");
+		
+		for(Instruction i : functionInstructions) {
+			System.out.println(i);
+		}
 	}
 	
 	public void markInstructionStart() {
