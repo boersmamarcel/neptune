@@ -9,20 +9,24 @@ public class Program {
 
 	private List<Instruction> instructions;
 	public SymbolTable symtab;
+	public static boolean isFunctionCall = false;
+	
+	private List<Instruction> functionInstructions;
 	
 	private int instructionMarker = 0;
 	
 	public Program() {
 		instructions = new ArrayList<Instruction>();
+		functionInstructions = new ArrayList<Instruction>();
 	}
 	
 	public void add(Instruction i) {
-		instructions.add(i);
+		instructionSet().add(i);
 	}
 	
 	public void addMultiple(ArrayList<Instruction> instrs) {
 		for(Instruction i: instrs) {
-			instructions.add(i);
+			add(i);
 		}
 	}
 	
@@ -36,23 +40,34 @@ public class Program {
 		
 		System.out.println("POP(0) " + variableStackSize);
 		System.out.println("HALT");
+		
+		for(Instruction i : functionInstructions) {
+			System.out.println(i);
+		}
 	}
 	
 	public void markInstructionStart() {
-		instructionMarker = instructions.size();
+		instructionMarker = instructionSet().size();
 	}
 	
 	public ArrayList<Instruction> popLastInstructions() {
 		
 		ArrayList<Instruction> result = new ArrayList<Instruction>();
-		int count = instructions.size();
+		int count = instructionSet().size();
 		for(int i = instructionMarker; i < count; i++) {
-			Instruction instr = instructions.get(instructionMarker);
+			Instruction instr = instructionSet().get(instructionMarker);
 			result.add(instr);
-			instructions.remove(instructionMarker);		
+			instructionSet().remove(instructionMarker);		
 		}
 		
 		return result;
 	}
 	
+	private List<Instruction> instructionSet() {
+		if(isFunctionCall) {
+			return functionInstructions;
+		}else{
+			return instructions;
+		}
+	}
 }

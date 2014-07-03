@@ -188,7 +188,8 @@ print_statement returns [Type type = new Type(Type.primitive.VOID)]
 
 		}else{
 			type = new Type(Type.primitive.VOID);
-			}}
+		}
+	}
 	;
 
 read_statement returns [Type type = new Type(Type.primitive.VOID)]
@@ -230,14 +231,14 @@ declaration
 		//const cannot change in the future
 			declare($x.text, t);
 		}
-	| ^(FUNCTION {ArrayList<String> argsList = new ArrayList<String>();} 
+	| ^(FUNCTION {ArrayList<String> argsList = new ArrayList<String>(); symtab.openFunctionScope(); } 
 		t=type x=IDENTIFIER 
 		{
 
 		String expression_label = $x.text +"0";
-		String jump_over_label = $x.text +"1";
+		// String jump_over_label = $x.text +"1";
 		// jump over the function code
-		addInstruction(Instruction.JUMP(jump_over_label));
+		//addInstruction(Instruction.JUMP(jump_over_label));
 		//add the expression label for function calls
 		//TODO: STORE FUNCTION ADDRESS IN FUNCTION TABLE
 		addInstruction(Instruction.LABEL(expression_label));
@@ -251,26 +252,34 @@ declaration
 		)+ 
 		{
 			int argcount=0;
-			int frame_offset = 3+1;
-			addTextualInstruction("PUSH "+argsList.size(), false, false);
+			
+			program.markInstructionStart();
+			
+			symtab.openScope();
+			
 			for(String argString : argsList){
-				symtab.openScope(); 
 				declare(argString, new Type(Type.primitive.INTEGER));
 
 				//store the argument value on top of the stack into the local variables
 				addTextualInstruction("LOAD(1) -"+(argsList.size()-argcount)+"[LB]", true, false);
-				IdEntry argItem = symtab.retrieve(argString);
-				argItem.setAddress(frame_offset+argcount); //edit address to the LB
-				addTextualInstruction("STORE(1) "+argItem.getAddress()+"[LB]", false, true); 
+				addTextualInstruction("STORE(1) "+symtab.retrieve(argString).getAddress()+"[LB]", false, true); 
 
 				argcount++;
 			}
+
+			int prevSize = symtab.getSize();
 				
-		} line* return_type=return_statement) 
+		} line* return_type=return_statement {
+			ArrayList<Instruction> tmp = program.popLastInstructions();
+			addTextualInstruction("PUSH "+(symtab.getFunctionSize()), false, false);
+			program.addMultiple(tmp);
+			
+		}) 
 	 {
 		symtab.closeScope();
 		addInstruction(Instruction.RETURN(t,argcount));
-		addInstruction(Instruction.LABEL(jump_over_label));
+		//addInstruction(Instruction.LABEL(jump_over_label));
+		symtab.closeFunctionScope();
 
 	}
 	;

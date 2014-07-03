@@ -1,5 +1,7 @@
 package neptune;
 
+import neptune.assembly.Program;
+
 
 /**
  * VB prac week1 - SymbolTable.
@@ -20,7 +22,9 @@ public class IdEntry {
     public int   getLevel()             { return this.level;    }
     public void  setLevel(int level)    { this.level = level;   }
     
-    public int getAddress() { return this.address; }
+    public int getAddress() {
+    	return this.address;
+    }
     public void setAddress(int address) { this.address = address; }
 
     public Type getType(){return this.type;}

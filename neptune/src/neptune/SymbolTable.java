@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
+import neptune.assembly.Program;
+
 public class SymbolTable {
 	
 	protected int currentLevel = -1;
@@ -15,6 +17,7 @@ public class SymbolTable {
 	
 	protected int largestSize = 0;
 	protected int currentSize = 0;
+	protected int functionSize = 0;
 	
     /**
      * Constructor.
@@ -35,6 +38,19 @@ public class SymbolTable {
     	this.scopeStack.push(newList);
     }
 
+    public void openFunctionScope() {
+    	Program.isFunctionCall = true;
+    	functionSize = 0;
+    }
+    
+    public void closeFunctionScope() {
+    	Program.isFunctionCall = false;
+    }
+    
+    public int getFunctionSize() {
+    	return functionSize;
+    }
+    
     /**
      * Closes the current scope. All identifiers in
      * the current scope will be removed from the SymbolTable.
@@ -49,7 +65,10 @@ public class SymbolTable {
     	
     	for(String identifier : scopeList) {
     		IdEntry poppedElement = this.symtab.get(identifier).pop();
-    		currentSize -= poppedElement.getSize();
+    		
+    		if(!Program.isFunctionCall) {
+    			currentSize -= poppedElement.getSize();
+    		}
     	}
     	
     	this.currentLevel--;
@@ -83,7 +102,11 @@ public class SymbolTable {
     	}
     	
     	entry.setLevel(this.currentLevel());
-    	entry.setAddress(currentSize);
+    	if(Program.isFunctionCall) {
+    		entry.setAddress(3+functionSize);	
+    	}else{
+    		entry.setAddress(currentSize);
+    	}
     	
     	if(this.symtab.get(id) == null) {
     		this.symtab.put(id, new Stack<IdEntry>());
@@ -92,7 +115,12 @@ public class SymbolTable {
     	this.scopeStack.peek().add(id);
     	this.symtab.get(id).push(entry);
     	
-    	currentSize += entry.getSize();
+    	
+    	if(Program.isFunctionCall) {
+    		functionSize += entry.getSize();
+    	}else{
+    		currentSize += entry.getSize();
+    	}
     }
 
     /**
@@ -115,6 +143,10 @@ public class SymbolTable {
     
     public int getLargestSize() {
     	return largestSize;
+    }
+    
+    public int getSize() {
+    	return currentSize;
     }
 }
 
