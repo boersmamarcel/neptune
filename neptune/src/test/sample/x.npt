@@ -1,24 +1,37 @@
-char[4] theUltimateTest;
-char decision;
+function int square(int c){
+	return(c*c);
+};
 
-read(decision);
+char newline = 10;
 
-print(sizeof(theUltimateTest));
+print(square(2));
+print(newline);
+print(square(3));
 
-if(!(decision == 't')) {
-	theUltimateTest = print("TEST");
-}elsif(decision == 't' && 1==1) {
-	theUltimateTest = print("FAIL");
-}
+function int fibo(int n){
 
-print(theUltimateTest);
+	int result = 0;
+	if(n==1){
+		result = 1;
+	}elsif(n > 1){
+		int a = fibo(n-2);
+		int b = fibo(n-1);
+		result = a+b;
+	}
+	
+	return(result);
+};
 
-int i = 10;
-while(i >= 0) {
-	char n = 10;
-	print(i, n);
-	i = i + -1;
-}
 
-int[5] h = "HALLO";
-int[5] a = "ALLOH";
+print(fibo(0));
+print(newline);
+print(fibo(1));
+print(newline);
+print(fibo(2));
+print(newline);
+print(fibo(3));
+print(newline);
+print(fibo(4));
+print(newline);
+print(fibo(5));
+print(newline);

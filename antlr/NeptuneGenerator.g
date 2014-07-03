@@ -100,7 +100,7 @@ foreach_statement
 		lastlabel = newUniqueLabel();
 		addInstruction(Instruction.LABEL(lastlabel));
 
-		addTextualInstruction("LOADA " + symtab.retrieve($y.text).getAddress() + "[SB]", true, false);
+		addTextualInstruction("LOADA " + symtab.retrieve($y.text).getAddress() + "[LB]", true, false);
 		addInstruction(Instruction.LOAD(symtab.retrieve("").getAddress(), new Type(Type.primitive.INTEGER)));
 		addInstruction(Instruction.ADD());
 		addTextualInstruction("LOADI(1)",true, true);
@@ -231,10 +231,10 @@ declaration
 		//const cannot change in the future
 			declare($x.text, t);
 		}
-	| ^(FUNCTION 
+	| ^(FUNCTION {ArrayList<String> argsList = new ArrayList<String>();} 
 		t=type x=IDENTIFIER 
 		{
-		int argcount=1; 
+
 		String expression_label = $x.text +"0";
 		String jump_over_label = $x.text +"1";
 		// jump over the function code
@@ -244,21 +244,30 @@ declaration
 		addInstruction(Instruction.LABEL(expression_label));
 		}
 		(
-		argt=type args=IDENTIFIER 
+		argt=type arg=IDENTIFIER 
 		{
 			//arguments are on top of the stack
-			symtab.openScope(); 
-			declare($args.text, argt);
-
-			//store the argument value on top of the stack into the local variables
-			//TODO: wrong order
-			addTextualInstruction("LOAD(1) -"+argcount+"[LB]", true, false);
-			IdEntry arg = symtab.retrieve($args.text);
-			addInstruction(Instruction.STORE(arg.getAddress(), arg.getType())); 
-
-			argcount++;
+			argsList.add($arg.text);
 		}
-		)+ line* return_type=return_statement) 
+		)+ 
+		{
+			int argcount=0;
+			int frame_offset = 3+1;
+			addTextualInstruction("PUSH "+argsList.size(), false, false);
+			for(String argString : argsList){
+				symtab.openScope(); 
+				declare(argString, new Type(Type.primitive.INTEGER));
+
+				//store the argument value on top of the stack into the local variables
+				addTextualInstruction("LOAD(1) -"+(argsList.size()-argcount)+"[LB]", true, false);
+				IdEntry argItem = symtab.retrieve(argString);
+				argItem.setAddress(frame_offset+argcount); //edit address to the LB
+				addTextualInstruction("STORE(1) "+argItem.getAddress()+"[LB]", false, true); 
+
+				argcount++;
+			}
+				
+		} line* return_type=return_statement) 
 	 {
 		symtab.closeScope();
 		addInstruction(Instruction.RETURN(t,argcount));
