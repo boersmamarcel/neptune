@@ -194,21 +194,21 @@ print_statement returns [Type type = new Type(Type.primitive.VOID)]
 
 read_statement returns [Type type = new Type(Type.primitive.VOID)]
 	@init{boolean one=true;}
-	: ^(READ (t=IDENTIFIER {
-			IdEntry entry= symtab.retrieve($t.text);
-			addTextualInstruction("LOADA " + entry.getAddress() + "[SB]", true, false);
+	: ^(READ (v=variable_use {
+			IdEntry entry = symtab.retrieve(v.identifier);
+			addTextualInstruction("LOADA " + entry.getAddress() + "[LB]", true, false);
+			addInstruction(Instruction.ADD());
 			addInstruction(Instruction.READ(entry.getType()));
-
-		}) (COMMA t2=IDENTIFIER{
+		}) (COMMA v=variable_use {
 			one=false;
-			IdEntry entry= symtab.retrieve($t2.text);
+			IdEntry entry = symtab.retrieve(v.identifier);
 			addTextualInstruction("LOADA " + entry.getAddress() + "[SB]", true, false);
 			addInstruction(Instruction.READ(entry.getType()));
 		})*) {
 		if(one){
-			IdEntry entry= symtab.retrieve($t.text);
+			IdEntry entry = symtab.retrieve(v.identifier);
 			addInstruction(Instruction.LOAD(entry.getAddress(), entry.getType()));
-			type=symtab.retrieve($t.text).getType(); 
+			type=symtab.retrieve(v.identifier).getType(); 
 
 		}else{
 			type = new Type(Type.primitive.VOID);
@@ -228,9 +228,18 @@ declaration
 		}
 	})? )
 	| ^(CONST t=type x=IDENTIFIER BECOMES expression) {
-		//const cannot change in the future
-			declare($x.text, t);
+		declare($x.text, t);
+		
+		IdEntry var = symtab.retrieve($x.text);
+		
+		if(var.getType().isArray) {
+			for(int i = 0; i < var.getType().elemCount; i++) {
+				addInstruction(Instruction.STORE(var.getAddress() + i, var.getType()));
+			}
+		}else{
+			addInstruction(Instruction.STORE(var.getAddress(), var.getType()));
 		}
+	}
 	| ^(FUNCTION {ArrayList<String> argsList = new ArrayList<String>(); symtab.openFunctionScope(); } 
 		t=type x=IDENTIFIER 
 		{
@@ -254,6 +263,8 @@ declaration
 			int argcount=0;
 			
 			program.markInstructionStart();
+			
+			declare("_" + $x.text, t);
 			
 			symtab.openScope();
 			
@@ -294,21 +305,36 @@ expression returns [Type type = new Type(Type.primitive.VOID)]
 
 assignment_expr returns [Type type = new Type(Type.primitive.VOID)]
 	: t=and_or_expr {type=t;}
-	| { int index = -1; } ^(BECOMES x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? expression) {
-		IdEntry var = symtab.retrieve($x.text);
+	| ^(BECOMES {
+		program.markInstructionStart();
+	} x=variable_use {
+		ArrayList<Instruction> usedInstructions = program.popLastInstructions();
+	} expression {
+		IdEntry var = symtab.retrieve(x.identifier);
+		type = x.type;
 		
-		if(var.getType().isArray && index == -1) {
-			for(int i = 0; i < var.getType().elemCount; i++) {
-				addInstruction(Instruction.STORE(var.getAddress() + i, var.getType()));
-			}
-		}else{
-			if(index == -1) {
-				index = 0;
-			}
+		if(x.isIndexIntoArray) {
+			addTextualInstruction("LOAD(1) -1[ST]", true, true);
+			program.addMultiple(usedInstructions);
+			addTextualInstruction("LOADA " + var.getAddress() + "[LB]", true, false);
+			addInstruction(Instruction.ADD());
+			addTextualInstruction("STOREI(1)", false, true);
 			
-			addInstruction(Instruction.STORE(var.getAddress() + index, var.getType()));
+		}else{
+			if(type.isArray) {
+				for(int i = 0; i < var.getType().elemCount; i++) {
+					addInstruction(Instruction.STORE(var.getAddress() + i, var.getType()));
+				}
+
+				for(int i = var.getType().elemCount - 1; i >= 0; i--) {
+					addInstruction(Instruction.LOAD(var.getAddress() + i, var.getType()));
+				}
+			}else{
+				addInstruction(Instruction.STORE(var.getAddress(), var.getType()));
+				addInstruction(Instruction.LOAD(var.getAddress(), var.getType()));
+			}
 		}
-	}
+	})
 	;
 
 and_or_expr returns [Type type = new Type(Type.primitive.VOID)]
@@ -349,7 +375,7 @@ boolean_expr returns [Type type = new Type(Type.primitive.VOID)]
 	| ^(NEQ expression expression)				{
 		type = new Type(Type.primitive.BOOLEAN);
 		addInstruction(Instruction.LOADL(1));
-		addInstruction(Instruction.BINARY("neq"));
+		addInstruction(Instruction.BINARY("ne"));
 	}
 	;
 
@@ -402,8 +428,10 @@ operand returns [Type type=new Type(Type.primitive.VOID)]
 	| t=read_statement				{type = t;}
 	| ^(FUNCTION x=IDENTIFIER ^(ARRAY_SET expression+) {
 		addTextualInstruction("CALL(LB) "+$x.text+"0[CB]", true, false);
-		})
-	| { int index = -1; } x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? {
+		type = symtab.retrieve("_" + $x.text).getType();
+	})
+	| v=variable_expression			{type = v.type;}
+/*	| { int index = -1; } x=IDENTIFIER (^(ARRAY_DEF n=NUMBER { index = Integer.parseInt($n.text); }))? {
 		IdEntry var = symtab.retrieve($x.text);
 		type = new Type(var.getType().type);
 		type.isArray = var.getType().isArray;
@@ -424,7 +452,7 @@ operand returns [Type type=new Type(Type.primitive.VOID)]
 		}else{
 			addInstruction(Instruction.LOAD(var.getAddress() + index, var.getType()));
 		}
-	}
+	}*/
 	| n=NUMBER 						{
 		type = new Type(Type.primitive.INTEGER);
 		addInstruction(Instruction.LOADL(Integer.parseInt($n.text)));
@@ -473,6 +501,54 @@ operand returns [Type type=new Type(Type.primitive.VOID)]
 		addInstruction(Instruction.LOADL(entry.getType().elemCount));
 	}
 	;
+	
+variable_expression returns [Variable result = new Variable() ]
+	:	^(ATOMIC_VAR x=IDENTIFIER)			{
+		IdEntry var = symtab.retrieve($x.text);
+		result.type = symtab.retrieve($x.text).getType();
+		result.identifier = $x.text;
+		
+		if(result.type.isArray) {
+			for(int i = result.type.elemCount - 1; i >= 0; i--) {
+				addInstruction(Instruction.LOAD(var.getAddress() + i, result.type));
+			}
+		}else{
+			addInstruction(Instruction.LOAD(var.getAddress(), var.getType()));
+		}
+	}
+	|	^(ARRAY_VAR x=IDENTIFIER expression)	{
+		IdEntry var = symtab.retrieve($x.text);
+		
+		addTextualInstruction("LOAD(1) -1[ST]", true, true);
+		addTextualInstruction("LOADL " + var.getType().elemCount, true, false);
+		addTextualInstruction("CALL(LB) valid[CB]", false, true);
+		
+		Type newType = new Type(var.getType().type);
+		result.type = newType;
+		result.identifier = $x.text;
+		result.isIndexIntoArray = true;
+		
+		addTextualInstruction("LOADA " + var.getAddress() + "[LB]", true, false);
+		addInstruction(Instruction.ADD());
+		addTextualInstruction("LOADI(1)", true, true);
+	}
+	;
+
+variable_use returns [Variable result = new Variable() ]
+	:	^(ATOMIC_VAR x=IDENTIFIER)			{
+		IdEntry var = symtab.retrieve($x.text);
+		result.type = symtab.retrieve($x.text).getType();
+		result.identifier = $x.text;
+	}
+	|	^(ARRAY_VAR x=IDENTIFIER expression)	{
+		IdEntry var = symtab.retrieve($x.text);
+		
+		Type newType = new Type(var.getType().type);
+		result.type = newType;
+		result.identifier = $x.text;
+		result.isIndexIntoArray = true;
+	}
+	;
 
 type returns [Type type = new Type(Type.primitive.VOID)]
 	: INTEGER count=array_def? {
@@ -498,7 +574,3 @@ type returns [Type type = new Type(Type.primitive.VOID)]
 array_def returns [int count = 0]
 	: ^(ARRAY_DEF x=NUMBER { count = Integer.parseInt($x.text); })
 	;
-
-
-
-

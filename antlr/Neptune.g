@@ -72,6 +72,8 @@ tokens {
 	OR			=	'||'		;
 	ARRAY_SET	=	'array_set'	;
 	ARRAY_DEF	=	'array_def'	;
+	ATOMIC_VAR	=	'atomic'	;
+	ARRAY_VAR	=	'array_var'	;
 }
 
 @lexer::members {
@@ -219,7 +221,7 @@ unary_expr
 	;
 
 operand
-    :   IDENTIFIER ((array_def? ->	^(IDENTIFIER array_def?))| (LPAREN (expression (COMMA expression)*)? RPAREN -> ^(FUNCTION IDENTIFIER ^(ARRAY_SET expression+)?)))
+    :   IDENTIFIER ( -> ^(ATOMIC_VAR IDENTIFIER) | LBRACKET expression RBRACKET -> ^(ARRAY_VAR IDENTIFIER expression)  | (LPAREN (expression (COMMA expression)*)? RPAREN -> ^(FUNCTION IDENTIFIER ^(ARRAY_SET expression+)?)))
     |   NUMBER
     |   LPAREN! assignment_expr RPAREN!
 	|	LBRACKET expression (COMMA expression)* RBRACKET
@@ -261,7 +263,7 @@ DROPIN_STATEMENT
 	         reset();
 
 	       } catch(Exception fnf) { throw new Error("Cannot open file " + name); }
-	     }
+	}
     ;
 
 IDENTIFIER

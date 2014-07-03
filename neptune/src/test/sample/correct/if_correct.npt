@@ -1,0 +1,7 @@
+bool decision = true;
+
+if(decision) {
+	print("Good pick");
+}else{
+	print("Nope.");
+}

@@ -4,11 +4,11 @@ namespace :build do
 		sh "java org.antlr.Tool antlr/Neptune.g"
 	end
 
-	file "antlr/NeptuneChecker.java" => "antlr/NeptuneChecker.g" do
+	file "antlr/NeptuneChecker.java" => ["antlr/NeptuneChecker.g", "antlr/Neptune.g"] do
 		sh "java org.antlr.Tool antlr/NeptuneChecker.g"
 	end
 
-	file "antlr/NeptuneGenerator.java" => "antlr/NeptuneGenerator.g" do
+	file "antlr/NeptuneGenerator.java" => ["antlr/NeptuneGenerator.g", "antlr/Neptune.g"] do
 		sh "java org.antlr.Tool antlr/NeptuneGenerator.g"
 	end
 

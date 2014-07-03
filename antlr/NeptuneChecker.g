@@ -151,9 +151,10 @@ declaration
 	}
 	| ^(FUNCTION t=type x=IDENTIFIER 
 	{
+		symtab.openScope();
 		declare($x.text, t);
 	} 
-	(argt=type args=IDENTIFIER {symtab.openScope(); declare($args.text, argt); })+ line* return_type=return_statement) 
+	(argt=type args=IDENTIFIER { declare($args.text, argt); })+ line* return_type=return_statement) 
 	{
 		if(t.type != return_type.type){
 			throw new NeptuneException("invalid return type");
@@ -172,31 +173,7 @@ expression returns [Type type = new Type(Type.primitive.VOID) ]
 
 assignment_expr returns [Type type = new Type(Type.primitive.VOID) ]
 	: t=and_or_expr {type=t;}
-	| { boolean isIndexAccess = false; } ^(BECOMES x=IDENTIFIER {
-		//x needs to be defined beforehand
-		if(!isDeclared($x.text)){
-			throw new NeptuneException($x,"is not declared");
-		}
-		if(symtab.retrieve($x.text).getType().isConstant) {
-			throw new NeptuneException($x,"cannot be redeclared (constant)");
-		}
-	} (^(ARRAY_DEF n=NUMBER {
-		isIndexAccess = true;
-		
-		Type tmp = symtab.retrieve($x.text).getType();
-		if(!tmp.isArray) {
-			throw new NeptuneException($x,"is not an array");
-		}
-		
-		if(Integer.parseInt($n.text) >= tmp.elemCount) {
-			throw new NeptuneException($x,"index out of bounds");
-		}
-	}))? ex=expression {
-		Type idType = symtab.retrieve($x.text).getType();
-		if(!isIndexAccess && (ex.isArray != idType.isArray || ex.elemCount != idType.elemCount)) {
-			throw new NeptuneException($x,"invalid assignment (non-array or count mismatch)");
-		}
-	})
+	| ^(BECOMES x=variable_use expression) // check shit.
 	;
  
 and_or_expr returns [Type type = new Type(Type.primitive.VOID) ]
@@ -297,20 +274,7 @@ unary_expr returns [Type type = new Type(Type.primitive.VOID) ]
 
 operand returns [Type type=new Type(Type.primitive.VOID) ]
 	: ^(FUNCTION IDENTIFIER ^(ARRAY_SET expression+))
-	| ^(x=IDENTIFIER 			{
-		if(!isDeclared($x.text)){
-			throw new NeptuneException($x,"is not declared");
-		}
-		type = symtab.retrieve($x.text).getType();
-	} (^(ARRAY_DEF n=NUMBER {
-		type = symtab.retrieve($x.text).getType();
-		if(!type.isArray) {
-			throw new NeptuneException($x,"is not an array");
-		}
-		if(Integer.parseInt($n.text) >= type.elemCount) {
-			throw new NeptuneException($x,"array out of bounds");
-		}
-	}))?)
+	| v=variable_expression			{type = v.type;}
 	| NUMBER 						{type = new Type(Type.primitive.INTEGER);}
 	| {int numElements = 0; } ^(ARRAY_SET (t=expression{type = t; numElements++; })+) { type.elemCount = numElements; type.isArray = true; }
 	| TRUE 							{type = new Type(Type.primitive.BOOLEAN);}
@@ -330,6 +294,69 @@ operand returns [Type type=new Type(Type.primitive.VOID) ]
 		if(!entry.getType().isArray) {
 			throw new NeptuneException($id,"not an array, invalid use of sizeof function");
 		}
+	}
+	;
+	
+variable_expression returns [Variable result = new Variable() ]
+	:	^(ATOMIC_VAR x=IDENTIFIER)			{
+		if(!isDeclared($x.text)){
+			throw new NeptuneException($x,"is not declared");
+		}
+		result.type = symtab.retrieve($x.text).getType();
+	}
+	|	^(ARRAY_VAR x=IDENTIFIER ex=expression)	{
+		if(!isDeclared($x.text)){
+			throw new NeptuneException($x,"is not declared");
+		}
+		
+		result.type = symtab.retrieve($x.text).getType();
+		
+		if(!result.type.isArray) {
+			throw new NeptuneException($x,"is not an array");
+		}
+		
+		if(ex.isArray) {
+			throw new NeptuneException($x,"cannot have array as index into array");
+		}
+		
+		if(ex.type != Type.primitive.INTEGER) {
+			throw new NeptuneException($x,"index into array must be integer");
+		}
+		
+		Type newType = new Type(result.type.type);
+		result.type = newType;
+		result.isIndexIntoArray = true;
+	}
+	;
+	
+variable_use returns [Variable result = new Variable() ]
+	:	^(ATOMIC_VAR x=IDENTIFIER)			{
+		if(!isDeclared($x.text)){
+			throw new NeptuneException($x,"is not declared");
+		}
+		result.type = symtab.retrieve($x.text).getType();
+	}
+	|	^(ARRAY_VAR x=IDENTIFIER ex=expression)	{
+		if(!isDeclared($x.text)){
+			throw new NeptuneException($x,"is not declared");
+		}
+		result.type = symtab.retrieve($x.text).getType();
+		
+		if(!result.type.isArray) {
+			throw new NeptuneException($x,"is not an array");
+		}
+		
+		if(ex.isArray) {
+			throw new NeptuneException($x,"cannot have array as index into array");
+		}
+		
+		if(ex.type != Type.primitive.INTEGER) {
+			throw new NeptuneException($x,"index into array must be integer");
+		}
+		
+		Type newType = new Type(result.type.type);
+		result.type = newType;
+		result.isIndexIntoArray = true;
 	}
 	;
 
