@@ -7,6 +7,9 @@ options{
 
 @header{
 	package neptune;
+	
+	import neptune.node.*;
+	import neptune.assembly.Program;
 }
 
 @rulecatch{
@@ -15,376 +18,137 @@ options{
 	}
 }
 
-@members{
-	protected SymbolTable symtab = new SymbolTable();
-	public void declare(String s, Type type) throws NeptuneException {
-			try {
-				symtab.enter(s, new IdEntry(0, type));
-			} catch (SymbolTableException e) {
-				throw new NeptuneException(e.getMessage());
-			}
-	}
-
-	public boolean isDeclared(String s){ return (symtab.retrieve(s) != null);}
-	
-	public void checkBinaryOperator(Type e1, Type e2) throws NeptuneException {
-		if(e1.isArray) {
-			throw new NeptuneException("left hand side of operator cannot be array");
-		}
-		
-		if(e2.isArray) {
-			throw new NeptuneException("right hand side of operator cannot be array");
-		}
-		
-		if(e1.type == Type.primitive.BOOLEAN || e1.type == Type.primitive.VOID) {
-			throw new NeptuneException("invalid operand type for left hand side");
-		}
-		
-		if(e2.type == Type.primitive.BOOLEAN || e2.type == Type.primitive.VOID) {
-			throw new NeptuneException("invalid operand type for right hand side");
-		}
-	}
-
-}
-
-
 program
-	: ^(PROGRAM {symtab.openScope();} lines) {symtab.closeScope();}
+	: ^(PROGRAM n=lines)				{ ProgramNode node = new ProgramNode(n); node.validate(new Program()); }
 	;
 
-lines returns[ Type type = new Type(Type.primitive.VOID) ]
-	: t=line+ {type=t;}
+lines returns [ List<Node> nodes = new ArrayList<Node>() ]
+	: (n=line { nodes.add(n); })+
 	;
 
-line returns [Type type = new Type(Type.primitive.VOID) ]
-	: t=expression {type=t;}
-	| declaration {type = new Type(Type.primitive.VOID);}
-	| logic_statement {type = new Type(Type.primitive.VOID);}
+line returns [ Node node ]
+	: n=expression												{ node = new BasicNode("expression", n); }
+	| n=declaration												{ node = new BasicNode("declaration", n);  }
+	| n=logic_statement											{ node = new BasicNode("logic", n); }
 	;
 
-codeblock returns [Type type = new Type(Type.primitive.VOID) ]
-	: ^(BLOCK {symtab.openScope();} lines {symtab.closeScope();})
+codeblock returns [ Node node ]
+	: ^(BLOCK n=lines)											{ node = new CodeblockNode(n); }
 	;
 
-logic_statement
-	: while_statement
-	| foreach_statement
-	| if_statement
+logic_statement returns [ Node node ]
+	: ^(WHILE ex=expression l=lines)							{ node = new WhileNode(ex, l); }
+	| ^(FOREACH x=IDENTIFIER y=IDENTIFIER l=lines)				{ node = new ForeachNode($x.text, $y.text, l); }
+// If statement
+	| { List<Node> ifBlocks = new ArrayList<Node>(); Node elseNode = null; }
+	  ^(IF ex=expression l=lines					{ ifBlocks.add(new IfBlockNode(ex, l)); }
+		(
+			ELSIF ex=expression l=lines				{ ifBlocks.add(new IfBlockNode(ex, l)); }
+		)+
+		(
+			ELSE l=lines							{ elseNode = new ElseNode(l); }
+		)?
+	  )															{ node = new IfNode(ifBlocks, elseNode); }
 	;
 
-while_statement
-	: ^(WHILE expression {symtab.openScope();} lines {symtab.closeScope();})
+print_statement returns [ Node node ]
+	: { List<Node> expressions = new ArrayList<Node>(); }
+		^(PRINT
+			 n1=expression { expressions.add(n1); }
+			(n2=expression { expressions.add(n2); })*
+		)														{ node = new PrintNode(expressions); }
 	;
 
-foreach_statement
-	: ^(FOREACH x=IDENTIFIER {symtab.openScope();} y=IDENTIFIER { 
-		if(!isDeclared($y.text)){
-			throw new NeptuneException($y,"is not declared");
-		}
-		if(!symtab.retrieve($y.text).getType().isArray){
-			throw new NeptuneException($y,"is not an array");
-		}
-		declare($x.text, new Type(symtab.retrieve($y.text).getType().type));
-		} lines {symtab.closeScope();}) 
+read_statement
+	: ^(READ t=IDENTIFIER (t1=IDENTIFIER)*)
 	;
 
-if_statement
-	:	^(IF expression {symtab.openScope();} lines {symtab.closeScope();}
-		(ELSIF expression {symtab.openScope();} lines {symtab.closeScope();})* 
-		(ELSE {symtab.openScope();} lines {symtab.closeScope();})?)
+declaration returns [ Node node ]
+	: ^(VAR t=type id=IDENTIFIER (BECOMES ex=expression)?)		{ node = new VarDeclarationNode($id.text, t, ex); }
+	| ^(CONST t=type id=IDENTIFIER BECOMES ex=expression) 		{ node = new ConstDeclarationNode($id.text, t, ex); }
+	| ^(FUNCTION t=type func=IDENTIFIER (t=type id=IDENTIFIER)+ l=lines return_statement) { node = new BasicNode("function " + $func.text); }
 	;
 
-print_statement returns [Type type = new Type(Type.primitive.VOID) ]
-	@init{boolean one=true;}
-	: ^(PRINT t=expression (COMMA expression{one=false;})*) {
-		if(one){
-			type=t; 
-		}else{
-			type = new Type(Type.primitive.VOID);
-		}
-	}
-	;
-
-read_statement returns [Type type = new Type(Type.primitive.VOID) ]
-	@init{boolean one=true;}
-	: ^(READ (t=IDENTIFIER {
-		if(symtab.retrieve($t.text).getType().type == Type.primitive.BOOLEAN) {
-			throw new NeptuneException($t,"cannot read into boolean variable");
-		}
-		
-		if(symtab.retrieve($t.text).getType().isConstant) {
-			throw new NeptuneException($t,"cannot read into constant variable");
-		}
-	}) (COMMA t1=IDENTIFIER {
-		if(symtab.retrieve($t1.text).getType().type == Type.primitive.BOOLEAN) {
-			throw new NeptuneException($t1,"cannot read into boolean variable");
-		}
-		
-		if(symtab.retrieve($t1.text).getType().isConstant) {
-			throw new NeptuneException($t1,"cannot read into constant variable");
-		}
-		one=false;
-	})*) {
-		if(one){
-			type=symtab.retrieve($t.text).getType(); 
-		}else{
-			type = new Type(Type.primitive.VOID);
-		}}
-	;
-
-declaration
-	: ^(VAR t=type x=IDENTIFIER (BECOMES ex=expression {
-		if(ex.isArray != t.isArray || ex.elemCount != t.elemCount) {
-			throw new NeptuneException($x,"invalid declaration assignment (non-array or count mismatch)");
-		}
-	})?) {
-			declare($x.text, t);
-		}
-	| ^(CONST t=type x=IDENTIFIER BECOMES ex=expression) {
-		//const cannot change in the future
-		t.isConstant = true;
-		declare($x.text, t);
-		
-		if(ex.isArray != t.isArray || ex.elemCount != t.elemCount) {
-			throw new NeptuneException($x,"invalid declaration assignment (non-array or count mismatch)");
-		}
-	}
-	| ^(FUNCTION t=type x=IDENTIFIER 
-	{
-		symtab.openScope();
-		declare($x.text, t);
-	} 
-	(argt=type args=IDENTIFIER { declare($args.text, argt); })+ line* return_type=return_statement) 
-	{
-		if(t.type != return_type.type){
-			throw new NeptuneException("invalid return type");
-		}
-
-		symtab.closeScope();}
-	;
-
-return_statement returns[Type type = null]
-	:	^(RETURN t=expression {type = t;})
+return_statement returns [ Node node ]
+	:	^(RETURN ex=expression)									{ node = new BasicNode("return", ex); }
 ;
 
-expression returns [Type type = new Type(Type.primitive.VOID) ]
-	: t=assignment_expr {type = t;}
+expression returns [ Node node = new BasicNode("expression"); ]
+	: n=assignment_expr											{ node = n; }
 	;
 
-assignment_expr returns [Type type = new Type(Type.primitive.VOID) ]
-	: t=and_or_expr {type=t;}
-	| ^(BECOMES x=variable_use expression) // check shit.
+assignment_expr returns [ Node node = new BasicNode("assignment"); ]
+	: n=and_or_expr												{ node = n; }
+	| ^(BECOMES x=variable_use expression)
 	;
  
-and_or_expr returns [Type type = new Type(Type.primitive.VOID) ]
-	: t=boolean_expr							{type = t;}
-	| ^(AND e1=expression e2=expression) 		{
-		type = new Type(Type.primitive.BOOLEAN);
-		if(e1.isArray || e1.type != Type.primitive.BOOLEAN) {
-			throw new NeptuneException("invalid left operand type for function &&");
-		}
-		if(e2.isArray || e2.type != Type.primitive.BOOLEAN) {
-			throw new NeptuneException("invalid right operand type for function &&");
-		}
-	}
-	| ^(OR e1=expression e2=expression) 		{
-		type = new Type(Type.primitive.BOOLEAN);
-		if(e1.isArray || e1.type != Type.primitive.BOOLEAN) {
-			throw new NeptuneException("invalid left operand type for function ||");
-		}
-		if(e2.isArray || e2.type != Type.primitive.BOOLEAN) {
-			throw new NeptuneException("invalid right operand type for function ||");
-		}
-	}
+and_or_expr returns [ Node node = new BasicNode("and_or"); ]
+	: n=boolean_expr											{ node = n; }
+	| ^(AND e1=expression e2=expression)
+	| ^(OR e1=expression e2=expression)
 	;
 
-boolean_expr returns [Type type = new Type(Type.primitive.VOID) ]
-	: t=plus_expr 								{type = t;}
-	| ^(LT e1=expression e2=expression) 				{
-		checkBinaryOperator(e1, e2);
-		type = new Type(Type.primitive.BOOLEAN);
-	}
-	| ^(LT_EQ e1=expression e2=expression)			{
-		checkBinaryOperator(e1, e2);
-		type = new Type(Type.primitive.BOOLEAN);
-	}
-	| ^(GT e1=expression e2=expression)				{
-		checkBinaryOperator(e1, e2);
-		type = new Type(Type.primitive.BOOLEAN);
-	}
-	| ^(GT_EQ e1=expression e2=expression)			{
-		checkBinaryOperator(e1, e2);
-		type = new Type(Type.primitive.BOOLEAN);
-	}
-	| ^(EQ expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
-	| ^(NEQ expression expression)				{type = new Type(Type.primitive.BOOLEAN);}
+boolean_expr returns [ Node node = new BasicNode("boolean"); ]
+	: n=plus_expr												{ node = n; }
+	| ^(LT e1=expression e2=expression)
+	| ^(LT_EQ e1=expression e2=expression)
+	| ^(GT e1=expression e2=expression)
+	| ^(GT_EQ e1=expression e2=expression)
+	| ^(EQ expression expression)
+	| ^(NEQ expression expression)
 	;
 
-plus_expr returns [Type type = new Type(Type.primitive.VOID) ]
-	: t=multi_expr 						{type=t;}
-	| ^(PLUS e1=expression e2=expression)		{
-		checkBinaryOperator(e1, e2);
-		type = new Type(Type.primitive.INTEGER);
-	}
-	| ^(MINUS e1=expression e2=expression) 	{
-		checkBinaryOperator(e1, e2);
-		type = new Type(Type.primitive.INTEGER);
-	}
+plus_expr returns [ Node node = new BasicNode("plus"); ]
+	: n=multi_expr												{ node = n; }
+	| ^(PLUS e1=expression e2=expression)
+	| ^(MINUS e1=expression e2=expression)
 	;
 
-multi_expr returns [Type type = new Type(Type.primitive.VOID) ]
-	: t=unary_expr						{type=t;}
-	| ^(TIMES e1=expression e2=expression)	{
-		checkBinaryOperator(e1, e2);
-		type = new Type(Type.primitive.INTEGER);}
-	| ^(DIVIDE e1=expression e2=expression)	{
-		type = new Type(Type.primitive.INTEGER);
-		checkBinaryOperator(e1, e2);
-	}
-	| ^(MOD e1=expression e2=expression)		{
-		checkBinaryOperator(e1, e2);
-		type = new Type(Type.primitive.INTEGER);
-	}
+multi_expr returns [ Node node = new BasicNode("multi"); ]
+	: n=unary_expr												{ node = n; }
+	| ^(TIMES e1=expression e2=expression)
+	| ^(DIVIDE e1=expression e2=expression)
+	| ^(MOD e1=expression e2=expression)
 	;
 	
-unary_expr returns [Type type = new Type(Type.primitive.VOID) ]
-	: t=operand								{type = t;}
-	| ^(UNARY_MINUS o=expression) {
-		if(o.type != Type.primitive.INTEGER || o.isArray) {
-			throw new NeptuneException("invalid operand for unary -");
-		}
-
-		type = o;
-	}
-	| ^(UNARY_PLUS o=expression) {
-		if(o.type != Type.primitive.INTEGER || o.isArray) {
-			throw new NeptuneException("invalid operand for unary +");
-		}
-
-		type = o;
-	}
-	| ^(NEGATE o=expression) {
-		if(o.type != Type.primitive.BOOLEAN || o.isArray) {
-			throw new NeptuneException("invalid operand for unary !");
-		}
-
-		type = o;
-	}
+unary_expr returns [ Node node = new BasicNode("unary"); ]
+	: n=operand													{ node = n; }
+	| ^(UNARY_MINUS o=expression)
+	| ^(UNARY_PLUS o=expression)
+	| ^(NEGATE o=expression)
 	;
 
-operand returns [Type type=new Type(Type.primitive.VOID) ]
+operand returns [ Node node = new BasicNode("operand"); ]
 	: ^(FUNCTION IDENTIFIER ^(ARRAY_SET expression+))
-	| v=variable_expression			{type = v.type;}
-	| NUMBER 						{type = new Type(Type.primitive.INTEGER);}
-	| {int numElements = 0; } ^(ARRAY_SET (t=expression{type = t; numElements++; })+) { type.elemCount = numElements; type.isArray = true; }
-	| TRUE 							{type = new Type(Type.primitive.BOOLEAN);}
-	| FALSE 						{type = new Type(Type.primitive.BOOLEAN);}
-	| CHAR_LITERAL 					{type = new Type(Type.primitive.CHAR);}
-	| str=STRING_LITERAL			{
-		type = new Type(Type.primitive.CHAR, 0);
-		type.isArray = true;
-		type.elemCount = $str.text.length()-2;
-	}
-	| t=codeblock					{type = t;}						
-	| t=print_statement				{type = t;}
-	| t=read_statement				{type = t;}
-	| ^(SIZEOF id=IDENTIFIER) {
-		type = new Type(Type.primitive.INTEGER);
-		IdEntry entry = symtab.retrieve($id.text);
-		if(!entry.getType().isArray) {
-			throw new NeptuneException($id,"not an array, invalid use of sizeof function");
-		}
-	}
+	| v=variable_expression										{ node = v; }
+	| NUMBER
+	| ^(ARRAY_SET (expression)+)
+	| TRUE
+	| FALSE
+	| CHAR_LITERAL
+	| str=STRING_LITERAL
+	| codeblock
+	| n=print_statement											{ node = n; }
+	| read_statement
+	| ^(SIZEOF id=IDENTIFIER)
 	;
 	
-variable_expression returns [Variable result = new Variable() ]
-	:	^(ATOMIC_VAR x=IDENTIFIER)			{
-		if(!isDeclared($x.text)){
-			throw new NeptuneException($x,"is not declared");
-		}
-		result.type = symtab.retrieve($x.text).getType();
-	}
-	|	^(ARRAY_VAR x=IDENTIFIER ex=expression)	{
-		if(!isDeclared($x.text)){
-			throw new NeptuneException($x,"is not declared");
-		}
-		
-		result.type = symtab.retrieve($x.text).getType();
-		
-		if(!result.type.isArray) {
-			throw new NeptuneException($x,"is not an array");
-		}
-		
-		if(ex.isArray) {
-			throw new NeptuneException($x,"cannot have array as index into array");
-		}
-		
-		if(ex.type != Type.primitive.INTEGER) {
-			throw new NeptuneException($x,"index into array must be integer");
-		}
-		
-		Type newType = new Type(result.type.type);
-		result.type = newType;
-		result.isIndexIntoArray = true;
-	}
+variable_expression returns [ Node node ]
+	:	^(ATOMIC_VAR id=IDENTIFIER)								{ node = new VarNode($id.text); }
+	|	^(ARRAY_VAR id=IDENTIFIER ex=expression)				{ node = new VarIndexedNode($id.text, ex); }
 	;
 	
-variable_use returns [Variable result = new Variable() ]
-	:	^(ATOMIC_VAR x=IDENTIFIER)			{
-		if(!isDeclared($x.text)){
-			throw new NeptuneException($x,"is not declared");
-		}
-		result.type = symtab.retrieve($x.text).getType();
-	}
-	|	^(ARRAY_VAR x=IDENTIFIER ex=expression)	{
-		if(!isDeclared($x.text)){
-			throw new NeptuneException($x,"is not declared");
-		}
-		result.type = symtab.retrieve($x.text).getType();
-		
-		if(!result.type.isArray) {
-			throw new NeptuneException($x,"is not an array");
-		}
-		
-		if(ex.isArray) {
-			throw new NeptuneException($x,"cannot have array as index into array");
-		}
-		
-		if(ex.type != Type.primitive.INTEGER) {
-			throw new NeptuneException($x,"index into array must be integer");
-		}
-		
-		Type newType = new Type(result.type.type);
-		result.type = newType;
-		result.isIndexIntoArray = true;
-	}
+variable_use returns [ Node node ]
+	:	^(ATOMIC_VAR x=IDENTIFIER)								{ node = new VarNode($id.text); }
+	|	^(ARRAY_VAR x=IDENTIFIER ex=expression)					{ node = new VarIndexedNode($id.text, ex); }
 	;
 
-type returns [Type type = new Type(Type.primitive.VOID) ]
-	: INTEGER count=array_def? {
-		if(count > 0){
-			type = new Type(Type.primitive.INTEGER, count);
-		}else{
-			type = new Type(Type.primitive.INTEGER);
-		}}
-	| CHAR count=array_def? {
-		if(count > 0){
-			type = new Type(Type.primitive.CHAR, count);
-		}else{
-			type = new Type(Type.primitive.CHAR);
-		}}
-	| BOOLEAN count=array_def? {
-		if(count > 0){
-			type = new Type(Type.primitive.BOOLEAN, count);
-		}else{
-			type = new Type(Type.primitive.BOOLEAN);
-		}}
+type returns [ Node node ]
+	: INTEGER count=array_def?		{ node = new TypeNode(Node.type.INTEGER, count); }
+	| CHAR count=array_def?			{ node = new TypeNode(Node.type.CHAR, count); }
+	| BOOLEAN count=array_def?		{ node = new TypeNode(Node.type.BOOL, count); }
 	;
 
 array_def returns [int count = 0]
 	: ^(ARRAY_DEF x=NUMBER) { count = Integer.parseInt($x.text); }
 	;
-
-
-
-

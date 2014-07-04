@@ -166,11 +166,11 @@ if_statement
 	;
 	
 print_statement
-	:	PRINT^ LPAREN! expression (COMMA expression)* RPAREN!
+	:	PRINT^ LPAREN! expression (COMMA! expression)* RPAREN!
 	;
 	
 read_statement
-	:	READ^ LPAREN! expression (COMMA expression)* RPAREN!
+	:	READ^ LPAREN! expression (COMMA! expression)* RPAREN!
 	;
 	
 declaration

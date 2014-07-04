@@ -2,7 +2,7 @@ package neptune;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.Tree;
 
-class NeptuneException extends RecognitionException {
+public class NeptuneException extends RecognitionException {
     private String msg;
     public static final long serialVersionUID = 24162462L; // for Serializable
 

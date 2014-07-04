@@ -9,7 +9,7 @@ import neptune.SymbolTable;
 public class Program {
 
 	private List<Instruction> instructions;
-	public SymbolTable symtab;
+	public SymbolTable symbolTable = new SymbolTable();
 	public static boolean isFunctionCall = false;
 	
 	private List<Instruction> functionInstructions;

@@ -65,7 +65,7 @@ codeblock returns [Type type = null]
 	;
 
 logic_statement
-	: while_statement
+	: w=while_statement
 	| foreach_statement
 	| if_statement
 	;
@@ -542,6 +542,10 @@ variable_use returns [Variable result = new Variable() ]
 	}
 	|	^(ARRAY_VAR x=IDENTIFIER expression)	{
 		IdEntry var = symtab.retrieve($x.text);
+		
+		addTextualInstruction("LOAD(1) -1[ST]", true, true);
+		addTextualInstruction("LOADL " + var.getType().elemCount, true, false);
+		addTextualInstruction("CALL(LB) valid[CB]", false, true);
 		
 		Type newType = new Type(var.getType().type);
 		result.type = newType;

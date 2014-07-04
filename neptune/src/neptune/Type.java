@@ -2,7 +2,7 @@ package neptune;
 
 public class Type {
 	public enum primitive{
-		INTEGER, CHAR, BOOLEAN, VOID
+		INTEGER, CHAR, BOOLEAN, VOID, CONTAINER
 	}
 	
 	public boolean isArray = false;
@@ -25,3 +25,7 @@ public class Type {
 	}
 
 }
+
+//public enum Type{
+//	INTEGER, CHAR, BOOLEAN, VOID, CONTAINER
+//}

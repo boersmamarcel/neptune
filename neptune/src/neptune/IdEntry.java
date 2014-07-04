@@ -1,7 +1,6 @@
 package neptune;
 
-import neptune.assembly.Program;
-
+import neptune.node.Node;
 
 /**
  * VB prac week1 - SymbolTable.
@@ -12,28 +11,26 @@ import neptune.assembly.Program;
 public class IdEntry {
     private int  level = -1;
     private int  address = -1;
-    private Type type;
+    private Node type;
  
-    public IdEntry(int addr, Type t) {
-    	this.address = addr;
+    public IdEntry(Node t) {
     	type = t;
     }
     
-    public int   getLevel()             { return this.level;    }
-    public void  setLevel(int level)    { this.level = level;   }
+    public int   getLevel()             	{ return this.level;    }
+    public void  setLevel(int level)    	{ this.level = level;   }
     
-    public int getAddress() {
-    	return this.address;
-    }
-    public void setAddress(int address) { this.address = address; }
+    public int getAddress() 				{ return this.address; }
+    public void setAddress(int address) 	{ this.address = address; }
 
-    public Type getType(){return this.type;}
+    public Node getTypeNode()				{ return this.type; }
     
     public int getSize() {
-    	if(this.type.isArray) {
-    		return this.type.elemCount * this.type.getPrimitiveSize();
+    	if(this.type.isArray()) {
+    		return this.type.elemCount();
     	}else{
-    		return this.type.getPrimitiveSize();
+    		// All primitives have are 1 word big
+    		return 1;
     	}
     }
 }
