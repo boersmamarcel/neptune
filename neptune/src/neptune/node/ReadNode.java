@@ -5,10 +5,10 @@ import java.util.List;
 import neptune.NeptuneException;
 import neptune.assembly.Program;
 
-public class PrintNode extends Node {
+public class ReadNode extends Node {
 
-	public PrintNode(List<Node> expressions) {
-		this.description = "print";
+	public ReadNode(List<Node> expressions) {
+		this.description = "read";
 		children = expressions;
 	}
 	
@@ -16,14 +16,18 @@ public class PrintNode extends Node {
 		for(Node n: children) {
 			n.validate(p);
 			if(n.getType() == type.VOID) {
-				throw new NeptuneException(this, "expression " + n.description + " cannot be of type void");
+				throw new NeptuneException(this, "variable " + n.description + " cannot be of type void");
+			}
+			
+			if(!n.isMutable()) {
+				throw new NeptuneException(this, "trying to read into immutable variable");
 			}
 		}
 	}
 	
 	@Override
 	public type getType() {
-		// Print statement returns a real value iff there is only 1 expression
+		// Read statement returns a real value iff there is only 1 expression
 		if(children.size() == 1) {
 			return children.get(0).getType();
 		}
@@ -32,7 +36,7 @@ public class PrintNode extends Node {
 
 	@Override
 	public boolean isArray() {
-		// Print statement returns a real value iff there is only 1 expression
+		// Read statement returns a real value iff there is only 1 expression
 		if(children.size() == 1) {
 			return children.get(0).isArray();
 		}
@@ -46,7 +50,7 @@ public class PrintNode extends Node {
 
 	@Override
 	public int elemCount() {
-		// Print statement returns a real value iff there is only 1 expression
+		// Read statement returns a real value iff there is only 1 expression
 		if(children.size() == 1) {
 			return children.get(0).elemCount();
 		}

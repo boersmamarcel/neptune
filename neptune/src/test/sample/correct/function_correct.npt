@@ -30,8 +30,8 @@ function bool nand(bool a, bool b){
 };
 
 char a = 'a';
-bool b = 1;
-bool c = 1;
+bool b = true;
+bool c = true;
 
 print(square(1));
 print(square(2));

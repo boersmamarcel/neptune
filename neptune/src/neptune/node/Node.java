@@ -27,7 +27,6 @@ public abstract class Node {
 	public void validate(Program p) throws NeptuneException {
 		for(Node n: children) {
 			n.validate(p);
-			System.out.println("Validating: " + n.description);
 		}
 	}
 	
@@ -38,12 +37,27 @@ public abstract class Node {
 	}
 	
 	public boolean typeMatch(Node node) {
-		return (node.getType() == this.getType() && node.isArray() == this.isArray() && node.elemCount() == this.elemCount());	
+		
+		boolean eType = node.getType() == this.getType();
+		boolean eArray = node.isArray() == this.isArray();
+		boolean eCount = node.elemCount() == this.elemCount();
+		boolean intOrChar = (node.getType() == type.INTEGER && this.getType() == type.CHAR);
+		boolean charOrInt = (node.getType() == type.CHAR && this.getType() == type.INTEGER);
+		
+		return (eType || intOrChar || charOrInt) && eArray && eCount;
 	}
 	
 	public abstract type getType();
 	public abstract boolean isArray();
 	public abstract boolean isMutable();
 	public abstract int elemCount();
+	
+	public String typeDescription() {
+		if(isArray()) {
+			return getType() + "[" + elemCount() + "]";
+		}else{
+			return "" + getType();
+		}
+	}
 	
 }

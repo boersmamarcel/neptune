@@ -11,6 +11,7 @@ public class Program {
 	private List<Instruction> instructions;
 	public SymbolTable symbolTable = new SymbolTable();
 	public static boolean isFunctionCall = false;
+	public static String definingFunction = "";
 	
 	private List<Instruction> functionInstructions;
 	

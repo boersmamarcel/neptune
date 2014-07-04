@@ -1,4 +1,6 @@
 package neptune;
+import neptune.node.Node;
+
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.Tree;
 
@@ -20,6 +22,11 @@ public class NeptuneException extends RecognitionException {
                 " (" + tree.getLine() +
                 ":" + tree.getCharPositionInLine() +
                 ") " + msg;
+    }
+    
+    public NeptuneException(Node node, String msg) {
+    	super();
+    	this.msg = node.description + " --> " + msg;
     }
 
     @Override

@@ -25,7 +25,7 @@ public class VarDeclarationNode extends Node {
 			expression.validate(p);
 
 			if(!this.typeMatch(expression)) {
-				throw new NeptuneException(this.description + ": type mismatch with " + expression.description);
+				throw new NeptuneException(this, "type mismatch (" + expression.typeDescription() + "!=" + this.typeDescription() + ")");
 			}
 		}
 		
@@ -33,7 +33,7 @@ public class VarDeclarationNode extends Node {
 		try {
 			p.symbolTable.enter(this.identifier, entry);
 		} catch (Exception e) {
-			throw new NeptuneException(this.description + ": error while adding var to symbol table (" + e.getMessage() + ")");
+			throw new NeptuneException(this, "error while adding var to symbol table (" + e.getMessage() + ")");
 		}
 	}
 	

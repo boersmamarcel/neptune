@@ -13,28 +13,29 @@ public class VarIndexedNode extends Node {
 	public VarIndexedNode(String element, Node expression) {
 		this.description = "index_ref:" + element;
 		elementRef = element;
+		this.expression = expression;
 	}
 	
 	public void validate(Program p) throws NeptuneException {
 		IdEntry entry = p.symbolTable.retrieve(elementRef);
 		
 		if(entry == null) {
-			throw new NeptuneException(this.description + ": variable used but not declared");
+			throw new NeptuneException(this, "variable used but not declared");
 		}
 		
-		if(!entry.getTypeNode().isArray()) {
-			throw new NeptuneException(this.description + ": used with index, but is not an array");
+		if(!entry.getDeclaringNode().isArray()) {
+			throw new NeptuneException(this, "used with index, but is not an array");
 		}
 		
 		if(expression.getType() != type.INTEGER) {
-			throw new NeptuneException(this.description + ": index into variable should be integer type");
+			throw new NeptuneException(this, "index into variable should be integer type");
 		}
 		
-		if(!expression.isArray()) {
-			throw new NeptuneException(this.description + ": index into variable should not be an array");
+		if(expression.isArray()) {
+			throw new NeptuneException(this, "index into variable should not be an array");
 		}
 		
-		element = entry.getTypeNode();
+		element = entry.getDeclaringNode();
 	}
 	
 	@Override

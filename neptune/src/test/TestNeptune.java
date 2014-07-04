@@ -57,6 +57,10 @@ public class TestNeptune {
 				NeptuneChecker checker = new NeptuneChecker(treeStream);
 				
 				checker.program();
+				
+				if(true) {
+					continue;
+				}
 
 				TreeNodeStream nodes = new BufferedTreeNodeStream(tree);
 				NeptuneGenerator generator = new NeptuneGenerator(nodes);

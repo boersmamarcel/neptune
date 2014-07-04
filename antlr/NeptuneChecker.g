@@ -19,7 +19,7 @@ options{
 }
 
 program
-	: ^(PROGRAM n=lines)				{ ProgramNode node = new ProgramNode(n); node.validate(new Program()); }
+	: ^(PROGRAM n=lines)										{ ProgramNode node = new ProgramNode(n); node.validate(new Program()); }
 	;
 
 lines returns [ List<Node> nodes = new ArrayList<Node>() ]
@@ -30,6 +30,7 @@ line returns [ Node node ]
 	: n=expression												{ node = new BasicNode("expression", n); }
 	| n=declaration												{ node = new BasicNode("declaration", n);  }
 	| n=logic_statement											{ node = new BasicNode("logic", n); }
+	| n=return_statement										{ node = new BasicNode("return", n); }
 	;
 
 codeblock returns [ Node node ]
@@ -44,7 +45,7 @@ logic_statement returns [ Node node ]
 	  ^(IF ex=expression l=lines					{ ifBlocks.add(new IfBlockNode(ex, l)); }
 		(
 			ELSIF ex=expression l=lines				{ ifBlocks.add(new IfBlockNode(ex, l)); }
-		)+
+		)*
 		(
 			ELSE l=lines							{ elseNode = new ElseNode(l); }
 		)?
@@ -59,78 +60,75 @@ print_statement returns [ Node node ]
 		)														{ node = new PrintNode(expressions); }
 	;
 
-read_statement
-	: ^(READ t=IDENTIFIER (t1=IDENTIFIER)*)
+read_statement returns [ Node node ]
+	: { List<Node> expressions = new ArrayList<Node>(); }
+		^(READ
+			 n1=variable_expression { expressions.add(n1); }
+			(n2=variable_expression { expressions.add(n2); })*
+		)														{ node = new ReadNode(expressions); }
 	;
 
 declaration returns [ Node node ]
 	: ^(VAR t=type id=IDENTIFIER (BECOMES ex=expression)?)		{ node = new VarDeclarationNode($id.text, t, ex); }
 	| ^(CONST t=type id=IDENTIFIER BECOMES ex=expression) 		{ node = new ConstDeclarationNode($id.text, t, ex); }
-	| ^(FUNCTION t=type func=IDENTIFIER (t=type id=IDENTIFIER)+ l=lines return_statement) { node = new BasicNode("function " + $func.text); }
+	| { List<Node> args = new ArrayList<Node>(); }
+	  ^(FUNCTION
+		t=type
+		func=IDENTIFIER
+		(
+			t=type id=IDENTIFIER			{ args.add(new VarDeclarationNode($id.text, t, null)); }
+		)+
+		l=lines
+	) 															{ node = new FunctionDeclarationNode($func.text, t, args, l); }
 	;
 
 return_statement returns [ Node node ]
-	:	^(RETURN ex=expression)									{ node = new BasicNode("return", ex); }
-;
-
-expression returns [ Node node = new BasicNode("expression"); ]
-	: n=assignment_expr											{ node = n; }
+	:	^(RETURN ex=expression)									{ node = new ReturnNode(ex); }
 	;
 
-assignment_expr returns [ Node node = new BasicNode("assignment"); ]
-	: n=and_or_expr												{ node = n; }
-	| ^(BECOMES x=variable_use expression)
-	;
- 
-and_or_expr returns [ Node node = new BasicNode("and_or"); ]
-	: n=boolean_expr											{ node = n; }
-	| ^(AND e1=expression e2=expression)
-	| ^(OR e1=expression e2=expression)
-	;
-
-boolean_expr returns [ Node node = new BasicNode("boolean"); ]
-	: n=plus_expr												{ node = n; }
-	| ^(LT e1=expression e2=expression)
-	| ^(LT_EQ e1=expression e2=expression)
-	| ^(GT e1=expression e2=expression)
-	| ^(GT_EQ e1=expression e2=expression)
-	| ^(EQ expression expression)
-	| ^(NEQ expression expression)
-	;
-
-plus_expr returns [ Node node = new BasicNode("plus"); ]
-	: n=multi_expr												{ node = n; }
-	| ^(PLUS e1=expression e2=expression)
-	| ^(MINUS e1=expression e2=expression)
+expression returns [ Node node ]
+	: n=operand													{ node = n; }
+	| ^(BECOMES x=variable_use e1=expression)					{ node = new BinaryAnyOperatorNode(Operator.BECOMES, x, e1); }
+	| ^(AND e1=expression e2=expression)						{ node = new BinaryPrimitiveOperatorNode(Operator.AND, e1, e2); }
+	| ^(OR e1=expression e2=expression)							{ node = new BinaryPrimitiveOperatorNode(Operator.OR, e1, e2); }
+	| ^(LT e1=expression e2=expression)							{ node = new BinaryPrimitiveOperatorNode(Operator.LESS, e1, e2); }
+	| ^(LT_EQ e1=expression e2=expression)						{ node = new BinaryPrimitiveOperatorNode(Operator.LESS_EQUAL, e1, e2); }
+	| ^(GT e1=expression e2=expression)							{ node = new BinaryPrimitiveOperatorNode(Operator.GREATER, e1, e2); }
+	| ^(GT_EQ e1=expression e2=expression)						{ node = new BinaryPrimitiveOperatorNode(Operator.GREATER_EQUAL, e1, e2); }
+	| ^(EQ e1=expression e2=expression)							{ node = new BinaryAnyOperatorNode(Operator.EQUAL, e1, e2); }
+	| ^(NEQ e1=expression e2=expression)						{ node = new BinaryAnyOperatorNode(Operator.NOT_EQUAL, e1, e2); }
+	| ^(PLUS e1=expression e2=expression)						{ node = new BinaryPrimitiveOperatorNode(Operator.PLUS, e1, e2); }
+	| ^(MINUS e1=expression e2=expression)						{ node = new BinaryPrimitiveOperatorNode(Operator.MINUS, e1, e2); }
+	| ^(TIMES e1=expression e2=expression)						{ node = new BinaryPrimitiveOperatorNode(Operator.TIMES, e1, e2); }
+	| ^(DIVIDE e1=expression e2=expression)						{ node = new BinaryPrimitiveOperatorNode(Operator.DIVIDE, e1, e2); }
+	| ^(MOD e1=expression e2=expression)						{ node = new BinaryPrimitiveOperatorNode(Operator.MOD, e1, e2); }
+	| ^(UNARY_MINUS e1=expression)								{ node = new UnaryPrimitiveOperatorNode(Operator.UNARY_MINUS, e1); }
+	| ^(UNARY_PLUS e1=expression)								{ node = new UnaryPrimitiveOperatorNode(Operator.UNARY_PLUS, e1); }
+	| ^(NEGATE e1=expression)									{ node = new UnaryPrimitiveOperatorNode(Operator.UNARY_NEGATE, e1); }
 	;
 
-multi_expr returns [ Node node = new BasicNode("multi"); ]
-	: n=unary_expr												{ node = n; }
-	| ^(TIMES e1=expression e2=expression)
-	| ^(DIVIDE e1=expression e2=expression)
-	| ^(MOD e1=expression e2=expression)
+operand returns [ Node node ]
+	: ^(FUNCTION id=IDENTIFIER n=array_set)						{ node = new FunctionCallNode($id.text, n); } // fix
+	| v=variable_expression										{ node = v; }
+	| l=NUMBER													{ node = new LiteralNode($l.text, Node.type.INTEGER); }
+	| n=array_set												{ node = n; }
+	| l=TRUE													{ node = new LiteralNode($l.text, Node.type.BOOL); }
+	| l=FALSE													{ node = new LiteralNode($l.text, Node.type.BOOL); }
+	| l=CHAR_LITERAL											{ node = new LiteralNode($l.text, Node.type.CHAR); }
+	| l=STRING_LITERAL											{ node = new LiteralNode($l.text, Node.type.CHAR); }
+	| n=codeblock												{ node = n; }
+	| n=print_statement											{ node = n; }
+	| n=read_statement											{ node = n; }
+	| ^(SIZEOF id=IDENTIFIER)									{ node = new SizeOfNode($id.text); }
 	;
 	
-unary_expr returns [ Node node = new BasicNode("unary"); ]
-	: n=operand													{ node = n; }
-	| ^(UNARY_MINUS o=expression)
-	| ^(UNARY_PLUS o=expression)
-	| ^(NEGATE o=expression)
-	;
-
-operand returns [ Node node = new BasicNode("operand"); ]
-	: ^(FUNCTION IDENTIFIER ^(ARRAY_SET expression+))
-	| v=variable_expression										{ node = v; }
-	| NUMBER
-	| ^(ARRAY_SET (expression)+)
-	| TRUE
-	| FALSE
-	| CHAR_LITERAL
-	| str=STRING_LITERAL
-	| codeblock
-	| n=print_statement											{ node = n; }
-	| read_statement
-	| ^(SIZEOF id=IDENTIFIER)
+array_set returns [ Node node ]
+	: { List<Node> elements = new ArrayList<Node>(); }
+	  ^(ARRAY_SET
+		(
+			ex=expression					{ elements.add(ex); }
+		)+
+	  )															{ node = new ArraySetNode(elements); }
 	;
 	
 variable_expression returns [ Node node ]
@@ -139,8 +137,8 @@ variable_expression returns [ Node node ]
 	;
 	
 variable_use returns [ Node node ]
-	:	^(ATOMIC_VAR x=IDENTIFIER)								{ node = new VarNode($id.text); }
-	|	^(ARRAY_VAR x=IDENTIFIER ex=expression)					{ node = new VarIndexedNode($id.text, ex); }
+	:	^(ATOMIC_VAR id=IDENTIFIER)								{ node = new VarNode($id.text); }
+	|	^(ARRAY_VAR id=IDENTIFIER ex=expression)				{ node = new VarIndexedNode($id.text, ex); }
 	;
 
 type returns [ Node node ]

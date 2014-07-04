@@ -1,3 +1,19 @@
-int a;
+char[5] test = "HEYOO";
+const char tester = 'a';
+int a = sizeof(test);
 
-print(a[1]);
+function int hello(int a, int b) {
+	if(a == 1) {
+		return(3);
+	}else{
+		return(1);
+	}
+	
+	return(10);
+};
+
+hello(1, 2);
+
+int b = 'a';
+
+print(test = "HELLO");

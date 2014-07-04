@@ -46,23 +46,23 @@ print(x);
 x = (2+5)*3;
 print(x);
 
-bool h = 0;
-bool i = 0;
+bool h = false;
+bool i = true;
 
 print(h && i);
 print(!h && !i);
 print(!(h && i));
 
-i = 1;
+i = true;
 
 print(h || i);
 
-i = 0;
-h = 1;
+i = false;
+h = true;
 print(h || i);
 
-i = 0;
-h = 0;
+i = false;
+h = false;
 print(h || i);
 
 //sfdasfds

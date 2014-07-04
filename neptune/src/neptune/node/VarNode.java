@@ -18,10 +18,10 @@ public class VarNode extends Node {
 		IdEntry entry = p.symbolTable.retrieve(elementRef);
 		
 		if(entry == null) {
-			throw new NeptuneException(this.description + ": variable used but not declared");
+			throw new NeptuneException(this, "variable used but not declared");
 		}
 		
-		element = entry.getTypeNode();
+		element = entry.getDeclaringNode();
 	}
 	
 	@Override

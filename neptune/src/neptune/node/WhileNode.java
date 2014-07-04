@@ -20,11 +20,11 @@ public class WhileNode extends Node {
 	public void validate(Program p) throws NeptuneException {
 		p.symbolTable.openScope();
 		if(loopCondition.getType() != type.BOOL) {
-			throw new NeptuneException(this.description + ": loop condition " + loopCondition.description + " must be boolean");
+			throw new NeptuneException(this, "loop condition " + loopCondition.description + " must be boolean");
 		}
 		
 		if(loopCondition.isArray()) {
-			throw new NeptuneException(this.description + ": loop condition " + loopCondition.description + " cannot be array");
+			throw new NeptuneException(this, "loop condition " + loopCondition.description + " cannot be array");
 		}
 		
 		super.validate(p);

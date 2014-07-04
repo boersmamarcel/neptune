@@ -24,14 +24,14 @@ public class ConstDeclarationNode extends Node {
 		expression.validate(p);
 
 		if(!this.typeMatch(expression)) {
-			throw new NeptuneException(this.description + ": type mismatch with " + expression.description);
+			throw new NeptuneException(this, "type mismatch with " + expression.description);
 		}
 		
 		IdEntry entry = new IdEntry(this);
 		try {
 			p.symbolTable.enter(this.identifier, entry);
 		} catch (Exception e) {
-			throw new NeptuneException(this.description + ": error while adding const to symbol table (" + e.getMessage() + ")");
+			throw new NeptuneException(this, "error while adding const to symbol table (" + e.getMessage() + ")");
 		}
 	}
 	

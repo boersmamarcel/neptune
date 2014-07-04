@@ -16,17 +16,18 @@ public class IfBlockNode extends Node {
 		this.expression = expression;
 		this.lines = lines;
 		
-		children.add(expression);
 		children.addAll(lines);
 	}
 	
 	public void validate(Program p) throws NeptuneException {
+		expression.validate(p);
+		
 		if(expression.getType() != type.BOOL) {
-			throw new NeptuneException(this.description + ": condition for if-block must be boolean (" + expression + ")");
+			throw new NeptuneException(this, "condition for if-block must be boolean (" + expression.typeDescription() + ")");
 		}
 		
 		if(expression.isArray()) {
-			throw new NeptuneException(this.description + ": condition for if-block cannot be array (" + expression + ")");
+			throw new NeptuneException(this, "condition for if-block cannot be array (" + expression.typeDescription() + ")");
 		}
 		
 		p.symbolTable.openScope();

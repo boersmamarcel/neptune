@@ -26,16 +26,16 @@ public class ForeachNode extends Node {
 		// Node elementType = new TypeNode(array.getType(), 0);
 		// new VarDeclarationNode(element, elementType, null)
 		
-		Node array = p.symbolTable.retrieve(arrayRef).getTypeNode();
+		Node array = p.symbolTable.retrieve(arrayRef).getDeclaringNode();
 		Node elementType = new TypeNode(array.getType(), 0);
 		Node element = new VarDeclarationNode(elementRef, elementType, null);
 		
 		if(array.getType() == type.VOID) {
-			throw new NeptuneException(this.description + ": iterated element cannot be void");
+			throw new NeptuneException(this, "iterated element cannot be void");
 		}
 		
 		if(!array.isArray()) {
-			throw new NeptuneException(this.description + ": iterated element should be array (" + array.description + ")");
+			throw new NeptuneException(this, "iterated element should be array (" + array.description + ")");
 		}
 		
 		element.validate(p);

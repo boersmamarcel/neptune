@@ -38,8 +38,9 @@ public class SymbolTable {
     	this.scopeStack.push(newList);
     }
 
-    public void openFunctionScope() {
+    public void openFunctionScope(String funcName) {
     	Program.isFunctionCall = true;
+    	Program.definingFunction = funcName;
     	functionSize = 0;
     }
     
