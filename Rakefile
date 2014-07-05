@@ -1,29 +1,29 @@
 
 namespace :build do
-	file "antlr/Neptune.java" => "antlr/Neptune.g" do
-		sh "java org.antlr.Tool antlr/Neptune.g"
+	file "tmp/Neptune.java" => "antlr/Neptune.g" do
+		sh "java org.antlr.Tool antlr/Neptune.g -o tmp/"
 	end
 
-	file "antlr/NeptuneChecker.java" => ["antlr/NeptuneChecker.g", "antlr/Neptune.g"] do
-		sh "java org.antlr.Tool antlr/NeptuneChecker.g"
+	file "tmp/NeptuneChecker.java" => ["antlr/NeptuneChecker.g", "antlr/Neptune.g"] do
+		sh "java org.antlr.Tool antlr/NeptuneChecker.g -o tmp/"
 	end
 
-	file "antlr/NeptuneGenerator.java" => ["antlr/NeptuneGenerator.g", "antlr/Neptune.g"] do
-		sh "java org.antlr.Tool antlr/NeptuneGenerator.g"
+	file "tmp/NeptuneGenerator.java" => ["antlr/NeptuneGenerator.g", "antlr/Neptune.g"] do
+		sh "java org.antlr.Tool antlr/NeptuneGenerator.g -o tmp/"
 	end
 
 	desc "Build generator"
-	task :generator => [:setup, "antlr/NeptuneGenerator.java"] do
+	task :generator => [:setup, "tmp/NeptuneGenerator.java"] do
 		puts "building generator"
 	end
 
 	desc "Build checker"
-	task :checker => [:setup, "antlr/NeptuneChecker.java"] do
+	task :checker => [:setup, "tmp/NeptuneChecker.java"] do
 		puts "building checker"
 	end
 
 	desc "Build parser"
-	task :parser => [:setup, "antlr/Neptune.java"] do
+	task :parser => [:setup, "tmp/Neptune.java"] do
 		puts "Building parser"
 	end
 
@@ -43,17 +43,17 @@ end
 namespace :copy do
 	desc "copy parser"
 	task :parser do
-		sh "cp -f antlr/NeptuneLexer.java antlr/NeptuneParser.java Neptune.tokens neptune/src/neptune/"
+		sh "cp -f tmp/antlr/NeptuneLexer.java tmp/antlr/NeptuneParser.java tmp/Neptune.tokens neptune/src/neptune/"
 	end
 
 	desc "copy checker"
 	task :checker do
-		sh "cp -f antlr/NeptuneChecker.java NeptuneChecker.tokens neptune/src/neptune/"
+		sh "cp -f tmp/antlr/NeptuneChecker.java tmp/NeptuneChecker.tokens neptune/src/neptune/"
 	end
 
 	desc "copy generator"
 	task :generator do
-		sh "cp -f antlr/NeptuneGenerator.java NeptuneGenerator.tokens neptune/src/neptune/"
+		sh "cp -f tmp/antlr/NeptuneGenerator.java tmp/NeptuneGenerator.tokens neptune/src/neptune/"
 	end
 
 	desc "copy all"
