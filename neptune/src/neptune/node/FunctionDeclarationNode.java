@@ -1,9 +1,12 @@
 package neptune.node;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import neptune.IdEntry;
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class FunctionDeclarationNode extends Node {
@@ -30,16 +33,14 @@ public class FunctionDeclarationNode extends Node {
 			throw new NeptuneException(this, "function can only be declared in the global scope");
 		}
 		
-		try {
-			p.symbolTable.enter("_" + funcName, new IdEntry(this));
-		} catch (Exception e) {
-			throw new NeptuneException(this, "error while declaring function (" + e.getMessage() + ")");
-		}
+		addToSymbolTable(p);
 		
 		p.symbolTable.openFunctionScope(funcName);
 		p.symbolTable.openScope();
 		
-		super.validate(p);
+		for(Node n: children) {
+			n.validate(p);
+		}
 		
 		if(!children.get(children.size()-1).description.equals("return")) {
 			throw new NeptuneException(this, "function must end with a return statement");
@@ -47,6 +48,56 @@ public class FunctionDeclarationNode extends Node {
 		
 		p.symbolTable.closeScope();
 		p.symbolTable.closeFunctionScope();
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+		addToSymbolTable(p);
+		
+		p.symbolTable.openFunctionScope(funcName);
+		p.symbolTable.openScope();
+		
+		p.add(Instruction.LABEL(funcName));
+		
+		IdEntry functionEntry = p.symbolTable.retrieve("_" + funcName);
+		
+		int argsSize = 0;
+		
+		for(Node n: args) {
+			if(n.isArray()) {
+				argsSize += n.elemCount();
+			}else{
+				argsSize++;
+			}
+		}
+		
+		p.add(Instruction.PUSH(functionEntry.getSize() + argsSize));
+		
+		if(argsSize > 0) {
+			p.add(Instruction.LOAD(-argsSize, argsSize));
+		}
+		
+		for(int i = 0; i < args.size(); i++) {
+			Map<String, Object> genArgs = new HashMap<String, Object>();
+			genArgs.put("instruction", "store");
+			args.get(i).generate(p, genArgs);
+		}
+		
+		for(Node n: lines) {
+			n.resultIsUsed = false;
+			n.generate(p, info);
+		}
+		
+		p.symbolTable.closeScope();
+		p.symbolTable.closeFunctionScope();
+	}
+	
+	protected void addToSymbolTable(Program p) throws NeptuneException {
+		try {
+			p.symbolTable.enter("_" + funcName, new IdEntry(this));
+		} catch (Exception e) {
+			throw new NeptuneException(this, "error while declaring function (" + e.getMessage() + ")");
+		}
 	}
 	
 	@Override

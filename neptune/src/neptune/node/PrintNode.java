@@ -1,8 +1,10 @@
 package neptune.node;
 
 import java.util.List;
+import java.util.Map;
 
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class PrintNode extends Node {
@@ -18,6 +20,33 @@ public class PrintNode extends Node {
 			if(n.getType() == type.VOID) {
 				throw new NeptuneException(this, "expression " + n.description + " cannot be of type void");
 			}
+		}
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+		for(Node n: children) {
+			n.resultIsUsed = true;
+			n.generate(p, info);
+			
+			int elems = 1;
+			
+			if(n.isArray()) {
+				elems = n.elemCount();
+			}
+
+			for(int i = 0; i < elems; i++) {
+				if(n.getType() == type.CHAR) {
+					p.add(Instruction.PRINT_CHAR());
+				}else{
+					p.add(Instruction.PRINT_INT());
+				}
+			}
+		}
+		
+		if(children.size() == 1 && resultIsUsed) {
+			children.get(0).resultIsUsed = true;
+			children.get(0).generate(p, info);
 		}
 	}
 	

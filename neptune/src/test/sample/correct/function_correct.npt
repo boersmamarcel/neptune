@@ -8,9 +8,7 @@ function int fibo(int n){
 	if(n <= 1){
 		result = 1;
 	}else{
-		int a = fibo(n-1);
-		int b = fibo(n-2);
-		result = a + b;
+		result = fibo(n-1) + fibo(n-2);
 	} 
 	return(result);
 }
@@ -38,20 +36,9 @@ print(square(2));
 print(identity(a));
 print(inverse(b));
 print(inverse(inverse(b)));
-print("fibo -1");
-a = 10;
-print(a);
 print(fibo(-1));
-print(a);
-print(a);
-print("fibo 0");
-print(a);
 print(fibo(0));
-print(a);
-print("Fibo 1");
-print(a);
 print(fibo(1));
-print(a);
 print(fibo(3));
 print(nand(b,c));
 print(nand(!b, !c));

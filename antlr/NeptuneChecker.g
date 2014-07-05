@@ -19,7 +19,7 @@ options{
 }
 
 program
-	: ^(PROGRAM n=lines)										{ ProgramNode node = new ProgramNode(n); node.validate(new Program()); }
+	: ^(PROGRAM n=lines)										{ ProgramNode node = new ProgramNode(n); Program p = new Program(); node.validate(p); node.generate(p, null); p.assemble(); }
 	;
 
 lines returns [ List<Node> nodes = new ArrayList<Node>() ]

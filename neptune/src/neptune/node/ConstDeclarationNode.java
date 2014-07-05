@@ -1,7 +1,10 @@
 package neptune.node;
 
+import java.util.Map;
+
 import neptune.IdEntry;
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class ConstDeclarationNode extends Node {
@@ -21,12 +24,34 @@ public class ConstDeclarationNode extends Node {
 	}
 	
 	public void validate(Program p) throws NeptuneException {
+		type.validate(p);
 		expression.validate(p);
 
 		if(!this.typeMatch(expression)) {
 			throw new NeptuneException(this, "type mismatch with " + expression.description);
 		}
 		
+		addToSymbolTable(p);
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+		expression.resultIsUsed = true;
+		expression.generate(p, info);
+		
+		addToSymbolTable(p);
+		
+		IdEntry entry = p.symbolTable.retrieve(this.identifier);
+		if(type.isArray()) {
+			for(int i = 0; i < type.elemCount(); i++) {
+				p.add(Instruction.STORE(entry.getAddress() + i));
+			}
+		}else{
+			p.add(Instruction.STORE(entry.getAddress()));
+		}
+	}
+	
+	protected void addToSymbolTable(Program p) throws NeptuneException {
 		IdEntry entry = new IdEntry(this);
 		try {
 			p.symbolTable.enter(this.identifier, entry);

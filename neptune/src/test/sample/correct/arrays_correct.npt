@@ -16,4 +16,4 @@ char[5] msg2;
 
 msg1 = msg2 = english;
 
-print(msg1, '.', msg2, '.', english, english[5]);
+print(msg1, '.', msg2, '.', english);

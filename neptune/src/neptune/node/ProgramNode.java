@@ -1,6 +1,7 @@
 package neptune.node;
 
 import java.util.List;
+import java.util.Map;
 
 import neptune.assembly.Program;
 import neptune.NeptuneException;
@@ -15,14 +16,19 @@ public class ProgramNode extends Node {
 	@Override
 	public void validate(Program p) throws NeptuneException {
 		p.symbolTable.openScope();
-		super.validate(p);
+		for(Node n: children) {
+			n.validate(p);
+		}
 		p.symbolTable.closeScope();
 	}
 
 	@Override
-	public void generate(Program p) {
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
 		p.symbolTable.openScope();
-		super.generate(p);
+		for(Node n: children) {
+			n.resultIsUsed = false;
+			n.generate(p, info);
+		}
 		p.symbolTable.closeScope();
 	}
 

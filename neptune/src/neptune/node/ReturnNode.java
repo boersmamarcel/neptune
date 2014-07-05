@@ -1,7 +1,10 @@
 package neptune.node;
 
+import java.util.Map;
+
 import neptune.IdEntry;
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class ReturnNode extends Node {
@@ -26,6 +29,21 @@ public class ReturnNode extends Node {
 		
 		if(!this.typeMatch(declaringNode)) {
 			throw new NeptuneException(this, "invalid return type (" + this.typeDescription() + "!=" + declaringNode.typeDescription() + ")");
+		}
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+		IdEntry entry = p.symbolTable.retrieve("_" + Program.definingFunction);
+		FunctionDeclarationNode declaringNode = (FunctionDeclarationNode)entry.getDeclaringNode();
+		
+		expression.resultIsUsed = true;
+		expression.generate(p, info);
+			
+		if(expression.isArray()) {
+			p.add(Instruction.RETURN(expression.elemCount(), declaringNode.args.size()));
+		}else{
+			p.add(Instruction.RETURN(1, declaringNode.args.size()));
 		}
 	}
 	

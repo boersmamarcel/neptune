@@ -1,8 +1,10 @@
 package neptune.node;
 
 import java.util.List;
+import java.util.Map;
 
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class IfBlockNode extends Node {
@@ -31,7 +33,26 @@ public class IfBlockNode extends Node {
 		}
 		
 		p.symbolTable.openScope();
-		super.validate(p);
+		for(Node n: children) {
+			n.validate(p);
+		}
+		p.symbolTable.closeScope();
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+		
+		Integer nextLabel = (Integer)info.get("next_label");
+		
+		expression.resultIsUsed = true;
+		expression.generate(p, info);
+		p.add(Instruction.JUMPIF(0, nextLabel));
+		
+		p.symbolTable.openScope();
+		for(Node n: children) {
+			n.resultIsUsed = false;
+			n.generate(p, info);
+		}
 		p.symbolTable.closeScope();
 	}
 	

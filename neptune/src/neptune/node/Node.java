@@ -2,6 +2,7 @@ package neptune.node;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import neptune.NeptuneException;
 import neptune.assembly.Program;
@@ -17,6 +18,7 @@ public abstract class Node {
 	protected type primitive = type.VOID;
 	protected boolean isArray = false;
 	protected boolean isMutable = false;
+	protected boolean resultIsUsed = false;
 	protected int elemCount = 0;
 	public String description;
 	
@@ -24,17 +26,9 @@ public abstract class Node {
 		return description + " ( " + children.toString() + " ) ";
 	}
 	
-	public void validate(Program p) throws NeptuneException {
-		for(Node n: children) {
-			n.validate(p);
-		}
-	}
+	public abstract void validate(Program p) throws NeptuneException;
 	
-	public void generate(Program p) {
-		for(Node n: children) {
-			n.generate(p);
-		}
-	}
+	public abstract void generate(Program p, Map<String, Object> info) throws NeptuneException;
 	
 	public boolean typeMatch(Node node) {
 		

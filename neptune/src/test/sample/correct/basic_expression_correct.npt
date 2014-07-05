@@ -47,7 +47,7 @@ x = (2+5)*3;
 print(x);
 
 bool h = false;
-bool i = true;
+bool i = false;
 
 print(h && i);
 print(!h && !i);

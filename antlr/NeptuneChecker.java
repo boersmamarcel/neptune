@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/NeptuneChecker.g 2014-07-04 21:59:34
+// $ANTLR 3.5.2 antlr/NeptuneChecker.g 2014-07-05 13:49:34
 
 	package neptune;
 	
@@ -130,7 +130,7 @@ public class NeptuneChecker extends TreeParser {
 
 			match(input, Token.UP, null); 
 
-			 ProgramNode node = new ProgramNode(n); node.validate(new Program()); 
+			 ProgramNode node = new ProgramNode(n); Program p = new Program(); node.validate(p); node.generate(p, null); p.assemble(); 
 			}
 
 		}

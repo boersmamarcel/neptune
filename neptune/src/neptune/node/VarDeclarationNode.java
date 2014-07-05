@@ -1,7 +1,10 @@
 package neptune.node;
 
+import java.util.Map;
+
 import neptune.IdEntry;
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class VarDeclarationNode extends Node {
@@ -29,7 +32,43 @@ public class VarDeclarationNode extends Node {
 			}
 		}
 		
-		IdEntry entry = new IdEntry(this);
+		addToSymbolTable(p);
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+		addToSymbolTable(p);
+
+		IdEntry entry = p.symbolTable.retrieve(this.identifier);
+		
+		if(info == null || info.get("instruction") == null || !info.get("instruction").equals("store")) {
+		
+			if(expression != null) {
+				expression.resultIsUsed = true;
+				expression.generate(p, info);
+
+				if(type.isArray()) {
+					for(int i = 0; i < type.elemCount(); i++) {
+						p.add(Instruction.STORE(entry.getAddress() + i));
+					}
+				}else{
+					p.add(Instruction.STORE(entry.getAddress()));
+				}
+			}
+		} else {
+			if(type.isArray()) {
+				for(int i = 0; i < type.elemCount(); i++) {
+					p.add(Instruction.STORE(entry.getAddress() + i));
+				}
+			}else{
+				p.add(Instruction.STORE(entry.getAddress()));
+			}
+		}
+	}
+	
+	protected void addToSymbolTable(Program p) throws NeptuneException {
+			IdEntry entry = new IdEntry(this);
+		
 		try {
 			p.symbolTable.enter(this.identifier, entry);
 		} catch (Exception e) {

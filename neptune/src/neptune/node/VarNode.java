@@ -1,7 +1,10 @@
 package neptune.node;
 
+import java.util.Map;
+
 import neptune.IdEntry;
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class VarNode extends Node {
@@ -22,6 +25,34 @@ public class VarNode extends Node {
 		}
 		
 		element = entry.getDeclaringNode();
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+
+		IdEntry entry = p.symbolTable.retrieve(this.elementRef);
+		
+		if(info == null || info.get("instruction") == null || !info.get("instruction").equals("store")) {
+			if(resultIsUsed) {
+				if(element.isArray()) {
+
+					// Load in reverse order
+					for(int i = element.elemCount() - 1; i >= 0; i--) {
+						p.add(Instruction.LOAD(entry.getAddress() + i));
+					}
+				}else{
+					p.add(Instruction.LOAD(entry.getAddress()));
+				}
+			}
+		} else {
+			if(element.isArray()) {
+				for(int i = 0; i < element.elemCount(); i++) {
+					p.add(Instruction.STORE(entry.getAddress() + i));
+				}
+			}else{
+				p.add(Instruction.STORE(entry.getAddress()));
+			}
+		}
 	}
 	
 	@Override

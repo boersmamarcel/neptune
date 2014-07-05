@@ -1,9 +1,11 @@
 package neptune.node;
 
 import java.util.List;
+import java.util.Map;
 
 import neptune.IdEntry;
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class FunctionCallNode extends Node {
@@ -22,7 +24,9 @@ public class FunctionCallNode extends Node {
 	}
 	
 	public void validate(Program p) throws NeptuneException {
-		super.validate(p);
+		for(Node n: children) {
+			n.validate(p);
+		}
 		
 		IdEntry entry = p.symbolTable.retrieve("_" + functionName);
 		
@@ -39,6 +43,27 @@ public class FunctionCallNode extends Node {
 			if(!args.get(i).typeMatch(functionRef.args.get(i))) {
 				throw new NeptuneException(this, "argument " + (i+1) + " does not match expected argument type");
 			}
+		}
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+		IdEntry entry = p.symbolTable.retrieve("_" + functionName);
+		
+		for(int i = args.size()-1; i >= 0; i--) {
+			args.get(i).resultIsUsed = true;
+			args.get(i).generate(p, info);
+		}
+		
+		p.add(Instruction.CALL_LABEL(functionName));
+		
+		if(!resultIsUsed) {
+			int elems = 1;
+			if(entry.getDeclaringNode().isArray()) {
+				elems=entry.getDeclaringNode().elemCount();
+			}
+			
+			p.add(Instruction.POP(elems));
 		}
 	}
 	

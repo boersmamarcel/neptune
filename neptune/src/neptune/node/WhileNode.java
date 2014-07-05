@@ -1,8 +1,10 @@
 package neptune.node;
 
 import java.util.List;
+import java.util.Map;
 
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class WhileNode extends Node {
@@ -12,13 +14,15 @@ public class WhileNode extends Node {
 	public WhileNode(Node expression, List<Node> lines) {
 		this.description = "while";
 		loopCondition = expression;
-		children.add(expression);
 		children.addAll(lines);
 	}
 	
 	@Override
 	public void validate(Program p) throws NeptuneException {
 		p.symbolTable.openScope();
+		
+		loopCondition.validate(p);
+		
 		if(loopCondition.getType() != type.BOOL) {
 			throw new NeptuneException(this, "loop condition " + loopCondition.description + " must be boolean");
 		}
@@ -27,14 +31,32 @@ public class WhileNode extends Node {
 			throw new NeptuneException(this, "loop condition " + loopCondition.description + " cannot be array");
 		}
 		
-		super.validate(p);
+		for(Node n: children) {
+			n.validate(p);
+		}
 		p.symbolTable.closeScope();
 	}
 
 	@Override
-	public void generate(Program p) {
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
 		p.symbolTable.openScope();
-		super.generate(p);
+		
+		int beginLabel = p.generateLabel();
+		int endLabel = p.generateLabel();
+		
+		p.add(Instruction.LABEL(beginLabel));
+		loopCondition.resultIsUsed = true;
+		loopCondition.generate(p, info);
+		p.add(Instruction.JUMPIF(0, endLabel));
+		
+		for(Node n: children) {
+			n.resultIsUsed = false;
+			n.generate(p, info);
+		}
+		
+		p.add(Instruction.JUMP(beginLabel));
+		p.add(Instruction.LABEL(endLabel));
+		
 		p.symbolTable.closeScope();
 	}
 	

@@ -1,6 +1,9 @@
 package neptune.node;
 
+import java.util.Map;
+
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class UnaryPrimitiveOperatorNode extends Node {
@@ -60,6 +63,22 @@ public class UnaryPrimitiveOperatorNode extends Node {
 		}
 		
 		return result;
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+		if(resultIsUsed) {
+			operand.resultIsUsed = true;
+			operand.generate(p, info);
+			
+			if(operator == Operator.UNARY_NEGATE) {
+				p.add(Instruction.UNARY_NEGATE());
+			}else if(operator == Operator.UNARY_MINUS) {
+				p.add(Instruction.UNARY_MINUS());
+			}
+			
+			// Unary plus has no real effect, besides loading the argument onto the stack.
+		}
 	}
 
 	@Override

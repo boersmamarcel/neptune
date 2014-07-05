@@ -1,7 +1,10 @@
 package neptune.node;
 
+import java.util.Map;
+
 import neptune.IdEntry;
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class VarIndexedNode extends Node {
@@ -36,6 +39,40 @@ public class VarIndexedNode extends Node {
 		}
 		
 		element = entry.getDeclaringNode();
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+
+		IdEntry entry = p.symbolTable.retrieve(this.elementRef);
+		
+		if(info == null || info.get("instruction") == null || !info.get("instruction").equals("store")) {
+			
+			// First confirm that the index is not out of bounds
+			expression.resultIsUsed = true;
+			expression.generate(p, info);
+			p.add(Instruction.LOADL(entry.getDeclaringNode().elemCount()));
+			p.add(Instruction.CALL_LABEL("valid0"));
+			
+			// Next load the address and using that the value onto the stack if it is used
+			if(resultIsUsed) {
+				p.add(Instruction.LOADA(entry.getAddress()));
+				expression.generate(p, info);
+				p.add(Instruction.ADD());
+				p.add(Instruction.LOADI(1));
+			}
+		} else {
+			expression.resultIsUsed = true;
+			expression.generate(p, info);
+			p.add(Instruction.LOADL(entry.getDeclaringNode().elemCount()));
+			p.add(Instruction.CALL_LABEL("valid0"));
+			
+			p.add(Instruction.LOADA(entry.getAddress()));
+			expression.generate(p, info);
+			p.add(Instruction.ADD());
+			
+			p.add(Instruction.STOREI(1));
+		}
 	}
 	
 	@Override

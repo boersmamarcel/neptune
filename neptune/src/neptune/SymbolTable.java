@@ -46,6 +46,7 @@ public class SymbolTable {
     
     public void closeFunctionScope() {
     	Program.isFunctionCall = false;
+    	retrieve("_" + Program.definingFunction).functionSize = functionSize;
     }
     
     public int getFunctionSize() {
@@ -67,10 +68,19 @@ public class SymbolTable {
     	for(String identifier : scopeList) {
     		IdEntry poppedElement = this.symtab.get(identifier).pop();
     		
-    		if(!Program.isFunctionCall) {
+    		if(!Program.isFunctionCall && identifier.charAt(0) != '_') {
     			currentSize -= poppedElement.getSize();
     		}
+    		
+//    		System.out.println("<===>    " + identifier);
     	}
+    	
+//    	System.out.println("<<<<<    " + currentSize);
+//    	System.out.println("<<<      " + this.currentLevel());
+//    	
+//    	if(this.currentLevel == 0) {
+//    		System.out.println(this.symtab);
+//    	}
     	
     	this.currentLevel--;
     	
@@ -92,6 +102,9 @@ public class SymbolTable {
      *    on the current level.
      */
     public void enter(String id, IdEntry entry) throws SymbolTableException {
+    	
+//    	System.out.println(">>>>>    " + currentSize);
+    	
     	IdEntry currentEntry = this.retrieve(id);
     	if(currentEntry != null && currentEntry.getLevel() == this.currentLevel()) {
     		throw new SymbolTableException("Failure. ID '" + id + "' already exists within scope.");
@@ -120,7 +133,9 @@ public class SymbolTable {
     	if(Program.isFunctionCall) {
     		functionSize += entry.getSize();
     	}else{
-    		currentSize += entry.getSize();
+    		if(id.charAt(0) != '_') {
+    			currentSize += entry.getSize();
+    		}
     	}
     }
 

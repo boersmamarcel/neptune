@@ -1,6 +1,10 @@
 package neptune.node;
 
 import java.util.List;
+import java.util.Map;
+
+import neptune.NeptuneException;
+import neptune.assembly.Program;
 
 public class BasicNode extends Node {
 
@@ -16,6 +20,21 @@ public class BasicNode extends Node {
 	
 	public BasicNode(String description) {
 		this.description = description;
+	}
+	
+	@Override
+	public void validate(Program p) throws NeptuneException {
+		for(Node n: children) {
+			n.validate(p);
+		}
+	}
+	
+	@Override
+	public void generate(Program p, Map <String, Object> info) throws NeptuneException {
+		for(Node n: children) {
+			n.resultIsUsed = this.resultIsUsed;
+			n.generate(p, info);
+		}
 	}
 	
 	@Override

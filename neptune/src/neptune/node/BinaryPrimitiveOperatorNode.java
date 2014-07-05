@@ -1,6 +1,9 @@
 package neptune.node;
 
+import java.util.Map;
+
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class BinaryPrimitiveOperatorNode extends Node {
@@ -63,6 +66,55 @@ public class BinaryPrimitiveOperatorNode extends Node {
 			
 		default:
 			throw new NeptuneException(this, "invalid binary primitive operator (" + operator + ")");
+		}
+	}
+	
+	@Override
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
+		if(this.resultIsUsed) {
+			left.resultIsUsed = true;
+			right.resultIsUsed = true;
+			
+			left.generate(p, info);
+			right.generate(p, info);
+			
+			switch(operator) {
+			case AND:
+				p.add(Instruction.AND());
+				break;
+			case OR:
+				p.add(Instruction.OR());
+				break;
+			case LESS:
+				p.add(Instruction.LESS());
+				break;
+			case LESS_EQUAL:
+				p.add(Instruction.LESS_EQUAL());
+				break;
+			case GREATER:
+				p.add(Instruction.GREATER());
+				break;
+			case GREATER_EQUAL:
+				p.add(Instruction.GREATER_EQUAL());
+				break;
+			case DIVIDE:
+				p.add(Instruction.DIV());
+				break;
+			case MINUS:
+				p.add(Instruction.SUB());
+				break;
+			case MOD:
+				p.add(Instruction.MOD());
+				break;
+			case PLUS:
+				p.add(Instruction.ADD());
+				break;
+			case TIMES:
+				p.add(Instruction.MULT());
+				break;
+			default:
+				break;
+			}
 		}
 	}
 	

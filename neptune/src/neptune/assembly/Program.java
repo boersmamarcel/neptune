@@ -12,6 +12,7 @@ public class Program {
 	public SymbolTable symbolTable = new SymbolTable();
 	public static boolean isFunctionCall = false;
 	public static String definingFunction = "";
+	protected int labelCounter = 0;
 	
 	private List<Instruction> functionInstructions;
 	
@@ -33,25 +34,25 @@ public class Program {
 		}
 	}
 	
-	public void assemble(int variableStackSize) {
+	public void assemble() {
 		
-		System.out.println("PUSH " + variableStackSize);
+		System.out.println("PUSH " + symbolTable.getLargestSize());
 		
 		for(Instruction i : instructions) {
 			System.out.println(i);
 		}
 		
-		System.out.println("POP(0) " + variableStackSize);
+		System.out.println("POP(0) " + symbolTable.getLargestSize());
 		System.out.println("HALT");
 		
 		for(Instruction i : functionInstructions) {
 			System.out.println(i);
 		}
 		
-		System.out.println("valid: LOAD(1) -2[LB]");
+		System.out.println("valid0: LOAD(1) -2[LB]");
 		System.out.println("LOAD(1) -1[LB]");
 		System.out.println("CALL ge");
-		System.out.println("JUMPIF(0) L0[CB]");
+		System.out.println("JUMPIF(0) valid1[CB]");
 		System.out.println("LOADL 83");
 		System.out.println("LOADL 68");
 		System.out.println("LOADL 78");
@@ -79,8 +80,7 @@ public class Program {
 		System.out.println("CALL put");
 		System.out.println("CALL put");
 		System.out.println("HALT");
-		System.out.println("JUMP L0[CB]");
-		System.out.println("L0: RETURN(0) 2");
+		System.out.println("valid1: RETURN(0) 2");
 	}
 	
 	public void markInstructionStart() {
@@ -109,5 +109,9 @@ public class Program {
 		}else{
 			return instructions;
 		}
+	}
+	
+	public int generateLabel() {
+		return labelCounter++;
 	}
 }

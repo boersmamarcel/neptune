@@ -1,14 +1,19 @@
 package neptune.node;
 
 import java.util.List;
+import java.util.Map;
 
+import neptune.IdEntry;
 import neptune.NeptuneException;
+import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
 public class ForeachNode extends Node {
 
 	protected String elementRef;
 	protected String arrayRef;
+	protected Node array;
+	protected Node element;
 	
 	public ForeachNode(String element, String array, List<Node> lines) {
 		this.description = "foreach";
@@ -26,9 +31,11 @@ public class ForeachNode extends Node {
 		// Node elementType = new TypeNode(array.getType(), 0);
 		// new VarDeclarationNode(element, elementType, null)
 		
-		Node array = p.symbolTable.retrieve(arrayRef).getDeclaringNode();
+		array = p.symbolTable.retrieve(arrayRef).getDeclaringNode();
 		Node elementType = new TypeNode(array.getType(), 0);
-		Node element = new VarDeclarationNode(elementRef, elementType, null);
+		element = new VarDeclarationNode(elementRef, elementType, null);
+		
+		// TODO: Stuff
 		
 		if(array.getType() == type.VOID) {
 			throw new NeptuneException(this, "iterated element cannot be void");
@@ -39,14 +46,56 @@ public class ForeachNode extends Node {
 		}
 		
 		element.validate(p);
-		super.validate(p);
+		
+		for(Node n: children) {
+			n.validate(p);
+		}
+		
 		p.symbolTable.closeScope();
 	}
 
 	@Override
-	public void generate(Program p) {
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
 		p.symbolTable.openScope();
-		super.generate(p);
+		
+		p.add(Instruction.LOADL(0));
+		
+		int startLabel = p.generateLabel();
+		int endLabel = p.generateLabel();
+		
+		p.add(Instruction.LABEL(startLabel));
+		
+		IdEntry elementEntry = p.symbolTable.retrieve(elementRef);
+		IdEntry arrayEntry = p.symbolTable.retrieve(arrayRef);
+		
+		// Load counter and start address of array
+		p.add(Instruction.LOAD_ST(1));
+		p.add(Instruction.LOADA(arrayEntry.getAddress()));
+		p.add(Instruction.ADD());
+		
+		// Load value from address of array element
+		p.add(Instruction.LOADI(1));
+		
+		// Store into variable for use in the loop
+		p.add(Instruction.STORE(elementEntry.getAddress()));
+		
+		for(Node n: children) {
+			n.resultIsUsed = false;
+			n.generate(p, info);
+		}
+		
+		// Duplicate counter and increment
+		p.add(Instruction.LOAD_ST(1));
+		p.add(Instruction.INC());
+		
+		// Exit the loop by jumping if we have seen all elements
+		p.add(Instruction.JUMPIF(array.elemCount(), endLabel));
+		p.add(Instruction.JUMP(startLabel));
+		p.add(Instruction.LABEL(endLabel));
+		
+		// Remove counter from the stack
+		p.add(Instruction.POP(1));
+		
 		p.symbolTable.closeScope();
 	}
 	

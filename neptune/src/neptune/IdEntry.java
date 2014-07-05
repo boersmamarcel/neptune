@@ -7,6 +7,7 @@ public class IdEntry {
     private int level = -1;
     private int address = -1;
     private Node declaringNode;
+    public int functionSize = -1;
  
     public IdEntry(Node t) {
     	declaringNode = t;
@@ -21,7 +22,9 @@ public class IdEntry {
     public Node getDeclaringNode()			{ return this.declaringNode; }
     
     public int getSize() {
-    	if(this.declaringNode.isArray()) {
+    	if(functionSize >= 0) {
+    		return functionSize;
+    	} else if(this.declaringNode.isArray()) {
     		return this.declaringNode.elemCount();
     	}else{
     		// All primitives have are 1 word big

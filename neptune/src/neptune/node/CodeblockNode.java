@@ -1,6 +1,7 @@
 package neptune.node;
 
 import java.util.List;
+import java.util.Map;
 
 import neptune.NeptuneException;
 import neptune.assembly.Program;
@@ -15,14 +16,23 @@ public class CodeblockNode extends Node {
 	@Override
 	public void validate(Program p) throws NeptuneException {
 		p.symbolTable.openScope();
-		super.validate(p);
+		for(Node n: children) {
+			n.validate(p);
+		}
 		p.symbolTable.closeScope();
 	}
 
 	@Override
-	public void generate(Program p) {
+	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
 		p.symbolTable.openScope();
-		super.generate(p);
+		for(int i = 0; i < children.size() - 1; i++) {
+			children.get(i).resultIsUsed = false;
+			children.get(i).generate(p, info);
+		}
+		
+		// Last child is special if result of codeblock is used
+		children.get(children.size() - 1).resultIsUsed = this.resultIsUsed;
+		children.get(children.size() - 1).generate(p, info);
 		p.symbolTable.closeScope();
 	}
 

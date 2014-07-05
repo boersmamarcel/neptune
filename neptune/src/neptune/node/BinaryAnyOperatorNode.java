@@ -1,7 +1,11 @@
 package neptune.node;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import neptune.NeptuneException;
 import neptune.assembly.Program;
+import neptune.assembly.Instruction;
 
 public class BinaryAnyOperatorNode extends Node {
 
@@ -64,6 +68,43 @@ public class BinaryAnyOperatorNode extends Node {
 
 		default:
 			throw new NeptuneException(this, "invalid binary any operator (" + operator + ")");
+		}
+	}
+	
+	@Override
+	public void generate(Program p, Map <String, Object> info) throws NeptuneException {
+		if(this.resultIsUsed && (operator == Operator.EQUAL || operator == Operator.NOT_EQUAL)) {
+			left.resultIsUsed = true;
+			right.resultIsUsed = true;
+
+			left.generate(p, info);
+			right.generate(p, info);
+
+			if(left.isArray()) {
+				p.add(Instruction.LOADL(left.elemCount()));
+			}else{
+				p.add(Instruction.LOADL(1));
+			}
+			
+			if(operator == Operator.EQUAL) {
+				p.add(Instruction.CALL("eq"));
+			}else if(operator == Operator.NOT_EQUAL) {
+				p.add(Instruction.CALL("ne"));
+			}
+		}
+		
+		if(operator == Operator.BECOMES) {
+			right.resultIsUsed = true;
+			right.generate(p, info);
+
+			Map<String, Object> leftArgs = new HashMap<String, Object>();
+			leftArgs.put("instruction", "store");
+			left.generate(p, leftArgs);
+			
+			if(this.resultIsUsed) {
+				left.resultIsUsed = true;
+				left.generate(p, info);
+			}
 		}
 	}
 	

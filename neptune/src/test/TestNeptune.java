@@ -56,21 +56,23 @@ public class TestNeptune {
 				CommonTreeNodeStream treeStream = new CommonTreeNodeStream(tree);
 				NeptuneChecker checker = new NeptuneChecker(treeStream);
 				
-				checker.program();
-				
-				if(true) {
-					continue;
-				}
-
-				TreeNodeStream nodes = new BufferedTreeNodeStream(tree);
-				NeptuneGenerator generator = new NeptuneGenerator(nodes);
-				
 				PrintStream assemblyOut = new PrintStream(new File(inputFile + ".as"));
 				PrintStream normalOut = System.out;
 				
 				System.setOut(assemblyOut);
-				generator.program();
+				checker.program();
 				System.setOut(normalOut);
+				
+//				if(true) {
+//					continue;
+//				}
+
+//				TreeNodeStream nodes = new BufferedTreeNodeStream(tree);
+//				NeptuneGenerator generator = new NeptuneGenerator(nodes);
+				
+				
+//				generator.program();
+//				System.setOut(normalOut);
 				
 				InputStream assemblyFile = new FileInputStream(inputFile + ".as");
 				OutputStream objFile = new FileOutputStream(inputFile + ".obj");
