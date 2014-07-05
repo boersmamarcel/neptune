@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/NeptuneChecker.g 2014-07-05 15:40:48
+// $ANTLR 3.5.2 antlr/NeptuneChecker.g 2014-07-05 16:09:57
 
 	package neptune;
 	
@@ -130,7 +130,7 @@ public class NeptuneChecker extends TreeParser {
 
 			match(input, Token.UP, null); 
 
-			 ProgramNode node = new ProgramNode(n); Program p = new Program(); node.validate(p); node.generate(p, null); p.assemble(); 
+			 ProgramNode node = new ProgramNode(n); System.out.println(node); Program p = new Program(); node.validate(p); node.generate(p, null); p.assemble(); 
 			}
 
 		}
@@ -706,7 +706,7 @@ public class NeptuneChecker extends TreeParser {
 
 
 	// $ANTLR start "declaration"
-	// antlr/NeptuneChecker.g:71:1: declaration returns [ Node node ] : ( ^( VAR t= type id= IDENTIFIER ( BECOMES ex= expression )? ) | ^( CONST t= type id= IDENTIFIER BECOMES ex= expression ) | ^( FUNCTION t= type func= IDENTIFIER (t= type id= IDENTIFIER )+ l= lines ) );
+	// antlr/NeptuneChecker.g:71:1: declaration returns [ Node node ] : ( ^( VAR t= type id= IDENTIFIER ( BECOMES ex= expression )? ) | ^( CONST t= type id= IDENTIFIER BECOMES ex= expression ) | ^( FUNCTION t1= type func= IDENTIFIER (t= type id= IDENTIFIER )+ l= lines ) );
 	public final Node declaration() throws RecognitionException {
 		Node node = null;
 
@@ -715,10 +715,11 @@ public class NeptuneChecker extends TreeParser {
 		CommonTree func=null;
 		Node t =null;
 		Node ex =null;
+		Node t1 =null;
 		List<Node> l =null;
 
 		try {
-			// antlr/NeptuneChecker.g:72:2: ( ^( VAR t= type id= IDENTIFIER ( BECOMES ex= expression )? ) | ^( CONST t= type id= IDENTIFIER BECOMES ex= expression ) | ^( FUNCTION t= type func= IDENTIFIER (t= type id= IDENTIFIER )+ l= lines ) )
+			// antlr/NeptuneChecker.g:72:2: ( ^( VAR t= type id= IDENTIFIER ( BECOMES ex= expression )? ) | ^( CONST t= type id= IDENTIFIER BECOMES ex= expression ) | ^( FUNCTION t1= type func= IDENTIFIER (t= type id= IDENTIFIER )+ l= lines ) )
 			int alt10=3;
 			switch ( input.LA(1) ) {
 			case VAR:
@@ -798,13 +799,13 @@ public class NeptuneChecker extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneChecker.g:74:4: ^( FUNCTION t= type func= IDENTIFIER (t= type id= IDENTIFIER )+ l= lines )
+					// antlr/NeptuneChecker.g:74:4: ^( FUNCTION t1= type func= IDENTIFIER (t= type id= IDENTIFIER )+ l= lines )
 					{
 					 List<Node> args = new ArrayList<Node>(); 
 					match(input,FUNCTION,FOLLOW_FUNCTION_in_declaration551); 
 					match(input, Token.DOWN, null); 
 					pushFollow(FOLLOW_type_in_declaration557);
-					t=type();
+					t1=type();
 					state._fsp--;
 
 					func=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_declaration563); 
@@ -845,7 +846,7 @@ public class NeptuneChecker extends TreeParser {
 
 					match(input, Token.UP, null); 
 
-					 node = new FunctionDeclarationNode((func!=null?func.getText():null), t, args, l); 
+					 node = new FunctionDeclarationNode((func!=null?func.getText():null), t1, args, l); 
 					}
 					break;
 

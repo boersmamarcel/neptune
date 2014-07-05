@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/Neptune.g 2014-07-05 15:40:45
+// $ANTLR 3.5.2 antlr/Neptune.g 2014-07-05 16:33:58
 
 package neptune;
 
@@ -1252,7 +1252,7 @@ public class NeptuneParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: type, expression, IDENTIFIER, BECOMES
+					// elements: type, IDENTIFIER, expression, BECOMES
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2800,7 +2800,7 @@ public class NeptuneParser extends Parser {
 							stream_RBRACKET.add(RBRACKET127);
 
 							// AST REWRITE
-							// elements: IDENTIFIER, expression
+							// elements: expression, IDENTIFIER
 							// token labels: 
 							// rule labels: retval
 							// token list labels: 
@@ -2890,7 +2890,7 @@ public class NeptuneParser extends Parser {
 							stream_RPAREN.add(RPAREN132);
 
 							// AST REWRITE
-							// elements: IDENTIFIER, expression
+							// elements: expression, IDENTIFIER
 							// token labels: 
 							// rule labels: retval
 							// token list labels: 

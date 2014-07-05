@@ -66,9 +66,13 @@ public class SymbolTable {
     	List<String> scopeList = this.scopeStack.pop();
     	
     	for(String identifier : scopeList) {
+    		if(identifier.charAt(0) == '_') {
+    			continue;
+    		}
+    		
     		IdEntry poppedElement = this.symtab.get(identifier).pop();
     		
-    		if(!Program.isFunctionCall && identifier.charAt(0) != '_') {
+    		if(!Program.isFunctionCall) {
     			currentSize -= poppedElement.getSize();
     		}
     		
@@ -103,12 +107,13 @@ public class SymbolTable {
      */
     public void enter(String id, IdEntry entry) throws SymbolTableException {
     	
-//    	System.out.println(">>>>>    " + currentSize);
-    	
     	IdEntry currentEntry = this.retrieve(id);
     	if(currentEntry != null && currentEntry.getLevel() == this.currentLevel()) {
-    		throw new SymbolTableException("Failure. ID '" + id + "' already exists within scope.");
-//    		System.err.println("WARNING: ID '" + id + "' already exists within scope.");
+    		if(id.charAt(0) != '_') {
+    			throw new SymbolTableException("Failure. ID '" + id + "' already exists within scope.");
+    		}else{
+    			return;
+    		}
     	}
     		
     	if(this.currentLevel() < 0) {

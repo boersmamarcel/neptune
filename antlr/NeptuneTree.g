@@ -1,4 +1,4 @@
-tree grammar NeptuneChecker;
+tree grammar NeptuneTree;
 
 options{
 	tokenVocab=Neptune;
@@ -18,8 +18,12 @@ options{
 	}
 }
 
+@members {
+	public ProgramNode rootNode;
+}
+
 program
-	: ^(PROGRAM n=lines)										{ ProgramNode node = new ProgramNode(n); Program p = new Program(); node.validate(p); node.generate(p, null); p.assemble(); }
+	: ^(PROGRAM n=lines)										{ rootNode = new ProgramNode(n); }
 	;
 
 lines returns [ List<Node> nodes = new ArrayList<Node>() ]
@@ -73,13 +77,13 @@ declaration returns [ Node node ]
 	| ^(CONST t=type id=IDENTIFIER BECOMES ex=expression) 		{ node = new ConstDeclarationNode($id.text, t, ex); }
 	| { List<Node> args = new ArrayList<Node>(); }
 	  ^(FUNCTION
-		t=type
+		t1=type
 		func=IDENTIFIER
 		(
 			t=type id=IDENTIFIER			{ args.add(new VarDeclarationNode($id.text, t, null)); }
 		)+
 		l=lines
-	) 															{ node = new FunctionDeclarationNode($func.text, t, args, l); }
+	) 															{ node = new FunctionDeclarationNode($func.text, t1, args, l); }
 	;
 
 return_statement returns [ Node node ]

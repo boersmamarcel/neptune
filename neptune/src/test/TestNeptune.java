@@ -11,10 +11,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import neptune.NeptuneGenerator;
 import neptune.NeptuneLexer;
 import neptune.NeptuneParser;
-import neptune.NeptuneChecker;
+import neptune.NeptuneTree;
+import neptune.assembly.Program;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -54,25 +54,22 @@ public class TestNeptune {
 				System.out.println(tree.toStringTree());
 
 				CommonTreeNodeStream treeStream = new CommonTreeNodeStream(tree);
-				NeptuneChecker checker = new NeptuneChecker(treeStream);
+				NeptuneTree ntree = new NeptuneTree(treeStream);
 				
 				PrintStream assemblyOut = new PrintStream(new File(inputFile + ".as"));
 				PrintStream normalOut = System.out;
 				
+				ntree.program();
+				Program p = new Program();
+				
+				ntree.rootNode.validate(p);
+				ntree.rootNode.generate(p, null);
+				
 				System.setOut(assemblyOut);
-				checker.program();
+				p.assemble();
 				System.setOut(normalOut);
 				
-//				if(true) {
-//					continue;
-//				}
-
-//				TreeNodeStream nodes = new BufferedTreeNodeStream(tree);
-//				NeptuneGenerator generator = new NeptuneGenerator(nodes);
 				
-				
-//				generator.program();
-//				System.setOut(normalOut);
 				
 				InputStream assemblyFile = new FileInputStream(inputFile + ".as");
 				OutputStream objFile = new FileOutputStream(inputFile + ".obj");

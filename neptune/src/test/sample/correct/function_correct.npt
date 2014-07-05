@@ -8,7 +8,9 @@ function int fibo(int n){
 	if(n <= 1){
 		result = 1;
 	}else{
-		result = fibo(n-1) + fibo(n-2);
+		int a = fibo(n-1);
+		int b = fibo(n-2);
+		result = a + b;
 	} 
 	return(result);
 }

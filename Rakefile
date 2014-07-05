@@ -4,22 +4,13 @@ namespace :build do
 		sh "java org.antlr.Tool antlr/Neptune.g -o tmp/"
 	end
 
-	file "tmp/NeptuneChecker.java" => ["antlr/NeptuneChecker.g", "antlr/Neptune.g"] do
-		sh "java org.antlr.Tool antlr/NeptuneChecker.g -o tmp/"
+	file "tmp/NeptuneTree.java" => ["antlr/NeptuneTree.g", "antlr/Neptune.g"] do
+		sh "java org.antlr.Tool antlr/NeptuneTree.g -o tmp/"
 	end
 
-	file "tmp/NeptuneGenerator.java" => ["antlr/NeptuneGenerator.g", "antlr/Neptune.g"] do
-		sh "java org.antlr.Tool antlr/NeptuneGenerator.g -o tmp/"
-	end
-
-	desc "Build generator"
-	task :generator => [:setup, "tmp/NeptuneGenerator.java"] do
-		puts "building generator"
-	end
-
-	desc "Build checker"
-	task :checker => [:setup, "tmp/NeptuneChecker.java"] do
-		puts "building checker"
+	desc "Build tree"
+	task :tree => [:setup, "tmp/NeptuneTree.java"] do
+		puts "building tree"
 	end
 
 	desc "Build parser"
@@ -34,7 +25,7 @@ namespace :build do
 	end
 
 	desc "Build language"
-	task :all => [:setup, :parser,  :checker, :generator]do
+	task :all => [:setup, :parser, :tree]do
 		puts "Done building your language files with antlr"
 	end
 
@@ -46,18 +37,13 @@ namespace :copy do
 		sh "cp -f tmp/antlr/NeptuneLexer.java tmp/antlr/NeptuneParser.java tmp/Neptune.tokens neptune/src/neptune/"
 	end
 
-	desc "copy checker"
-	task :checker do
-		sh "cp -f tmp/antlr/NeptuneChecker.java tmp/NeptuneChecker.tokens neptune/src/neptune/"
-	end
-
-	desc "copy generator"
-	task :generator do
-		sh "cp -f tmp/antlr/NeptuneGenerator.java tmp/NeptuneGenerator.tokens neptune/src/neptune/"
+	desc "copy tree"
+	task :tree do
+		sh "cp -f tmp/antlr/NeptuneTree.java tmp/NeptuneTree.tokens neptune/src/neptune/"
 	end
 
 	desc "copy all"
-	task :all => [:parser, :checker, :generator] do
+	task :all => [:parser, :tree] do
 
 	end
 end

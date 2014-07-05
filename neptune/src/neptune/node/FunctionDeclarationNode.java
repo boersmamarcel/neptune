@@ -71,7 +71,8 @@ public class FunctionDeclarationNode extends Node {
 			}
 		}
 		
-		p.add(Instruction.PUSH(functionEntry.getSize() + argsSize));
+		p.add(Instruction.PUSH(argsSize));
+		p.add(Instruction.PUSH(functionEntry.getSize()));
 		
 		if(argsSize > 0) {
 			p.add(Instruction.LOAD(-argsSize, argsSize));
