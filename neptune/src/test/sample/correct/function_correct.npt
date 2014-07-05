@@ -5,7 +5,7 @@ function int square(int c){
 
 function int fibo(int n){
 	int result = 1;
-	if(n <= 1){
+	if(n <= 2){
 		result = 1;
 	}else{
 		int a = fibo(n-1);
@@ -41,7 +41,7 @@ print(inverse(inverse(b)));
 print(fibo(-1));
 print(fibo(0));
 print(fibo(1));
-print(fibo(3));
+print(fibo(12));
 print(nand(b,c));
 print(nand(!b, !c));
 print(nand(b, !c));

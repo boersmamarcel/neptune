@@ -1,5 +1,13 @@
-function int no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol() {
-	return(1337);
+function int fibo(int n){
+	int result = 1;
+	if(n <= 2){
+		result = 1;
+	}else{
+		int a = fibo(n-1);
+		int b = fibo(n-2);
+		result = a + b;
+	} 
+	return(result);
 }
 
-print(no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol_no_arguments_lol());
+print(fibo(12));
