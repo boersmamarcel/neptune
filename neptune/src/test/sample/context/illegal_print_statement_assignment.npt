@@ -1,0 +1,9 @@
+//illegal print statement assignment
+
+
+int a = 0;
+int b = 1;
+int c = 2;
+int d;
+
+d = print(a,b,c);

@@ -1,0 +1,8 @@
+//incorrect type function
+
+function int test(){
+	char a = 'a';
+	return(a);
+}
+
+char b = test();

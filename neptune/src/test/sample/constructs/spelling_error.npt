@@ -1,0 +1,7 @@
+//spelling error
+
+fucntion test(int arg){
+	return(arg*arg);
+}
+
+int blaat = test(3);

@@ -1,0 +1,9 @@
+//incorrect if statement
+
+int a = 2;
+
+if(a){
+	print(a);
+}else{
+	print(b);
+}

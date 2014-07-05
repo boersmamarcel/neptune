@@ -1,0 +1,8 @@
+//foreach without array
+
+
+int value = 0;
+
+foreach(item in value){
+	print(item);
+}

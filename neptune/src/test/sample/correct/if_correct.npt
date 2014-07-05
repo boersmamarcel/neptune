@@ -5,3 +5,18 @@ if(decision) {
 }else{
 	print("Nope.");
 }
+
+
+if(!decision){
+	print("BAD");
+}elsif(decision){
+	print("Good pick");
+}else{
+	print("BAD");
+}
+
+if(!decision){
+	print("BAD");
+}else{
+	print("Good pick");
+}

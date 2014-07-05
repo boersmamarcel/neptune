@@ -1,0 +1,8 @@
+//incorrect scoping
+function int test(int argument_in_function_scope){
+	return(argument_in_function_scope);
+}
+
+int test_value = test(2);
+print(test_value);
+print(argument_in_function_scope);
