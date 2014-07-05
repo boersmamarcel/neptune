@@ -1,9 +1,35 @@
-int a=0;
-int b= 2;
-a=b;
 function int square(int c){
 	return(c*c);
 };
 
-a = square(b);
-print(a);
+char newline = 10;
+
+print(square(2));
+print(newline);
+print(square(3));
+
+function int fibo(int n){
+
+	int result = 0;
+	if(n==1){
+		result = 1;
+	}elsif(n > 1){
+		result = fibo(n-2)+fibo(n-1);
+	}
+	
+	return(result);
+};
+
+
+print(fibo(0));
+print(newline);
+print(fibo(1));
+print(newline);
+print(fibo(2));
+print(newline);
+print(fibo(3));
+print(newline);
+print(fibo(4));
+print(newline);
+print(fibo(5));
+print(newline);
