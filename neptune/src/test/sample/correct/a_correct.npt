@@ -10,7 +10,7 @@ function int hello(int a, int b) {
 	}
 	
 	return(10);
-};
+}
 
 hello(1, 2);
 

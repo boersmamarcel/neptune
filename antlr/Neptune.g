@@ -136,7 +136,8 @@ line
 	:	expression SEMICOLON!
 	|	declaration SEMICOLON!
 	|	logic_statement
-	|	return_statement
+	|	return_statement SEMICOLON!
+	|	function_declaration
 	;
 	
 codeblock
@@ -178,13 +179,16 @@ declaration
 	:	type IDENTIFIER (BECOMES expression)?
 		-> ^(VAR type IDENTIFIER (BECOMES expression)?)
 	|	CONST^ type IDENTIFIER BECOMES expression
-	|   FUNCTION type IDENTIFIER LPAREN type IDENTIFIER (COMMA type IDENTIFIER)* RPAREN LCURLY line+ RCURLY
+	;
+	
+function_declaration
+   	:	FUNCTION type IDENTIFIER LPAREN type IDENTIFIER (COMMA type IDENTIFIER)* RPAREN LCURLY line+ RCURLY
 		-> ^(FUNCTION type IDENTIFIER (type IDENTIFIER)* line+)
 	;
 
 return_statement
-	:	RETURN^ LPAREN! expression RPAREN! SEMICOLON!
-;
+	:	RETURN^ LPAREN! expression RPAREN!
+	;
 	
 expression
 	:  assignment_expr

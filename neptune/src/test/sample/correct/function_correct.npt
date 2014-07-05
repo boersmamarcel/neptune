@@ -1,7 +1,7 @@
 //correct function calls
 function int square(int c){
 	return(c*c);
-};
+}
 
 function int fibo(int n){
 	int result = 1;
@@ -13,21 +13,21 @@ function int fibo(int n){
 		result = a + b;
 	} 
 	return(result);
-};
+}
 
 
 
 function char identity(char a){
 	return(a);
-};
+}
 
 function bool inverse(bool b){
 	return(!b);
-};
+}
 
 function bool nand(bool a, bool b){
 	return(!(a && b));
-};
+}
 
 char a = 'a';
 bool b = true;
