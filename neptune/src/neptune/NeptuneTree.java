@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/NeptuneTree.g 2014-07-05 16:34:00
+// $ANTLR 3.5.2 antlr/NeptuneTree.g 2014-07-05 16:50:51
 
 	package neptune;
 	
@@ -709,7 +709,7 @@ public class NeptuneTree extends TreeParser {
 
 
 	// $ANTLR start "declaration"
-	// antlr/NeptuneTree.g:75:1: declaration returns [ Node node ] : ( ^( VAR t= type id= IDENTIFIER ( BECOMES ex= expression )? ) | ^( CONST t= type id= IDENTIFIER BECOMES ex= expression ) | ^( FUNCTION t1= type func= IDENTIFIER (t= type id= IDENTIFIER )+ l= lines ) );
+	// antlr/NeptuneTree.g:75:1: declaration returns [ Node node ] : ( ^( VAR t= type id= IDENTIFIER ( BECOMES ex= expression )? ) | ^( CONST t= type id= IDENTIFIER BECOMES ex= expression ) | ^( FUNCTION t1= type func= IDENTIFIER (t= type id= IDENTIFIER )* l= lines ) );
 	public final Node declaration() throws RecognitionException {
 		Node node = null;
 
@@ -722,7 +722,7 @@ public class NeptuneTree extends TreeParser {
 		List<Node> l =null;
 
 		try {
-			// antlr/NeptuneTree.g:76:2: ( ^( VAR t= type id= IDENTIFIER ( BECOMES ex= expression )? ) | ^( CONST t= type id= IDENTIFIER BECOMES ex= expression ) | ^( FUNCTION t1= type func= IDENTIFIER (t= type id= IDENTIFIER )+ l= lines ) )
+			// antlr/NeptuneTree.g:76:2: ( ^( VAR t= type id= IDENTIFIER ( BECOMES ex= expression )? ) | ^( CONST t= type id= IDENTIFIER BECOMES ex= expression ) | ^( FUNCTION t1= type func= IDENTIFIER (t= type id= IDENTIFIER )* l= lines ) )
 			int alt10=3;
 			switch ( input.LA(1) ) {
 			case VAR:
@@ -802,7 +802,7 @@ public class NeptuneTree extends TreeParser {
 					}
 					break;
 				case 3 :
-					// antlr/NeptuneTree.g:78:4: ^( FUNCTION t1= type func= IDENTIFIER (t= type id= IDENTIFIER )+ l= lines )
+					// antlr/NeptuneTree.g:78:4: ^( FUNCTION t1= type func= IDENTIFIER (t= type id= IDENTIFIER )* l= lines )
 					{
 					 List<Node> args = new ArrayList<Node>(); 
 					match(input,FUNCTION,FOLLOW_FUNCTION_in_declaration557); 
@@ -812,8 +812,7 @@ public class NeptuneTree extends TreeParser {
 					state._fsp--;
 
 					func=(CommonTree)match(input,IDENTIFIER,FOLLOW_IDENTIFIER_in_declaration569); 
-					// antlr/NeptuneTree.g:82:3: (t= type id= IDENTIFIER )+
-					int cnt9=0;
+					// antlr/NeptuneTree.g:82:3: (t= type id= IDENTIFIER )*
 					loop9:
 					while (true) {
 						int alt9=2;
@@ -836,11 +835,8 @@ public class NeptuneTree extends TreeParser {
 							break;
 
 						default :
-							if ( cnt9 >= 1 ) break loop9;
-							EarlyExitException eee = new EarlyExitException(9, input);
-							throw eee;
+							break loop9;
 						}
-						cnt9++;
 					}
 
 					pushFollow(FOLLOW_lines_in_declaration599);
@@ -1562,7 +1558,7 @@ public class NeptuneTree extends TreeParser {
 
 
 	// $ANTLR start "array_set"
-	// antlr/NeptuneTree.g:129:1: array_set returns [ Node node ] : ^( ARRAY_SET (ex= expression )+ ) ;
+	// antlr/NeptuneTree.g:129:1: array_set returns [ Node node ] : ^( ARRAY_SET (ex= expression )* ) ;
 	public final Node array_set() throws RecognitionException {
 		Node node = null;
 
@@ -1570,43 +1566,41 @@ public class NeptuneTree extends TreeParser {
 		Node ex =null;
 
 		try {
-			// antlr/NeptuneTree.g:130:2: ( ^( ARRAY_SET (ex= expression )+ ) )
-			// antlr/NeptuneTree.g:130:4: ^( ARRAY_SET (ex= expression )+ )
+			// antlr/NeptuneTree.g:130:2: ( ^( ARRAY_SET (ex= expression )* ) )
+			// antlr/NeptuneTree.g:130:4: ^( ARRAY_SET (ex= expression )* )
 			{
 			 List<Node> elements = new ArrayList<Node>(); 
 			match(input,ARRAY_SET,FOLLOW_ARRAY_SET_in_array_set1326); 
-			match(input, Token.DOWN, null); 
-			// antlr/NeptuneTree.g:132:3: (ex= expression )+
-			int cnt13=0;
-			loop13:
-			while (true) {
-				int alt13=2;
-				int LA13_0 = input.LA(1);
-				if ( (LA13_0==AND||(LA13_0 >= ARRAY_SET && LA13_0 <= BLOCK)||LA13_0==CHAR_LITERAL||LA13_0==DIVIDE||(LA13_0 >= EQ && LA13_0 <= FALSE)||(LA13_0 >= FUNCTION && LA13_0 <= GT_EQ)||(LA13_0 >= LT && LA13_0 <= PRINT)||LA13_0==READ||(LA13_0 >= SIZEOF && LA13_0 <= STRING_LITERAL)||(LA13_0 >= TIMES && LA13_0 <= UNARY_PLUS)) ) {
-					alt13=1;
-				}
-
-				switch (alt13) {
-				case 1 :
-					// antlr/NeptuneTree.g:133:4: ex= expression
-					{
-					pushFollow(FOLLOW_expression_in_array_set1337);
-					ex=expression();
-					state._fsp--;
-
-					 elements.add(ex); 
+			if ( input.LA(1)==Token.DOWN ) {
+				match(input, Token.DOWN, null); 
+				// antlr/NeptuneTree.g:132:3: (ex= expression )*
+				loop13:
+				while (true) {
+					int alt13=2;
+					int LA13_0 = input.LA(1);
+					if ( (LA13_0==AND||(LA13_0 >= ARRAY_SET && LA13_0 <= BLOCK)||LA13_0==CHAR_LITERAL||LA13_0==DIVIDE||(LA13_0 >= EQ && LA13_0 <= FALSE)||(LA13_0 >= FUNCTION && LA13_0 <= GT_EQ)||(LA13_0 >= LT && LA13_0 <= PRINT)||LA13_0==READ||(LA13_0 >= SIZEOF && LA13_0 <= STRING_LITERAL)||(LA13_0 >= TIMES && LA13_0 <= UNARY_PLUS)) ) {
+						alt13=1;
 					}
-					break;
 
-				default :
-					if ( cnt13 >= 1 ) break loop13;
-					EarlyExitException eee = new EarlyExitException(13, input);
-					throw eee;
+					switch (alt13) {
+					case 1 :
+						// antlr/NeptuneTree.g:133:4: ex= expression
+						{
+						pushFollow(FOLLOW_expression_in_array_set1337);
+						ex=expression();
+						state._fsp--;
+
+						 elements.add(ex); 
+						}
+						break;
+
+					default :
+						break loop13;
+					}
 				}
-				cnt13++;
-			}
 
-			match(input, Token.UP, null); 
+				match(input, Token.UP, null); 
+			}
 
 			 node = new ArraySetNode(elements); 
 			}
@@ -1973,7 +1967,7 @@ public class NeptuneTree extends TreeParser {
 	public static final BitSet FOLLOW_expression_in_declaration541 = new BitSet(new long[]{0x0000000000000008L});
 	public static final BitSet FOLLOW_FUNCTION_in_declaration557 = new BitSet(new long[]{0x0000000000000004L});
 	public static final BitSet FOLLOW_type_in_declaration563 = new BitSet(new long[]{0x0000000080000000L});
-	public static final BitSet FOLLOW_IDENTIFIER_in_declaration569 = new BitSet(new long[]{0x0000000400001800L});
+	public static final BitSet FOLLOW_IDENTIFIER_in_declaration569 = new BitSet(new long[]{0xECC3FF057E0A3FD0L,0x000000000000000DL});
 	public static final BitSet FOLLOW_type_in_declaration580 = new BitSet(new long[]{0x0000000080000000L});
 	public static final BitSet FOLLOW_IDENTIFIER_in_declaration584 = new BitSet(new long[]{0xECC3FF057E0A3FD0L,0x000000000000000DL});
 	public static final BitSet FOLLOW_lines_in_declaration599 = new BitSet(new long[]{0x0000000000000008L});

@@ -57,7 +57,7 @@ public class FunctionDeclarationNode extends Node {
 		p.symbolTable.openFunctionScope(funcName);
 		p.symbolTable.openScope();
 		
-		p.add(Instruction.LABEL(funcName));
+		p.add(Instruction.LABEL(Instruction.convertFunctionNameToLabel(funcName)));
 		
 		IdEntry functionEntry = p.symbolTable.retrieve("_" + funcName);
 		
@@ -71,8 +71,7 @@ public class FunctionDeclarationNode extends Node {
 			}
 		}
 		
-		p.add(Instruction.PUSH(argsSize));
-		p.add(Instruction.PUSH(functionEntry.getSize()));
+		p.add(Instruction.PUSH(argsSize + functionEntry.getSize()));
 		
 		if(argsSize > 0) {
 			p.add(Instruction.LOAD(-argsSize, argsSize));

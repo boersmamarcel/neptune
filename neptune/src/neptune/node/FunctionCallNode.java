@@ -55,7 +55,7 @@ public class FunctionCallNode extends Node {
 			args.get(i).generate(p, info);
 		}
 		
-		p.add(Instruction.CALL_LABEL(functionName));
+		p.add(Instruction.CALL_LABEL(Instruction.convertFunctionNameToLabel(functionName)));
 		
 		if(!resultIsUsed) {
 			int elems = 1;

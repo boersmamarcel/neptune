@@ -81,7 +81,7 @@ declaration returns [ Node node ]
 		func=IDENTIFIER
 		(
 			t=type id=IDENTIFIER			{ args.add(new VarDeclarationNode($id.text, t, null)); }
-		)+
+		)*
 		l=lines
 	) 															{ node = new FunctionDeclarationNode($func.text, t1, args, l); }
 	;
@@ -131,7 +131,7 @@ array_set returns [ Node node ]
 	  ^(ARRAY_SET
 		(
 			ex=expression					{ elements.add(ex); }
-		)+
+		)*
 	  )															{ node = new ArraySetNode(elements); }
 	;
 	

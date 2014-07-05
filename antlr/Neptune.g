@@ -182,7 +182,7 @@ declaration
 	;
 	
 function_declaration
-   	:	FUNCTION type IDENTIFIER LPAREN type IDENTIFIER (COMMA type IDENTIFIER)* RPAREN LCURLY line+ RCURLY
+   	:	FUNCTION type IDENTIFIER LPAREN (type IDENTIFIER (COMMA type IDENTIFIER)*)? RPAREN LCURLY line+ RCURLY
 		-> ^(FUNCTION type IDENTIFIER (type IDENTIFIER)* line+)
 	;
 
@@ -226,7 +226,7 @@ unary_expr
 	;
 
 operand
-    :   IDENTIFIER ( -> ^(ATOMIC_VAR IDENTIFIER) | LBRACKET expression RBRACKET -> ^(ARRAY_VAR IDENTIFIER expression)  | (LPAREN (expression (COMMA expression)*)? RPAREN -> ^(FUNCTION IDENTIFIER ^(ARRAY_SET expression+)?)))
+    :   IDENTIFIER ( -> ^(ATOMIC_VAR IDENTIFIER) | LBRACKET expression RBRACKET -> ^(ARRAY_VAR IDENTIFIER expression)  | (LPAREN (expression (COMMA expression)*)? RPAREN -> ^(FUNCTION IDENTIFIER ^(ARRAY_SET expression*))))
     |   NUMBER
     |   LPAREN! assignment_expr RPAREN!
 	|	LBRACKET expression (COMMA expression)* RBRACKET

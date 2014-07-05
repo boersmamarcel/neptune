@@ -184,4 +184,13 @@ public class Instruction {
 	public static Instruction RETURN(int return_size, int pop_n_word) {
 		return new Instruction("RETURN(" + return_size + ") " + pop_n_word);
 	}
+	
+	public static String convertFunctionNameToLabel(String funcName) {
+		String result = "";
+		for(int i = 0; i < funcName.length(); i++) {
+			int ascii = funcName.charAt(i);
+			result = result + String.format("%03d", ascii);
+		}
+		return result;
+	}
 }

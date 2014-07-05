@@ -34,7 +34,11 @@ public class ArraySetNode extends Node {
 	
 	@Override
 	public type getType() {
-		return children.get(0).getType();
+		if(children.size() > 0) {
+			return children.get(0).getType();
+		}
+		
+		return type.VOID;
 	}
 
 	@Override
