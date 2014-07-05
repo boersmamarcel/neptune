@@ -1,13 +1,7 @@
-function int fibo(int n){
-	int result = 1;
-	if(n <= 2){
-		result = 1;
-	}else{
-		int a = fibo(n-1);
-		int b = fibo(n-2);
-		result = a + b;
-	} 
-	return(result);
-}
+char[13] name = "HELLO, WORLD!";
 
-print(fibo(12));
+int i = 0;
+while(i < sizeof(name)) {
+	print(name[i]);
+	i = i + 1;
+}

@@ -22,6 +22,8 @@ public class VarIndexedNode extends Node {
 	public void validate(Program p) throws NeptuneException {
 		IdEntry entry = p.symbolTable.retrieve(elementRef);
 		
+		expression.validate(p);
+		
 		if(entry == null) {
 			throw new NeptuneException(this, "variable used but not declared");
 		}
@@ -31,7 +33,7 @@ public class VarIndexedNode extends Node {
 		}
 		
 		if(expression.getType() != type.INTEGER) {
-			throw new NeptuneException(this, "index into variable should be integer type");
+			throw new NeptuneException(this, "index into variable should be integer type (" + expression.typeDescription() + "," + expression + ")");
 		}
 		
 		if(expression.isArray()) {
