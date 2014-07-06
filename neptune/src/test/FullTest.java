@@ -206,7 +206,7 @@ public class FullTest {
 		
 		
 		Program p = new Program();
-		
+		Program.isFunctionCall = false;
 		
 		
 		try {
