@@ -6,8 +6,9 @@ import java.util.List;
 import neptune.SymbolTable;
 
 /**
+ * Class that represents a Neptune assembly program.
+ * 
  * @author Koen van Urk and Marcel Boersma
- *
  */
 public class Program {
 

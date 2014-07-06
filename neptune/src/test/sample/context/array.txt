@@ -1,0 +1,1 @@
+var:array --> type mismatch (INTEGER[6]!=INTEGER[5])

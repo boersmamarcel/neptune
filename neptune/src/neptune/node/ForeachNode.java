@@ -35,8 +35,6 @@ public class ForeachNode extends Node {
 		Node elementType = new TypeNode(array.getType(), 0);
 		element = new VarDeclarationNode(elementRef, elementType, null);
 		
-		// TODO: Stuff
-		
 		if(array.getType() == type.VOID) {
 			throw new NeptuneException(this, "iterated element cannot be void");
 		}
@@ -65,6 +63,8 @@ public class ForeachNode extends Node {
 		
 		p.add(Instruction.LABEL(startLabel));
 		
+		element.generate(p, info);
+		
 		IdEntry elementEntry = p.symbolTable.retrieve(elementRef);
 		IdEntry arrayEntry = p.symbolTable.retrieve(arrayRef);
 		
@@ -84,9 +84,9 @@ public class ForeachNode extends Node {
 			n.generate(p, info);
 		}
 		
-		// Duplicate counter and increment
-		p.add(Instruction.LOAD_ST(1));
+		// Increment the counter, then duplicate
 		p.add(Instruction.INC());
+		p.add(Instruction.LOAD_ST(1));
 		
 		// Exit the loop by jumping if we have seen all elements
 		p.add(Instruction.JUMPIF(array.elemCount(), endLabel));

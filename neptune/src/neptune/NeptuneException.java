@@ -2,28 +2,39 @@ package neptune;
 import neptune.node.Node;
 
 import org.antlr.runtime.RecognitionException;
-import org.antlr.runtime.tree.Tree;
 
+/**
+ * Exception thrown by the Neptune validator.
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class NeptuneException extends RecognitionException {
+    /**
+     * The message for this exception. 
+     */
     private String msg;
+    
+    /**
+     * Used for Serializible.
+     */
     public static final long serialVersionUID = 24162462L; // for Serializable
 
-    // Ctor which only requires the error message to be printed.
+    /**
+     * Constructor for a Neptune exception without a node.
+     * 
+     * @param msg Message for this exception.
+     */
     public NeptuneException(String msg) {
         super();
         this.msg = msg;
     }
-
-    // Ctor that takes a node of the AST tree (i.e. IDENTIFIER) and
-    // the error message to build a more informative error message.
-    public NeptuneException(Tree tree, String msg) {
-        super();
-        this.msg = tree.getText() +
-                " (" + tree.getLine() +
-                ":" + tree.getCharPositionInLine() +
-                ") " + msg;
-    }
     
+    /**
+     * Constructor for a Neptune exception belonging to a specific node.
+     * 
+     * @param node The node that throws this exception
+     * @param msg Message for this exception.
+     */
     public NeptuneException(Node node, String msg) {
     	super();
     	this.msg = node.description + " --> " + msg;

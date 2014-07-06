@@ -1,3 +1,5 @@
-int a;
-a = 3;
-print(a);
+char[15] names = "Marcel en Koen.";
+
+foreach(item in names){
+	print(item);
+}

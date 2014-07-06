@@ -5,4 +5,4 @@ function int test(){
 	return(a);
 }
 
-char b = test();
+bool b = test();

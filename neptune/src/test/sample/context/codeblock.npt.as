@@ -1,5 +1,9 @@
-PUSH 1
-POP(0) 1
+PUSH 3
+LOADL 3
+STORE(1) 0[LB]
+LOAD(1) 0[LB]
+STORE(1) 1[LB]
+POP(0) 3
 HALT
 valid0: LOAD(1) -2[LB]
 LOAD(1) -1[LB]
