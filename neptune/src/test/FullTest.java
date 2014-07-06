@@ -21,13 +21,11 @@ import neptune.assembly.Program;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
-import org.antlr.runtime.NoViableAltException;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.junit.Test;
 
-import antlr.ANTLRException;
 import TAM.Assembler;
 import TAM.Interpreter;
 

@@ -22,6 +22,7 @@ public class FunctionDeclarationNode extends Node {
 		this.funcName = funcName;
 		this.type = type;
 		this.args = args;
+		
 		this.lines = lines;
 		
 		children.addAll(args);
@@ -64,8 +65,10 @@ public class FunctionDeclarationNode extends Node {
 		int argsSize = 0;
 		
 		for(Node n: args) {
-			if(n.isArray()) {
-				argsSize += n.elemCount();
+			Node typeNode = ((VarDeclarationNode)n).varType;
+			
+			if(typeNode.isArray()) {
+				argsSize += typeNode.elemCount();
 			}else{
 				argsSize++;
 			}
