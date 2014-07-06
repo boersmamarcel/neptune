@@ -22,6 +22,10 @@ public class ReadNode extends Node {
 				throw new NeptuneException(this, "variable " + n.description + " cannot be of type void");
 			}
 			
+			if(n.getType() == type.BOOL) {
+				throw new NeptuneException(this, "variable " + n.description + " cannot be of type bool");
+			}
+			
 			if(n.isArray()) {
 				throw new NeptuneException(this, "trying to read into array");
 			}
