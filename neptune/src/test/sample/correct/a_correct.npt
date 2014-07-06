@@ -1,10 +1,17 @@
-int i = -1;
+//int i = -1;
 
-char c;
+//char c;
 
-while(c != 10) {
-	read(c);
-	i = i + 1;
-}
+//while(c != 10) {
+//	read(c);
+//	i = i + 1;
+//}
 
-print(i);
+//print(i);
+
+int a = {
+	print("Hello world");
+	2;
+};
+
+print(a);

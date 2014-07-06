@@ -6,17 +6,18 @@ import neptune.IdEntry;
 import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
+import neptune.node.Node.type;
 
 public class ConstDeclarationNode extends Node {
 
 	protected String identifier;
-	protected Node type;
+	protected Node varType;
 	protected Node expression;
 	
 	public ConstDeclarationNode(String identifier, Node type, Node expression) {
 		this.description = "var:" + identifier;
 		this.identifier = identifier;
-		this.type = type;
+		this.varType = type;
 		this.expression = expression;
 		
 		children.add(type);
@@ -24,11 +25,11 @@ public class ConstDeclarationNode extends Node {
 	}
 	
 	public void validate(Program p) throws NeptuneException {
-		type.validate(p);
+		varType.validate(p);
 		expression.validate(p);
 
-		if(!this.typeMatch(expression)) {
-			throw new NeptuneException(this, "type mismatch with " + expression.description);
+		if(!this.varType.typeMatch(expression)) {
+			throw new NeptuneException(this, "type mismatch (" + expression.typeDescription() + "!=" + this.varType.typeDescription() + ")");
 		}
 		
 		addToSymbolTable(p);
@@ -42,8 +43,8 @@ public class ConstDeclarationNode extends Node {
 		addToSymbolTable(p);
 		
 		IdEntry entry = p.symbolTable.retrieve(this.identifier);
-		if(type.isArray()) {
-			for(int i = 0; i < type.elemCount(); i++) {
+		if(varType.isArray()) {
+			for(int i = 0; i < varType.elemCount(); i++) {
 				p.add(Instruction.STORE(entry.getAddress() + i));
 			}
 		}else{
@@ -52,7 +53,8 @@ public class ConstDeclarationNode extends Node {
 	}
 	
 	protected void addToSymbolTable(Program p) throws NeptuneException {
-		IdEntry entry = new IdEntry(this);
+		varType.isMutable = false;
+		IdEntry entry = new IdEntry(this.varType);
 		try {
 			p.symbolTable.enter(this.identifier, entry);
 		} catch (Exception e) {
@@ -62,12 +64,12 @@ public class ConstDeclarationNode extends Node {
 	
 	@Override
 	public type getType() {
-		return this.type.getType();
+		return type.VOID;
 	}
 
 	@Override
 	public boolean isArray() {
-		return this.type.isArray();
+		return false;
 	}
 	
 	@Override
@@ -77,7 +79,7 @@ public class ConstDeclarationNode extends Node {
 
 	@Override
 	public int elemCount() {
-		return this.type.elemCount();
+		return 0;
 	}
 
 }
