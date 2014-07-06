@@ -72,7 +72,7 @@ public class FullTest {
 	public void array(){
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
-			correctTest(method, "correct");
+			correctTest(method, "semantics");
 			correctTest(method, "context");
 
 		} catch (IOException e) {
@@ -86,12 +86,12 @@ public class FullTest {
 		//method name
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
-			correctTest(method, "correct");
+			correctTest(method, "semantics");
 			correctTest(method, "context");
 			correctTest("basicexpression_scope", "context");
-			//correctTest("read_without_identifier", "context");
+			correctTest("read_without_identifier", "context");
 			correctTest("const_reassignment", "context");
-			//correctTest("incorrect_variable_assignment", "context");
+			correctTest("incorrect_variable_assignment", "context");
 			correctTest("illegal_print_statement_assignment", "context");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -104,7 +104,7 @@ public class FullTest {
 		//method name
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
-			correctTest(method, "correct");
+			correctTest(method, "semantics");
 			correctTest(method, "context");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -117,7 +117,7 @@ public class FullTest {
 		//method name
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
-			correctTest(method, "correct");
+			correctTest(method, "semantics");
 			correctTest("function_scope", "context");
 			correctTest("function_type", "context");
 			correctTest("function_global_scope", "context");
@@ -132,7 +132,8 @@ public class FullTest {
 		//method name
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
-			correctTest(method, "correct");
+			correctTest(method, "semantics");
+			correctTest(method, "context");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -144,7 +145,8 @@ public class FullTest {
 		//method name
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
-			correctTest(method, "correct");
+			correctTest(method, "semantics");
+			correctTest(method, "context");
 			} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -156,7 +158,7 @@ public class FullTest {
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		
 		try {
-			correctTest(method, "correct");
+			correctTest(method, "semantics");
 			correctTest(method, "context");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

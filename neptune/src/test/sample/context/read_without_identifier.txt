@@ -1,1 +1,1 @@
-read_without_identifier.npt
+NoViableAltException(46@[])
