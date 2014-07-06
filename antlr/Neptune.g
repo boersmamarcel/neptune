@@ -76,40 +76,6 @@ tokens {
 	ARRAY_VAR	=	'array_var'	;
 }
 
-@lexer::members {
-    class SaveStruct {
-      SaveStruct(CharStream input){
-        this.input = input;
-        this.marker = input.mark();
-      }
-      public CharStream input;
-      public int marker;
-     }
- 
-     Stack<SaveStruct> includes = new Stack<SaveStruct>();
- 
-    // We should override this method for handling EOF of included file
-     public Token nextToken(){
-       Token token = super.nextToken();
- 
-       if(token.getType() == Token.EOF && includes.size() > 0){
-        // We've got EOF and have non empty stack.
-         SaveStruct ss = includes.pop();
-         setCharStream(ss.input);
-         input.rewind(ss.marker);
-         //this should be used instead of super [like below] to handle exits from nested includes
-         //it matters, when the 'include' token is the last in previous stream (using super, lexer 'crashes' returning EOF token)
-         token = this.nextToken();
-       }
- 
-      // Skip first token after switching on another input.
-      // You need to use this rather than super as there may be nested include files
-       if(((CommonToken)token).getStartIndex() < 0)
-         token = this.nextToken();
- 
-       return token;
-     }
- }
 
 @lexer::header {
 package neptune;
