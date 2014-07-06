@@ -8,12 +8,34 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representing a function call.
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class FunctionCallNode extends Node {
 
+	/**
+	 * Reference to the declaration of the function.
+	 */
 	protected FunctionDeclarationNode functionRef;
+	
+	/**
+	 * The function name.
+	 */
 	protected String functionName;
+	
+	/**
+	 * List containg expressions used as arguments for the function call.
+	 */
 	protected List<Node> args;
 	
+	/**
+	 * Constructor for a call to a function.
+	 * 
+	 * @param functionName The name of the function that is being called.
+	 * @param arraySet The arguments for the function call.
+	 */
 	public FunctionCallNode(String functionName, Node arraySet) {
 		this.description = "function_ref:" + functionName;
 		
@@ -23,6 +45,7 @@ public class FunctionCallNode extends Node {
 		children.addAll(args);
 	}
 	
+	@Override
 	public void validate(Program p) throws NeptuneException {
 		for(Node n: children) {
 			n.validate(p);

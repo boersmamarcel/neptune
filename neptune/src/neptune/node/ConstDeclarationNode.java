@@ -7,12 +7,35 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representing the declaration of a constant.
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class ConstDeclarationNode extends Node {
 
+	/**
+	 * Identifier for the constant.
+	 */
 	protected String identifier;
+	
+	/**
+	 * Node defining the type of the constant.
+	 */
 	protected Node varType;
+	
+	/**
+	 * Expression that is assigned to the constant.
+	 */
 	protected Node expression;
 	
+	/**
+	 * Constructor for a constant declaration.
+	 * 
+	 * @param identifier The identifier for this constant.
+	 * @param type The type node for this constant.
+	 * @param expression Expression to be assigned to the constant.
+	 */
 	public ConstDeclarationNode(String identifier, Node type, Node expression) {
 		this.description = "var:" + identifier;
 		this.identifier = identifier;
@@ -23,6 +46,7 @@ public class ConstDeclarationNode extends Node {
 		children.add(expression);
 	}
 	
+	@Override
 	public void validate(Program p) throws NeptuneException {
 		varType.validate(p);
 		expression.validate(p);

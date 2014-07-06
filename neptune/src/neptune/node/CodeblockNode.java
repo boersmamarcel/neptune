@@ -6,8 +6,18 @@ import java.util.Map;
 import neptune.NeptuneException;
 import neptune.assembly.Program;
 
+/**
+ * Class representing a codeblock
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class CodeblockNode extends Node {
 
+	/**
+	 * Constructor for a codeblock containing some code lines
+	 * 
+	 * @param lines Codelines contained with this block.
+	 */
 	public CodeblockNode(List<Node> lines) {
 		children = lines;
 		description = "codeblock";

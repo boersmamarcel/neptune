@@ -6,8 +6,18 @@ import java.util.Map;
 import neptune.NeptuneException;
 import neptune.assembly.Program;
 
+/**
+ * Node used to store a literal array set
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class ArraySetNode extends Node {
 
+	/**
+	 * Constructor for ArraySetNode.
+	 * 
+	 * @param elements Expressions representing the contents of the array set.
+	 */
 	public ArraySetNode(List<Node> elements) {
 		children = elements;
 	}

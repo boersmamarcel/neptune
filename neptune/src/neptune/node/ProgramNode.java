@@ -6,8 +6,18 @@ import java.util.Map;
 import neptune.assembly.Program;
 import neptune.NeptuneException;
 
+/**
+ * Class representing the entire Neptune program.
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class ProgramNode extends Node {
 
+	/**
+	 * Constructor for the program node.
+	 * 
+	 * @param lines Lines forming the Neptune program
+	 */
 	public ProgramNode(List<Node> lines) {
 		children = lines;
 		description = "program";

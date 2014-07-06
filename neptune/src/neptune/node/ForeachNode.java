@@ -8,13 +8,40 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representing a foreach logic statement.
+ * 
+ * @author Koen van Urk and Marcel Boersma.
+ */
 public class ForeachNode extends Node {
 
+	/**
+	 * Name of the referenced element.
+	 */
 	protected String elementRef;
+	
+	/**
+	 * Name of the array that is used to loop through.
+	 */
 	protected String arrayRef;
+	
+	/**
+	 * Node pointing to the array.
+	 */
 	protected Node array;
+	
+	/**
+	 * Node pointing to the referenced element.
+	 */
 	protected Node element;
 	
+	/**
+	 * Constructor for the foreach statement.
+	 * 
+	 * @param element Name of the element that contains a new value from the array each iteration.
+	 * @param array Name of the array that is being walked through.
+	 * @param lines Lines of code to execute every iteration.
+	 */
 	public ForeachNode(String element, String array, List<Node> lines) {
 		this.description = "foreach";
 		

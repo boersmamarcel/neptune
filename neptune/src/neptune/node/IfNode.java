@@ -8,11 +8,29 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representing a complete if-statement.
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class IfNode extends Node {
 
+	/**
+	 * List of IfBlockNodes that represent part of this if-statement.
+	 */
 	protected List<Node> blocks;
+	
+	/**
+	 * Else node, if applicable
+	 */
 	protected Node elseNode;
 	
+	/**
+	 * Constructor for an if-statement.
+	 * 
+	 * @param blocks List of IfBlockNodes that represent part of this if-statement.
+	 * @param elseNode Else node, if applicable (otherwise provide null).
+	 */
 	public IfNode(List<Node> blocks, Node elseNode) {
 		this.description = "if-statement";
 		

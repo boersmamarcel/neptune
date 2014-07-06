@@ -6,18 +6,41 @@ import java.util.Map;
 import neptune.NeptuneException;
 import neptune.assembly.Program;
 
+/**
+ * Generic container node used for top level nodes without functionality.
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class BasicNode extends Node {
 
+	
+	/**
+	 * Constructor for BasicNode with a description and a list of child nodes.
+	 * 
+	 * @param description Description for this node.
+	 * @param children List containing the children for this node.
+	 */
 	public BasicNode(String description, List<Node> children) {
 		this.description = description;
 		this.children = children;
 	}
 	
+	/**
+	 * Constructor for BasicNode with a description and a single child node.
+	 * 
+	 * @param description Description for this node.
+	 * @param child Child node.
+	 */
 	public BasicNode(String description, Node child) {
 		this.description = description;
 		children.add(child);
 	}
 	
+	/**
+	 * Constructor for BasicNode with a description and no child nodes.
+	 * 
+	 * @param description Description for this node.
+	 */
 	public BasicNode(String description) {
 		this.description = description;
 	}

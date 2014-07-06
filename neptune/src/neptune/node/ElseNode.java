@@ -6,10 +6,23 @@ import java.util.Map;
 import neptune.NeptuneException;
 import neptune.assembly.Program;
 
+/**
+ * Class representing an else node belonging to an if-statement.
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class ElseNode extends Node {
 
+	/**
+	 * Lines contained within the else block.
+	 */
 	protected List<Node> lines;
 	
+	/**
+	 * Constructor for an else node.
+	 * 
+	 * @param lines Lines contained within the else block.
+	 */
 	public ElseNode(List<Node> lines) {
 		this.description = "else";
 		
@@ -17,6 +30,7 @@ public class ElseNode extends Node {
 		children.addAll(lines);
 	}
 	
+	@Override
 	public void validate(Program p) throws NeptuneException {
 		p.symbolTable.openScope();
 		for(Node n: children) {

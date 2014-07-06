@@ -7,11 +7,29 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representing an if or elsif block for an if-statement.
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class IfBlockNode extends Node {
 
+	/**
+	 * Lines that form the body of this block.
+	 */
 	protected List<Node> lines;
+	
+	/**
+	 * Expression that needs to be evaluated to see if this block should be executed. 
+	 */
 	protected Node expression;
 	
+	/**
+	 * Constructor for an if or elsif block.
+	 * 
+	 * @param expression Expression that needs to be evaluated to see if this block should be executed.
+	 * @param lines Lines that form the body of this block.
+	 */
 	public IfBlockNode(Node expression, List<Node> lines) {
 		this.description = "if-block";
 		
@@ -21,6 +39,7 @@ public class IfBlockNode extends Node {
 		children.addAll(lines);
 	}
 	
+	@Override
 	public void validate(Program p) throws NeptuneException {
 		expression.validate(p);
 		

@@ -6,12 +6,35 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representing a binary operator that requires primitive (non-array) expressions. 
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class BinaryPrimitiveOperatorNode extends Node {
 
+	/**
+	 * The operator for this binary expression.
+	 */
 	protected Operator operator;
+	
+	/**
+	 * The left hand operand.
+	 */
 	protected Node left;
+	
+	/**
+	 * The right hand operand.
+	 */
 	protected Node right;
 	
+	/**
+	 * Constructor for a binary primitive operator node.
+	 * 
+	 * @param operator The operator to use.
+	 * @param left The left hand operand.
+	 * @param right The right hand operand.
+	 */
 	public BinaryPrimitiveOperatorNode(Operator operator, Node left, Node right) {
 		this.description = "operator:" + operator;
 		
@@ -23,6 +46,7 @@ public class BinaryPrimitiveOperatorNode extends Node {
 		children.add(right);
 	}
 	
+	@Override
 	public void validate(Program p) throws NeptuneException {
 		left.validate(p);
 		right.validate(p);

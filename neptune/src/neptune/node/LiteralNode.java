@@ -6,10 +6,24 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representing a literal value such as integer, char or string.
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class LiteralNode extends Node {
 
+	/**
+	 * Value represented by this literal node.
+	 */
 	protected String value;
 	
+	/**
+	 * Constructor for the literal node.
+	 * 
+	 * @param value String value representing the literal.
+	 * @param primitive Primitive type of the literal (char, integer or bool).
+	 */
 	public LiteralNode(String value, type primitive) {
 		this.value = value;
 		this.primitive = primitive;

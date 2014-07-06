@@ -7,13 +7,24 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representing a print statement.
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class PrintNode extends Node {
 
+	/**
+	 * Constructor for the print node.
+	 * 
+	 * @param expressions A list containing the expressions to be printed on screen.
+	 */
 	public PrintNode(List<Node> expressions) {
 		this.description = "print";
 		children = expressions;
 	}
 	
+	@Override
 	public void validate(Program p) throws NeptuneException {
 		for(Node n: children) {
 			n.validate(p);
