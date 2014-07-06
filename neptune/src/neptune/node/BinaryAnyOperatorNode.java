@@ -64,6 +64,10 @@ public class BinaryAnyOperatorNode extends Node {
 			if(left.isArray() && right.isArray() && left.elemCount() != right.elemCount()) {
 				throw new NeptuneException(this, "element counts do not match for assignment");
 			}
+			
+			if(!left.typeMatch(right)) {
+				throw new NeptuneException(this, "element types do not match (" + left.typeDescription() + "!=" + right.typeDescription() + ")");
+			}
 			break;
 
 		default:
