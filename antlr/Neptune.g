@@ -79,8 +79,6 @@ tokens {
 
 @lexer::header {
 package neptune;
-
-import java.io.File;
 }
 
 @header {
@@ -219,24 +217,6 @@ array_def
 	;
 
 // Lexer rules
-
-DROPIN_STATEMENT
-	:	'#dropin' LPAREN f=STRING_LITERAL RPAREN {
-	       String name = $f.text;
-	       name = name.substring(1,name.length()-1);
-			name = new File("").getAbsolutePath() + "/neptune/src/test/sample/" + name;
-	       try {
-	        // save current lexer's state
-	         SaveStruct ss = new SaveStruct(input);
-	         includes.push(ss);
-
-	        // switch on new input stream
-	         setCharStream(new ANTLRFileStream(name));
-	         reset();
-
-	       } catch(Exception fnf) { throw new Error("Cannot open file " + name); }
-	}
-    ;
 
 IDENTIFIER
     :   LETTER (LETTER | DIGIT | '_')*
