@@ -33,7 +33,7 @@ import TAM.Interpreter;
 
 /**
  * 
- * Dit is de klasse met alle test voor het testen van de Neptune compiler met behulp van JUnit
+ * Dit is de klasse met alle tests voor het testen van de Neptune compiler met behulp van JUnit
  * 
  * @author Marcel Boersma en Koen van Urk
  *

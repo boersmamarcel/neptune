@@ -17,8 +17,20 @@ import org.antlr.runtime.tree.CommonTreeNodeStream;
 import TAM.Assembler;
 import TAM.Interpreter;
 
+/**
+ * Command line tool for validating, compiling and running Neptune programs
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ */
 public class Neptune {
 
+	/**
+	 * Runs a given file with a given action.
+	 * 
+	 * @param file A file containing Neptune code
+	 * @param action Action to execute, can be one of validate, compile and run.
+	 * @throws Exception Can throw exceptions when validation, compilation or running fail.
+	 */
 	public void run(File file, String action) throws Exception {
 
 		String inputFile = file.getAbsolutePath();
@@ -82,6 +94,11 @@ public class Neptune {
 		}
 	}
 
+	/**
+	 * Entry point for the Neptune Compiler.
+	 * 
+	 * @param args Command line arguments
+	 */
 	public static void main(String[] args) {
 		Neptune neptune = new Neptune();
 		
