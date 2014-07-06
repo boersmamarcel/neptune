@@ -10,13 +10,13 @@ import neptune.assembly.Program;
 public class VarDeclarationNode extends Node {
 
 	protected String identifier;
-	protected Node type;
+	protected Node varType;
 	protected Node expression;
 	
 	public VarDeclarationNode(String identifier, Node type, Node expression) {
 		this.description = "var:" + identifier;
 		this.identifier = identifier;
-		this.type = type;
+		this.varType = type;
 		this.expression = expression;
 		
 		children.add(type);
@@ -27,8 +27,8 @@ public class VarDeclarationNode extends Node {
 		if(expression != null) {
 			expression.validate(p);
 
-			if(!this.typeMatch(expression)) {
-				throw new NeptuneException(this, "type mismatch (" + expression.typeDescription() + "!=" + this.typeDescription() + ")");
+			if(!this.varType.typeMatch(expression)) {
+				throw new NeptuneException(this, "type mismatch (" + expression.typeDescription() + "!=" + this.varType.typeDescription() + ")");
 			}
 		}
 		
@@ -47,8 +47,8 @@ public class VarDeclarationNode extends Node {
 				expression.resultIsUsed = true;
 				expression.generate(p, info);
 
-				if(type.isArray()) {
-					for(int i = 0; i < type.elemCount(); i++) {
+				if(varType.isArray()) {
+					for(int i = 0; i < varType.elemCount(); i++) {
 						p.add(Instruction.STORE(entry.getAddress() + i));
 					}
 				}else{
@@ -56,8 +56,8 @@ public class VarDeclarationNode extends Node {
 				}
 			}
 		} else {
-			if(type.isArray()) {
-				for(int i = 0; i < type.elemCount(); i++) {
+			if(varType.isArray()) {
+				for(int i = 0; i < varType.elemCount(); i++) {
 					p.add(Instruction.STORE(entry.getAddress() + i));
 				}
 			}else{
@@ -67,7 +67,8 @@ public class VarDeclarationNode extends Node {
 	}
 	
 	protected void addToSymbolTable(Program p) throws NeptuneException {
-			IdEntry entry = new IdEntry(this);
+		varType.isMutable = true;
+		IdEntry entry = new IdEntry(this.varType);
 		
 		try {
 			p.symbolTable.enter(this.identifier, entry);
@@ -78,22 +79,22 @@ public class VarDeclarationNode extends Node {
 	
 	@Override
 	public type getType() {
-		return this.type.getType();
+		return type.VOID;
 	}
 
 	@Override
 	public boolean isArray() {
-		return this.type.isArray();
+		return false;
 	}
 	
 	@Override
 	public boolean isMutable() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public int elemCount() {
-		return this.type.elemCount();
+		return 0;
 	}
 
 }

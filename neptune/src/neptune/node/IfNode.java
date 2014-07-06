@@ -57,8 +57,9 @@ public class IfNode extends Node {
 			p.add(Instruction.JUMP(endLabel));
 		}
 		
+		p.add(Instruction.LABEL(nextLabel));
+		
 		if(elseNode != null) {
-			p.add(Instruction.LABEL(nextLabel));
 			elseNode.resultIsUsed = false;
 			elseNode.generate(p, info);
 		}

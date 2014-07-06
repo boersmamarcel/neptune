@@ -40,7 +40,7 @@ public class TypeNode extends Node {
 	
 	@Override
 	public boolean isMutable() {
-		return false;
+		return isMutable;
 	}
 
 	@Override

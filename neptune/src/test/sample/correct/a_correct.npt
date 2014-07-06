@@ -1,7 +1,0 @@
-char[13] name = "HELLO, WORLD!";
-
-int i = 0;
-while(i < sizeof(name)) {
-	print(name[i]);
-	i = i + 1;
-}

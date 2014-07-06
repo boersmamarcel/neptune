@@ -35,16 +35,16 @@ public class ReadNode extends Node {
 	@Override
 	public void generate(Program p, Map<String, Object> info) throws NeptuneException {
 		for(Node n: children) {
+			Map<String, Object> args = new HashMap<String, Object>();
+			args.put("instruction", "address");
+			n.resultIsUsed = true;
+			n.generate(p, args);
+			
 			if(n.getType() == type.CHAR) {
 				p.add(Instruction.READ_CHAR());
 			}else{
-				p.add(Instruction.READ_CHAR());
+				p.add(Instruction.READ_INT());
 			}
-			
-			Map<String, Object> args = new HashMap<String, Object>();
-			args.put("instruction", "store");
-			n.resultIsUsed = false;
-			n.generate(p, args);
 		}
 		
 		if(children.size() == 1 && resultIsUsed) {
