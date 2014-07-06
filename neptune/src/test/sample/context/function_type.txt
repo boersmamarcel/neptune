@@ -1,1 +1,1 @@
-var:b --> type mismatch (INTEGER!=BOOL)
+return --> invalid return type (CHAR!=BOOL)
