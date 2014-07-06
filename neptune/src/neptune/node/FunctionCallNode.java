@@ -40,8 +40,9 @@ public class FunctionCallNode extends Node {
 		}
 		
 		for(int i = 0; i < args.size(); i++) {
-			if(!args.get(i).typeMatch(functionRef.args.get(i))) {
-				throw new NeptuneException(this, "argument " + (i+1) + " does not match expected argument type");
+			VarDeclarationNode declNode = (VarDeclarationNode)functionRef.args.get(i);
+			if(!args.get(i).typeMatch(declNode.varType)) {
+				throw new NeptuneException(this, "argument " + (i+1) + " does not match expected argument type (" + args.get(i).typeDescription() + "!=" + functionRef.args.get(i).typeDescription() + ")");
 			}
 		}
 	}

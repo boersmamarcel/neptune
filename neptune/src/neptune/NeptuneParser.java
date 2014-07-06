@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/Neptune.g 2014-07-06 02:53:53
+// $ANTLR 3.5.2 antlr/Neptune.g 2014-07-06 03:31:26
 
 package neptune;
 
@@ -1252,7 +1252,7 @@ public class NeptuneParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: type, expression, IDENTIFIER, BECOMES
+					// elements: expression, BECOMES, type, IDENTIFIER
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1502,7 +1502,7 @@ public class NeptuneParser extends Parser {
 			stream_RCURLY.add(RCURLY85);
 
 			// AST REWRITE
-			// elements: IDENTIFIER, line, type, FUNCTION, IDENTIFIER, type
+			// elements: type, IDENTIFIER, IDENTIFIER, line, type, FUNCTION
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -1521,12 +1521,12 @@ public class NeptuneParser extends Parser {
 				adaptor.addChild(root_1, stream_type.nextTree());
 				adaptor.addChild(root_1, stream_IDENTIFIER.nextNode());
 				// antlr/Neptune.g:186:33: ( type IDENTIFIER )*
-				while ( stream_type.hasNext()||stream_IDENTIFIER.hasNext() ) {
+				while ( stream_IDENTIFIER.hasNext()||stream_type.hasNext() ) {
 					adaptor.addChild(root_1, stream_type.nextTree());
 					adaptor.addChild(root_1, stream_IDENTIFIER.nextNode());
 				}
-				stream_type.reset();
 				stream_IDENTIFIER.reset();
+				stream_type.reset();
 
 				if ( !(stream_line.hasNext()) ) {
 					throw new RewriteEarlyExitException();
@@ -2815,7 +2815,7 @@ public class NeptuneParser extends Parser {
 							stream_RBRACKET.add(RBRACKET127);
 
 							// AST REWRITE
-							// elements: IDENTIFIER, expression
+							// elements: expression, IDENTIFIER
 							// token labels: 
 							// rule labels: retval
 							// token list labels: 

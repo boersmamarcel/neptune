@@ -43,7 +43,7 @@ public class ReadNode extends Node {
 			if(n.getType() == type.CHAR) {
 				p.add(Instruction.READ_CHAR());
 			}else{
-				p.add(Instruction.READ_CHAR());
+				p.add(Instruction.READ_INT());
 			}
 		}
 		

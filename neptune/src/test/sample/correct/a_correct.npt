@@ -1,17 +1,28 @@
-//int i = -1;
+// commentaar in een programma voorbeeld
+function int fibo(int n){
+	int result = 0;
+	if(n <= 2){
+		result = 1;
+	}else{
+		int a = fibo(n-1);
+		int b = fibo(n-2);
+		result = a + b;
+	} 
+	return(result);
+}
 
-//char c;
+int a;
+read(a);
+int i = 0;
+char newLine = 10;
 
-//while(c != 10) {
-//	read(c);
-//	i = i + 1;
-//}
+if(a > 0) {
 
-//print(i);
+	while(i <= a) {
+		print('(', i, ")  ", fibo(i), newLine);
+		i = i + 1;
+	}
 
-char[5] a = "HELLO";
-char[5] b = "HELLo";
-
-if(a == b) {
-	print("same");
+}else{
+	print("Negatieve waarde is niet toegestaan");
 }

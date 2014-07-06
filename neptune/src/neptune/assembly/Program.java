@@ -2,38 +2,69 @@ package neptune.assembly;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 import neptune.SymbolTable;
 
+/**
+ * @author Koen van Urk and Marcel Boersma
+ *
+ */
 public class Program {
 
+	/**
+	 * Stores the assembly instructions.
+	 */
 	private List<Instruction> instructions;
-	public SymbolTable symbolTable = new SymbolTable();
-	public static boolean isFunctionCall = false;
-	public static String definingFunction = "";
-	protected int labelCounter = 0;
 	
+	/**
+	 * Stores a symbol table.
+	 */
+	public SymbolTable symbolTable;
+	
+	/**
+	 * Helper variable to know when a function is being defined.
+	 */
+	public static boolean isFunctionCall = false;
+	
+	/**
+	 * Name of the function that is being defined when isFunctionCall is true.
+	 */
+	public static String definingFunction = "";
+	
+	/**
+	 * Assembly instructions for functions. These are printed after the main block.
+	 */
 	private List<Instruction> functionInstructions;
 	
-	protected Stack<Integer> popStack;
+	/**
+	 * Counter to generate unique labels for things like if statements and while blocks.
+	 */
+	protected int labelCounter = 0;
 	
+	/**
+	 * Creates a new instance of a Program with empty instructions sets and symbol table.
+	 */
 	public Program() {
 		instructions = new ArrayList<Instruction>();
 		functionInstructions = new ArrayList<Instruction>();
-		popStack = new Stack<Integer>();
+		symbolTable = new SymbolTable();
 	}
 	
+	/**
+	 * Adds an instructions to the currently active instruction set.
+	 * 
+	 * Instruction set is defined by instructionSet() and can be
+	 * either the function instruction or the base instruction set.
+	 * 
+	 * @param i Instruction to add.
+	 */
 	public void add(Instruction i) {
 		instructionSet().add(i);
 	}
 	
-	public void addMultiple(ArrayList<Instruction> instrs) {
-		for(Instruction i: instrs) {
-			add(i);
-		}
-	}
-	
+	/**
+	 * Assembles the program and prints the complete instruction set.
+	 */
 	public void assemble() {
 		
 		System.out.println("PUSH " + symbolTable.getLargestSize());
@@ -83,26 +114,11 @@ public class Program {
 		System.out.println("valid1: RETURN(0) 2");
 	}
 	
-	public void markInstructionStart() {
-		popStack.add(instructionSet().size());
-	}
-	
-	public ArrayList<Instruction> popLastInstructions() {
-		
-		ArrayList<Instruction> result = new ArrayList<Instruction>();
-		int count = instructionSet().size();
-		
-		int instructionMarker = popStack.pop();
-		
-		for(int i = instructionMarker; i < count; i++) {
-			Instruction instr = instructionSet().get(instructionMarker);
-			result.add(instr);
-			instructionSet().remove(instructionMarker);		
-		}
-		
-		return result;
-	}
-	
+	/**
+	 * Helper method to obtain the currently active instruction set.
+	 * 
+	 * @return The currently active instruction set (function or base)
+	 */
 	private List<Instruction> instructionSet() {
 		if(isFunctionCall) {
 			return functionInstructions;
@@ -111,6 +127,11 @@ public class Program {
 		}
 	}
 	
+	/**
+	 * Generates a new unique numeric label.
+	 * 
+	 * @return Unique numeric label
+	 */
 	public int generateLabel() {
 		return labelCounter++;
 	}
