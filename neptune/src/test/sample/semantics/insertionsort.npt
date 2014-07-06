@@ -19,7 +19,7 @@ function int[10] sort(int[10] arr) {
 		i = i + 1;
 	}
 	
-	return arr;
+	return(arr);
 }
 
 function int print_array(int[10] arr) {
@@ -35,7 +35,7 @@ function int print_array(int[10] arr) {
 		}
 	}
 	print(']', newLine);
-	return 1;
+	return(1);
 }
 
 int[10] numbers = [2, 9, 17, 4, 8, 5, 2, 10, 11, 3];

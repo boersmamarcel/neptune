@@ -25,6 +25,7 @@ import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.junit.Test;
+import org.junit.runner.JUnitCore;
 
 import TAM.Assembler;
 import TAM.Interpreter;
@@ -354,7 +355,10 @@ public class FullTest {
 	
 
 
-	
+	public static void main(String[] args) throws Exception {                    
+	       JUnitCore.main(
+	         "test.FullTest");            
+	}
 	
 	
 	
