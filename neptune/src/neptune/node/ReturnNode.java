@@ -7,16 +7,28 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representation of ReturnNode
+ * @author Koen van Urk and Marcel Boersma
+ *
+ */
 public class ReturnNode extends Node {
-
+	/**
+	 * Expression node
+	 */
 	protected Node expression;
 	
+	/**
+	 * Construct of return node
+	 * @param expression the return expression
+	 */
 	public ReturnNode(Node expression) {
 		this.description = "return";
 		
 		this.expression = expression;
 	}
 	
+	@Override
 	public void validate(Program p) throws NeptuneException {
 		expression.validate(p);
 		
