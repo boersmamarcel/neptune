@@ -148,7 +148,7 @@ declaration
 	
 function_declaration
    	:	FUNCTION type IDENTIFIER LPAREN (type IDENTIFIER (COMMA type IDENTIFIER)*)? RPAREN LCURLY line+ RCURLY
-		-> ^(FUNCTION type IDENTIFIER (type IDENTIFIER)* line+)
+		-> ^(FUNCTION type IDENTIFIER (type IDENTIFIER)* lines)
 	;
 
 return_statement
