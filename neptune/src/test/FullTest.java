@@ -154,9 +154,14 @@ public class FullTest {
 	@Test 
 	public void foreach(){
 		String method = new Exception().getStackTrace()[0].getMethodName();
-		//correctTest(method, "correct");
-		//correctTest(method, "context");
-		fail("TODO FIX foreach"); 
+		
+		try {
+			correctTest(method, "correct");
+			correctTest(method, "context");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
