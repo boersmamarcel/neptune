@@ -7,12 +7,36 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * 
+ * Class representation of VarDeclarationNode
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ *
+ */
 public class VarDeclarationNode extends Node {
 
+	/**
+	 * Identifier name
+	 */
 	protected String identifier;
+	
+	/**
+	 * Node type
+	 */
 	protected Node varType;
+	
+	/**
+	 * Assignment value for the variable
+	 */
 	protected Node expression;
 	
+	/**
+	 * Constructor of the VarDeclarationNode 
+	 * @param identifier name
+	 * @param type	node type
+	 * @param expression value of the variable
+	 */
 	public VarDeclarationNode(String identifier, Node type, Node expression) {
 		this.description = "var:" + identifier;
 		this.identifier = identifier;
@@ -23,6 +47,7 @@ public class VarDeclarationNode extends Node {
 		children.add(expression);
 	}
 	
+	@Override
 	public void validate(Program p) throws NeptuneException {
 		if(expression != null) {
 			expression.validate(p);

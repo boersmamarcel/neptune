@@ -7,10 +7,24 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representing a while statement
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ *
+ */
 public class WhileNode extends Node {
 
+	/**
+	 * The loop condition for the while statement	
+	 */
 	protected Node loopCondition;
 	
+	/**
+	 * Constructor of the while statement node
+	 * @param expression conditional expression
+	 * @param lines the code block
+	 */
 	public WhileNode(Node expression, List<Node> lines) {
 		this.description = "while";
 		loopCondition = expression;

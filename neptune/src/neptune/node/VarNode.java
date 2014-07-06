@@ -7,11 +7,29 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * 
+ * Class representing the Var node
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ *
+ */
 public class VarNode extends Node {
 
+	/**
+	 * Name of the reference variable
+	 */
 	protected String elementRef;
+	
+	/**
+	 * The node of the reference variable
+	 */
 	protected Node element;
 	
+	/**
+	 * Constructor for the var node
+	 * @param element name of the variable
+	 */
 	public VarNode(String element) {
 		this.description = "ref:" + element;
 		elementRef = element;

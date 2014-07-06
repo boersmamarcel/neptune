@@ -7,18 +7,42 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * 
+ * Class representing the VarIndexedNode
+ * 
+ * @author Koen van Urk and Marcel Boersma
+ *
+ */
 public class VarIndexedNode extends Node {
 
+	/**
+	 * Name of the reference variable
+	 */
 	protected String elementRef;
+	
+	/**
+	 * The reference node
+	 */
 	protected Node element;
+	
+	/**
+	 * Element pointer in the reference variable
+	 */
 	protected Node expression;
 	
+	/**
+	 * Constructor of the VarIndexNode
+	 * @param element element name
+	 * @param expression element expression
+	 */
 	public VarIndexedNode(String element, Node expression) {
 		this.description = "index_ref:" + element;
 		elementRef = element;
 		this.expression = expression;
 	}
 	
+	@Override
 	public void validate(Program p) throws NeptuneException {
 		IdEntry entry = p.symbolTable.retrieve(elementRef);
 		
