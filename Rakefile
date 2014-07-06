@@ -50,30 +50,6 @@ end
 
 
 
-namespace :run do
-	desc "Run test"
-	task :test do
-		sh "java -classpath neptune/bin:neptune/antlr-3.5.2-complete.jar test.TestNeptune"
-	end
-	desc "Run compiler"
-	task :compiler, [:ast, :dot, :file] do |t, args|
-		add_args = ""
-		
-		add_args = add_args + "-ast" if args[:ast] == "ast"
-		add_args = add_args + " -dot " if args[:dot] == "dot"
-		add_args = add_args + args[:file]
-
-		sh "java -classpath neptune/bin:neptune/antlr-3.5.2-complete.jar neptune.Neptune #{add_args}"
-	end
-
-	desc "Assembly"
-	task :assembly, [:file] do |t, args|
-		dir_name = File.dirname(__FILE__)
-		ENV['CLASSPATH'] = "#{ENV['CLASSPATH']}:#{dir_name}/TAM/Assembler.jar:#{dir_name}/TAM/Triangle.jar"
-		sh "java TAM.Assembler #{args[:file]} tam.obj; java TAM.Interpreter tam.obj"
-	end
-end
-
 
 task :default do
  puts "Build your compiler for the Neptune language"
