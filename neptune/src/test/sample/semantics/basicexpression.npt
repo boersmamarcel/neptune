@@ -30,7 +30,7 @@ print(c);
 print(-8*2+3);
 
 5==5;
-3*24/532 >= 342 == 23;
+3*24/532 >= 342 == false;
 
 
 int x;
@@ -65,7 +65,7 @@ i = false;
 h = false;
 print(h || i);
 
-//sfdasfds
+
 print( 10 > 9);
 
 print(10 < 9);
