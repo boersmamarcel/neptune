@@ -19,7 +19,7 @@ public class UnaryPrimitiveOperatorNode extends Node {
 	protected Operator operator;
 	
 	/**
-	 * Right handside operand
+	 * Right hand side operand
 	 */
 	protected Node operand;
 	
