@@ -1,0 +1,19 @@
+char[12] a = "HELLO WORLD!";
+
+print(a);
+
+int[1] x;
+int[1] y;
+
+x[0] = y[0] = 12;
+print(x[0]);
+print(y[0]);
+
+
+char[5] english = "HELLO";
+char[5] msg1;
+char[5] msg2;
+
+msg1 = msg2 = english;
+
+print(msg1, '.', msg2, '.', english);

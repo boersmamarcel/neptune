@@ -1,0 +1,95 @@
+//basic_expression_language_correct.npt
+int a = 0;
+int b = 1;
+int c = -3;
+
+int d = b-c;
+print(d);
+
+//this should not have any effect
+-3*21/3+1*3;
+
+-3-3-3-3-3-3-3-3-3-3-3;
+print(a);
+a=9;
+print(a);
+
+
+//define constants
+const int cons = 10;
+print(cons);
+
+//print multiple values 
+print(a,b,cons);
+
+//print b and assign to c
+c = print(b);
+print(c);
+
+//print minus
+print(-8*2+3);
+
+5==5;
+3*24/532 >= 342 == false;
+
+
+int x;
+int y;
+int z;
+
+x = y = 12;
+print(x);
+print(y);
+
+x = 2+5*3;
+print(x);
+x = (2+5)*3;
+print(x);
+
+bool h = false;
+bool i = false;
+
+print(h && i);
+print(!h && !i);
+print(!(h && i));
+
+i = true;
+
+print(h || i);
+
+i = false;
+h = true;
+print(h || i);
+
+i = false;
+h = false;
+print(h || i);
+
+
+print( 10 > 9);
+
+print(10 < 9);
+print(10 <= 10);
+print(9 <= 10);
+print(10 >= 10);
+print(9 >= 10);
+print(10 == 10);
+print(1 == 2);
+
+print(-1);
+
+print(+1);
+print(9 % 3);
+print(11 % 3);
+print(10 != 9);
+print(10 != 10);
+
+
+
+
+
+
+
+
+
+

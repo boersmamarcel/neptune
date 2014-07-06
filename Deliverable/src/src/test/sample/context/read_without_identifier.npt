@@ -1,0 +1,5 @@
+//read without identifier
+
+
+int a = read(1);
+print(a);

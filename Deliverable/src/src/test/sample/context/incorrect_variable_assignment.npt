@@ -1,0 +1,6 @@
+//incorrect variable type assignment
+
+int a = 0;
+bool b = true;
+
+b = a;

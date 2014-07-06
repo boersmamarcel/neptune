@@ -1,0 +1,18 @@
+int u = 0;
+int g = u;
+int a = {
+	int g = 25;
+	print(g*3);
+	{
+		int c = 43;
+		int d = 44;
+		print(d*3);
+	};
+};
+
+print(a, g);
+
+{
+int c = 3;
+print(c);
+};

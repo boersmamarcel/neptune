@@ -1,0 +1,1 @@
+function:scopeFunction --> function can only be declared in the global scope

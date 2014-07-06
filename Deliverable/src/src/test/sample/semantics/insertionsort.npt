@@ -1,0 +1,46 @@
+function int[10] sort(int[10] arr) {
+	int a;
+	int b;
+	
+	int i = 0;
+	int j = 0;
+	
+	char newLine = 10;
+	
+	while(i < 10) {
+		int x = arr[i];
+		int j = i;
+		while(j > 0 && arr[j-1] > x) {
+			arr[j] = arr[j-1];
+			j = j - 1;
+		}
+		arr[j] = x;
+		
+		i = i + 1;
+	}
+	
+	return(arr);
+}
+
+function int print_array(int[10] arr) {
+	int i = 0;
+	char newLine = 10;
+	print(newLine, '[');
+	foreach(number in arr) {
+		print(number);
+		i = i + 1;
+		
+		if(i < sizeof(arr)) {
+			print(", ");
+		}
+	}
+	print(']', newLine);
+	return(1);
+}
+
+int[10] numbers = [2, 9, 17, 4, 8, 5, 2, 10, 11, 3];
+
+print_array(numbers);
+print("Starting sort");
+numbers = sort(numbers);
+print_array(numbers);

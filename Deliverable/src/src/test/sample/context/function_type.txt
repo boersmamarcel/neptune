@@ -1,0 +1,1 @@
+return --> invalid return type (CHAR!=BOOL)
