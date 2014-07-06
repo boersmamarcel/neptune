@@ -9,9 +9,9 @@
 
 //print(i);
 
-int a = {
-	print("Hello world");
-	2;
-};
+char[5] a = "HELLO";
+char[5] b = "HELLo";
 
-print(a);
+if(a == b) {
+	print("same");
+}
