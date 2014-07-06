@@ -1,0 +1,7 @@
+{
+	function int scopeFunction(int a){
+	  return(a);
+	}
+};
+
+print(scopeFunction(9));

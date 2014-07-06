@@ -1,0 +1,1 @@
+var:b --> type mismatch (INTEGER!=BOOL)
