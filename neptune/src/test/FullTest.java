@@ -164,6 +164,17 @@ public class FullTest {
 		}
 	}
 	
+	@Test
+	public void insertionsort() {
+		String method = new Exception().getStackTrace()[0].getMethodName();
+		try {
+			correctTest(method, "semantics");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	
 	public void correctTest(String filebase, String dirbase) throws IOException{
 		File file = new File(new File("").getAbsolutePath() + "/neptune/src/test/sample/"+dirbase+"/"+filebase+".npt");
