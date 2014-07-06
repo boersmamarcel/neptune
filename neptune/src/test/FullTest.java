@@ -38,6 +38,8 @@ public class FullTest {
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
 			correctTest(method, "correct");
+			correctTest(method, "context");
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -52,6 +54,10 @@ public class FullTest {
 			correctTest(method, "correct");
 			correctTest(method, "context");
 			correctTest("basicexpression_scope", "context");
+			//correctTest("read_without_identifier", "context");
+			correctTest("const_reassignment", "context");
+			//correctTest("incorrect_variable_assignment", "context");
+			correctTest("illegal_print_statement_assignment", "context");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -64,6 +70,7 @@ public class FullTest {
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
 			correctTest(method, "correct");
+			//correctTest(method, "context");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -76,6 +83,9 @@ public class FullTest {
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
 			correctTest(method, "correct");
+			correctTest("function_scope", "context");
+			correctTest("function_type", "context");
+			correctTest("function_global_scope", "context");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -109,13 +119,9 @@ public class FullTest {
 	@Test 
 	public void foreach(){
 		String method = new Exception().getStackTrace()[0].getMethodName();
-		try {
-			correctTest(method, "correct");
-			correctTest(method, "context");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} 
-		
+		//correctTest(method, "correct");
+		//correctTest(method, "context");
+		fail("TODO FIX foreach"); 
 	}
 	
 	
@@ -147,7 +153,6 @@ public class FullTest {
 		try {
 			ntree.program();
 		} catch (RecognitionException e) {
-			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
 		
@@ -159,7 +164,6 @@ public class FullTest {
 		try {
 			ntree.rootNode.validate(p);
 		} catch (NeptuneException e) {
-			// TODO Auto-generated catch block
 			actual = e.getMessage()+ "\n";
 		}
 
@@ -168,7 +172,6 @@ public class FullTest {
 				ntree.rootNode.generate(p, null);
 			}
 		} catch (NeptuneException e) {
-			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
 		

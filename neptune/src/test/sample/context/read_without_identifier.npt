@@ -2,3 +2,4 @@
 
 
 int a = read(1);
+print(a);

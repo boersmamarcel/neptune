@@ -43,4 +43,3 @@ print(fibo(12));
 print(nand(b,c));
 print(nand(!b, !c));
 print(nand(b, !c));
-
