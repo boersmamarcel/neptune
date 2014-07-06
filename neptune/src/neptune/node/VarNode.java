@@ -20,6 +20,10 @@ public class VarNode extends Node {
 	public void validate(Program p) throws NeptuneException {
 		IdEntry entry = p.symbolTable.retrieve(elementRef);
 		
+		if(Program.isFunctionCall && !entry.isDefinedInFunction()) {
+			throw new NeptuneException(this, "cannot use global variables from within functions");
+		}
+		
 		if(entry == null) {
 			throw new NeptuneException(this, "variable used but not declared");
 		}

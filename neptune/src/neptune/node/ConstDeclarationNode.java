@@ -6,7 +6,6 @@ import neptune.IdEntry;
 import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
-import neptune.node.Node.type;
 
 public class ConstDeclarationNode extends Node {
 

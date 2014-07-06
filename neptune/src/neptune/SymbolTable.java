@@ -170,6 +170,7 @@ public class SymbolTable {
     		// The first 3 words after LB in a new frame
     		// are reserved for other addresses, so add 3.
     		entry.setAddress(3+functionSize);	
+    		entry.definedInFunction = true;
     	}else{
     		entry.setAddress(currentSize);
     	}
