@@ -1,1 +1,1 @@
-incorrect_variable_assingment.txt
+operator:BECOMES --> element types do not match (BOOL!=INTEGER)
