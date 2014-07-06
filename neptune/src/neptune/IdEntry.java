@@ -28,6 +28,11 @@ public class IdEntry {
      * Used for function entries to store the size on the stack required for variables used. 
      */
     public int functionSize = -1;
+    
+    /**
+     * Whether or not this variable was defined within a function.
+     */
+    public boolean definedInFunction = false;
  
     /**
      * @param t
@@ -90,5 +95,9 @@ public class IdEntry {
     		// All primitives have are 1 word big
     		return 1;
     	}
+    }
+    
+    public boolean isDefinedInFunction() {
+    	return definedInFunction;
     }
 }
