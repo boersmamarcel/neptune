@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 antlr/Neptune.g 2014-07-05 16:50:48
+// $ANTLR 3.5.2 antlr/Neptune.g 2014-07-06 02:53:53
 
 package neptune;
 
@@ -1252,7 +1252,7 @@ public class NeptuneParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: IDENTIFIER, BECOMES, expression, type
+					// elements: type, expression, IDENTIFIER, BECOMES
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1271,12 +1271,12 @@ public class NeptuneParser extends Parser {
 						adaptor.addChild(root_1, stream_type.nextTree());
 						adaptor.addChild(root_1, stream_IDENTIFIER.nextNode());
 						// antlr/Neptune.g:180:28: ( BECOMES expression )?
-						if ( stream_BECOMES.hasNext()||stream_expression.hasNext() ) {
+						if ( stream_expression.hasNext()||stream_BECOMES.hasNext() ) {
 							adaptor.addChild(root_1, stream_BECOMES.nextNode());
 							adaptor.addChild(root_1, stream_expression.nextTree());
 						}
-						stream_BECOMES.reset();
 						stream_expression.reset();
+						stream_BECOMES.reset();
 
 						adaptor.addChild(root_0, root_1);
 						}
@@ -1502,7 +1502,7 @@ public class NeptuneParser extends Parser {
 			stream_RCURLY.add(RCURLY85);
 
 			// AST REWRITE
-			// elements: type, IDENTIFIER, type, line, IDENTIFIER, FUNCTION
+			// elements: IDENTIFIER, line, type, FUNCTION, IDENTIFIER, type
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 

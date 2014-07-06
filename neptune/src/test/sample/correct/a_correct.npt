@@ -1,7 +1,10 @@
-char[13] name = "HELLO, WORLD!";
+int i = -1;
 
-int i = 0;
-while(i < sizeof(name)) {
-	print(name[i]);
+char c;
+
+while(c != 10) {
+	read(c);
 	i = i + 1;
 }
+
+print(i);

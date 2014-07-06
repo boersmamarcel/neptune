@@ -32,7 +32,7 @@ public class VarNode extends Node {
 
 		IdEntry entry = p.symbolTable.retrieve(this.elementRef);
 		
-		if(info == null || info.get("instruction") == null || !info.get("instruction").equals("store")) {
+		if(info == null || info.get("instruction") == null || (!info.get("instruction").equals("store") && !info.get("instruction").equals("address"))) {
 			if(resultIsUsed) {
 				if(element.isArray()) {
 
@@ -44,7 +44,7 @@ public class VarNode extends Node {
 					p.add(Instruction.LOAD(entry.getAddress()));
 				}
 			}
-		} else {
+		} else if(info.get("instruction").equals("store")) {
 			if(element.isArray()) {
 				for(int i = 0; i < element.elemCount(); i++) {
 					p.add(Instruction.STORE(entry.getAddress() + i));
@@ -52,6 +52,8 @@ public class VarNode extends Node {
 			}else{
 				p.add(Instruction.STORE(entry.getAddress()));
 			}
+		} else if(info.get("instruction").equals("address")) {
+			p.add(Instruction.LOADA(entry.getAddress()));
 		}
 	}
 	

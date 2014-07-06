@@ -48,7 +48,7 @@ public class VarIndexedNode extends Node {
 
 		IdEntry entry = p.symbolTable.retrieve(this.elementRef);
 		
-		if(info == null || info.get("instruction") == null || !info.get("instruction").equals("store")) {
+		if(info == null || info.get("instruction") == null || (!info.get("instruction").equals("store") && !info.get("instruction").equals("address"))) {
 			
 			// First confirm that the index is not out of bounds
 			expression.resultIsUsed = true;
@@ -73,7 +73,9 @@ public class VarIndexedNode extends Node {
 			expression.generate(p, info);
 			p.add(Instruction.ADD());
 			
-			p.add(Instruction.STOREI(1));
+			if(info.get("instruction").equals("store")) {
+				p.add(Instruction.STOREI(1));
+			}
 		}
 	}
 	
