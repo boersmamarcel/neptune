@@ -184,7 +184,7 @@ public class FullTest {
 	
 	
 	public void correctTest(String filebase, String dirbase) throws IOException{
-		File file = new File(new File("").getAbsolutePath() + "/neptune/src/test/sample/"+dirbase+"/"+filebase+".npt");
+		File file = new File(new File("").getAbsolutePath() + "/src/test/sample/"+dirbase+"/"+filebase+".npt");
 		
 		String inputFile = file.getAbsolutePath();
 				
@@ -280,7 +280,7 @@ public class FullTest {
 		System.setOut(normalOut);
 		
 		
-		File checkFile = new File(new File("").getAbsolutePath() + "/neptune/src/test/sample/"+dirbase+"/"+filebase+".txt");
+		File checkFile = new File(new File("").getAbsolutePath() + "/src/test/sample/"+dirbase+"/"+filebase+".txt");
 	
 		
 		if(actual.equals("")){
