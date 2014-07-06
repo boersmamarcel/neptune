@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import neptune.NeptuneException;
 import neptune.NeptuneLexer;
 import neptune.NeptuneParser;
 import neptune.NeptuneTree;
@@ -38,12 +39,9 @@ public class FullTest {
 		try {
 			correctTest(method, "correct");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (RecognitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
+		
 	}
 	
 	@Test
@@ -53,11 +51,10 @@ public class FullTest {
 		try {
 			correctTest(method, "correct");
 			correctTest(method, "context");
+			correctTest("basicexpression_scope", "context");
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (RecognitionException e) {
-			e.printStackTrace();
-		}
+		} 
 		
 	}
 	
@@ -68,12 +65,8 @@ public class FullTest {
 		try {
 			correctTest(method, "correct");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (RecognitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		
 	}
 	
@@ -84,12 +77,8 @@ public class FullTest {
 		try {
 			correctTest(method, "correct");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (RecognitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		
 	}
 	
@@ -100,12 +89,8 @@ public class FullTest {
 		try {
 			correctTest(method, "correct");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (RecognitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		
 	}
 	
@@ -115,13 +100,9 @@ public class FullTest {
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
 			correctTest(method, "correct");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			} catch (IOException e) {
 			e.printStackTrace();
-		} catch (RecognitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		
 	}
 	
@@ -130,28 +111,30 @@ public class FullTest {
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
 			correctTest(method, "correct");
+			correctTest(method, "context");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (RecognitionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 		
 	}
 	
 	
-	public void correctTest(String filebase, String dirbase) throws IOException, RecognitionException{
+	public void correctTest(String filebase, String dirbase) throws IOException{
 		File file = new File(new File("").getAbsolutePath() + "/neptune/src/test/sample/"+dirbase+"/"+filebase+".npt");
 		
 		String inputFile = file.getAbsolutePath();
-		
+				
 		InputStream in = inputFile == null ? System.in : new FileInputStream(inputFile);
 		NeptuneLexer lexer = new NeptuneLexer(new ANTLRInputStream(in));
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		NeptuneParser parser = new NeptuneParser(tokens);
 
-		NeptuneParser.program_return result = parser.program();
+		NeptuneParser.program_return result = null;
+		try {
+			result = parser.program();
+		} catch (RecognitionException e1) {
+			System.out.println(e1.getMessage());
+		}
 		CommonTree tree = (CommonTree) result.getTree();
 		
 
@@ -161,11 +144,35 @@ public class FullTest {
 		PrintStream assemblyOut = new PrintStream(new File(inputFile + ".as"));
 		PrintStream normalOut = System.out;
 		
-		ntree.program();
+		try {
+			ntree.program();
+		} catch (RecognitionException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
+		
+		
 		Program p = new Program();
 		
-		ntree.rootNode.validate(p);
-		ntree.rootNode.generate(p, null);
+		String actual = "";
+		
+		try {
+			ntree.rootNode.validate(p);
+		} catch (NeptuneException e) {
+			// TODO Auto-generated catch block
+			actual = e.getMessage()+ "\n";
+		}
+
+		try {
+			if(actual.equals("")){
+				ntree.rootNode.generate(p, null);
+			}
+		} catch (NeptuneException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
+		
+		
 		
 		System.setOut(assemblyOut);
 		p.assemble();
@@ -200,7 +207,9 @@ public class FullTest {
 		File checkFile = new File(new File("").getAbsolutePath() + "/neptune/src/test/sample/"+dirbase+"/"+filebase+".txt");
 	
 		
-		String actual = readFile(new File(inputFile + ".out"));
+		if(actual.equals("")){
+			actual = readFile(new File(inputFile + ".out"));
+		}
 		String expected = readFile(checkFile);
 		
 		
@@ -267,11 +276,7 @@ public class FullTest {
 		}
 	}
 	
-	@Test
-	public void testAllCorrect() {
-		assert(true);
 
-	}
 
 	
 	
