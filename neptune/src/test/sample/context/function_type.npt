@@ -1,6 +1,6 @@
 //incorrect type function
 
-function int test(){
+function bool test(){
 	char a = 'a';
 	return(a);
 }

@@ -1,1 +1,1 @@
-codeblock.txt
+var:a --> type mismatch (VOID!=INTEGER)

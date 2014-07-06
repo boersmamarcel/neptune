@@ -21,17 +21,52 @@ import neptune.assembly.Program;
 
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.NoViableAltException;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.junit.Test;
 
+import antlr.ANTLRException;
 import TAM.Assembler;
 import TAM.Interpreter;
 
 
 public class FullTest {
 
+	
+	@Test
+	public void spelling(){
+		String method = new Exception().getStackTrace()[0].getMethodName();
+		try {
+			correctTest(method, "constructs");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
+	
+	@Test
+	public void arraySyntax(){
+		String method = new Exception().getStackTrace()[0].getMethodName();
+		try {
+			correctTest(method, "constructs");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
+	
+	@Test
+	public void commands(){
+		String method = new Exception().getStackTrace()[0].getMethodName();
+		try {
+			correctTest(method, "constructs");
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
+	}
 	
 	@Test
 	public void array(){
@@ -70,7 +105,7 @@ public class FullTest {
 		String method = new Exception().getStackTrace()[0].getMethodName();
 		try {
 			correctTest(method, "correct");
-			//correctTest(method, "context");
+			correctTest(method, "context");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} 
@@ -136,10 +171,20 @@ public class FullTest {
 		NeptuneParser parser = new NeptuneParser(tokens);
 
 		NeptuneParser.program_return result = null;
+		
+		
 		try {
+			PrintStream normalErr = System.err;
+			
+			System.setErr(new PrintStream(new OutputStream() {
+			    public void write(int b) {
+			    }
+			}));
 			result = parser.program();
+			System.setErr(normalErr);
+			
 		} catch (RecognitionException e1) {
-			System.out.println(e1.getMessage());
+			e1.printStackTrace();
 		}
 		CommonTree tree = (CommonTree) result.getTree();
 		
@@ -150,19 +195,24 @@ public class FullTest {
 		PrintStream assemblyOut = new PrintStream(new File(inputFile + ".as"));
 		PrintStream normalOut = System.out;
 		
+		String actual = "";
+		
 		try {
 			ntree.program();
 		} catch (RecognitionException e) {
-			System.out.println(e.getMessage());
+			//e.printStackTrace();
+			actual = e.toString()+ "\n";
 		}
 		
 		
 		Program p = new Program();
 		
-		String actual = "";
+		
 		
 		try {
-			ntree.rootNode.validate(p);
+			if(actual.equals("")){
+				ntree.rootNode.validate(p);
+			}
 		} catch (NeptuneException e) {
 			actual = e.getMessage()+ "\n";
 		}
