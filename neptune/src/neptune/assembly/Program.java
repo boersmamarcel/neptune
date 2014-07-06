@@ -81,6 +81,8 @@ public class Program {
 			System.out.println(i);
 		}
 		
+		
+		//out of bounds check
 		System.out.println("valid0: LOAD(1) -2[LB]");
 		System.out.println("LOAD(1) -1[LB]");
 		System.out.println("CALL ge");
