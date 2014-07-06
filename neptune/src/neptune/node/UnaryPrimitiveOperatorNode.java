@@ -6,11 +6,28 @@ import neptune.NeptuneException;
 import neptune.assembly.Instruction;
 import neptune.assembly.Program;
 
+/**
+ * Class representation of UnaryPrimitiveOperatorNode
+ * @author Koen van Urk and Marcel Boersma
+ *
+ */
 public class UnaryPrimitiveOperatorNode extends Node {
 
+	/**
+	 * Operator action
+	 */
 	protected Operator operator;
+	
+	/**
+	 * Right handside operand
+	 */
 	protected Node operand;
 	
+	/**
+	 * Constructor of an unary primitive operator node
+	 * @param operator operator action
+	 * @param operand expression value
+	 */
 	public UnaryPrimitiveOperatorNode(Operator operator, Node operand) {
 		this.description = "operator:" + operator;
 		
@@ -20,6 +37,7 @@ public class UnaryPrimitiveOperatorNode extends Node {
 		children.add(operand);
 	}
 	
+	@Override
 	public void validate(Program p) throws NeptuneException {
 		operand.validate(p);
 		

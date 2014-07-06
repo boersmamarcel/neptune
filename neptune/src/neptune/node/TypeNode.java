@@ -5,8 +5,18 @@ import java.util.Map;
 import neptune.NeptuneException;
 import neptune.assembly.Program;
 
+/**
+ * Class representation of the TypeNode
+ * @author Koen van Urk and Marcel Boersma
+ *
+ */
 public class TypeNode extends Node {
 	
+	/**
+	 * Constructor of the type node
+	 * @param primitive primitive node type
+	 * @param elements number of elements, if 0 then primitive type else array
+	 */
 	public TypeNode(type primitive, int elements) {
 		this.description = "typedef";
 		this.primitive = primitive;
