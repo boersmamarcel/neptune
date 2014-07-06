@@ -1,1 +1,2 @@
-print("Hello, World!");
+char newLine = 10;
+print("Hello, World!", newLine);
